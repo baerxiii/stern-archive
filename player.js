@@ -1,6 +1,7 @@
 const params = new URLSearchParams(window.location.search);
 const archiveId = params.get("archiveId");
 const title = params.get("title");
+const archiveYear = Number((title || archiveId || "").match(/\b(19|20)\d{2}\b/)?.[0] || "");
 
 const pageTitle = document.getElementById("title");
 if (pageTitle) {
@@ -21,16 +22,57 @@ if (!mainPlayer) {
   console.error("No audioPlayer element found on the page.");
 }
 
-function parseDateFromFileName(fileName) {
-  const match = fileName.match(/(\d{4})_(\d{2})_(\d{2})/);
-  if (!match) return null;
+function parseDateFromFileName(fileName, fallbackYear = null) {
+  const normalized = fileName.toLowerCase();
 
-  const [, year, month, day] = match;
-  return new Date(`${year}-${month}-${day}T00:00:00`);
+  const datePatterns = [
+    /(\d{4})[_-](\d{2})[_-](\d{2})/,
+    /(\d{4})[_-](\d{2})(\d{2})/,
+    /(\d{4})(\d{2})(\d{2})/,
+    /(\d{2})[_-](\d{2})[_-](\d{4})/,
+    /(\d{2})[_-](\d{2})/,
+    /(\d{2})(\d{2})/
+  ];
+
+  for (const pattern of datePatterns) {
+    const match = normalized.match(pattern);
+    if (!match) continue;
+
+    let year;
+    let month;
+    let day;
+
+    if (match[1] && match[1].length === 4) {
+      year = Number(match[1]);
+      month = Number(match[2]);
+      day = Number(match[3] || match[2]);
+    } else if (match[3] && match[3].length === 4) {
+      day = Number(match[1]);
+      month = Number(match[2]);
+      year = Number(match[3]);
+    } else {
+      const resolvedYear = fallbackYear || new Date().getFullYear();
+      month = Number(match[1]);
+      day = Number(match[2]);
+      year = resolvedYear;
+    }
+
+    if (
+      Number.isFinite(year) &&
+      Number.isFinite(month) &&
+      Number.isFinite(day) &&
+      month >= 1 && month <= 12 &&
+      day >= 1 && day <= 31
+    ) {
+      return new Date(year, month - 1, day);
+    }
+  }
+
+  return null;
 }
 
 function formatEpisodeLabel(fileName) {
-  const date = parseDateFromFileName(fileName);
+  const date = parseDateFromFileName(fileName, archiveYear || null);
   if (!date) {
     return fileName.replace(/\.[^/.]+$/, "");
   }
@@ -53,7 +95,7 @@ function formatTime(seconds) {
 }
 
 function getMonthKey(fileName) {
-  const date = parseDateFromFileName(fileName);
+  const date = parseDateFromFileName(fileName, archiveYear || null);
   if (!date) return null;
 
   return {
@@ -82,8 +124,8 @@ fetch(`https://archive.org/metadata/${archiveId}`)
     const mp3s = (data.files || [])
       .filter(file => typeof file?.name === "string" && file.name.toLowerCase().endsWith(".mp3"))
       .sort((a, b) => {
-        const aDate = parseDateFromFileName(a.name)?.getTime() ?? Number.MAX_SAFE_INTEGER;
-        const bDate = parseDateFromFileName(b.name)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const aDate = parseDateFromFileName(a.name, archiveYear || null)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const bDate = parseDateFromFileName(b.name, archiveYear || null)?.getTime() ?? Number.MAX_SAFE_INTEGER;
         return aDate - bDate || a.name.localeCompare(b.name);
       });
 
