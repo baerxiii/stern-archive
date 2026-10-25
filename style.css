@@ -69,3 +69,14 @@ input{
 audio{
     width:100%;
 }
+
+.episode-list{
+  display:grid;
+  gap:15px;
+  padding:20px;
+}
+
+.card audio{
+  width:100%;
+  margin-top:10px;
+}
