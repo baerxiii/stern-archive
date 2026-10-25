@@ -28,64 +28,46 @@ fetch(`https://archive.org/metadata/${archiveId}`)
 
       card.innerHTML = `
         <h3>${file.name}</h3>
-
-        <audio
-          controls
-          preload="none"
-          src="${audioUrl}">
-        </audio>
+        <audio controls preload="none" src="${audioUrl}"></audio>
       `;
 
       const player = card.querySelector("audio");
 
-      const key =
-        archiveId + "_" + file.name;
+      const key = archiveId + "_" + file.name;
 
-      player.addEventListener(
-        "loadedmetadata",
-        () => {
+      player.addEventListener("loadedmetadata", () => {
+        const saved = localStorage.getItem(key);
 
-          const saved =
-            localStorage.getItem(key);
-
-          if(saved){
-            player.currentTime =
-              parseFloat(saved);
-          }
+        if (saved) {
+          player.currentTime = parseFloat(saved);
         }
-      );
+      });
 
-      player.addEventListener(
-        "timeupdate",
-        () => {
+      player.addEventListener("timeupdate", () => {
+        localStorage.setItem(
+          key,
+          player.currentTime
+        );
+      });
 
-          localStorage.setItem(
-            key,
-            player.currentTime
-          );
-        }
-      );
-
-      player.addEventListener(
-         "lastPlayed",
-            JSON.stringify({
-              title: file.name,
-              url: window.location.href
-            })
-          );
-        }
-      );
+      player.addEventListener("play", () => {
+        localStorage.setItem(
+          "lastPlayed",
+          JSON.stringify({
+            title: file.name,
+            url: window.location.href
+          })
+        );
+      });
 
       container.appendChild(card);
 
     });
 
-    document.body.appendChild(container);
-
+    
   })
   .catch(error => {
     console.error(error);
-
     document.body.innerHTML +=
       "<p>Failed to load archive metadata.</p>";
   });
