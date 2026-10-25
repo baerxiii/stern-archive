@@ -17,14 +17,16 @@ function buildLibrary(items) {
 
   items.forEach(item => {
     library.innerHTML += `
-      <div class="card">
+      <article class="library-card card">
+        <div class="card-topline">
+          <span class="status-pill">${item.year}</span>
+        </div>
         <h3>${item.title}</h3>
-        <p>${item.year}</p>
-
+        <p>Archive collection</p>
         <a href="player.html?archiveId=${item.archiveId}&title=${encodeURIComponent(item.title)}">
-          Browse Episodes
+          Open archive
         </a>
-      </div>
+      </article>
     `;
   });
 }
@@ -53,17 +55,21 @@ function buildContinueListening() {
   );
 
   if (!lastPlayed) {
-    card.innerHTML = "<p>No recent listening.</p>";
+    card.innerHTML = `
+      <div class="continue-card empty-state">
+        <p>No recent listening yet.</p>
+        <a href="library.html">Browse library</a>
+      </div>
+    `;
     return;
   }
 
   card.innerHTML = `
-    <div class="card">
+    <div class="continue-card">
+      <span class="status-pill">Resume</span>
       <h3>${lastPlayed.title}</h3>
-
-      <a href="${lastPlayed.url}">
-        Resume Listening
-      </a>
+      <p>Pick up where you left off.</p>
+      <a href="${lastPlayed.url}">Resume listening</a>
     </div>
   `;
 }

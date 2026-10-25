@@ -198,8 +198,46 @@ button, input {
   gap: 12px;
 }
 
-#continueCard .card {
+.continue-card {
+  display: grid;
+  gap: 8px;
+  padding: 18px 16px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(82, 214, 165, 0.07), rgba(18, 28, 47, 0.82));
+  border: 1px solid rgba(82, 214, 165, 0.18);
+}
+
+.continue-card.empty-state {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px dashed rgba(148, 163, 184, 0.2);
+}
+
+.continue-card h3,
+.library-card h3 {
   margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: -0.03em;
+}
+
+.continue-card p,
+.library-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.continue-card a,
+.library-card a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #041b12;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  box-shadow: 0 12px 24px rgba(46, 193, 141, 0.18);
 }
 
 .toolbar {
@@ -244,27 +282,26 @@ input::placeholder {
   border-color: rgba(82, 214, 165, 0.4);
 }
 
-.card h3 {
-  margin: 0 0 8px;
-  font-size: 1.15rem;
-  letter-spacing: -0.02em;
+.card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 14px;
 }
 
-.card p {
-  margin: 0 0 14px;
-  color: var(--muted);
-}
-
-.card a {
+.status-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-  color: #041b12;
-  border-radius: 12px;
-  padding: 10px 14px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(82, 214, 165, 0.1);
+  border: 1px solid rgba(82, 214, 165, 0.25);
+  color: var(--accent);
+  font-size: 0.76rem;
   font-weight: 700;
-  box-shadow: 0 12px 24px rgba(46, 193, 141, 0.18);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .player-shell {
