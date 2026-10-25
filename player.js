@@ -14,43 +14,108 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       file.name.toLowerCase().endsWith(".mp3")
     );
 
-    document.body.innerHTML += `
-      <p style="color:white;padding:20px;">
-        Found ${mp3s.length} MP3 files
-      </p>
+    const playerArea = document.createElement("div");
+
+    playerArea.innerHTML = `
+      <div class="card">
+        <h2 id="nowPlaying">Select an Episode</h2>
+
+        <audio
+          id="mainPlayer"
+          controls
+          style="width:100%;margin-top:10px;"
+        ></audio>
+      </div>
     `;
 
-  mp3s.forEach(file => {
+    document.body.appendChild(playerArea);
 
-  const audioUrl =
-    `https://archive.org/download/${archiveId}/${encodeURIComponent(file.name)}`;
+    const mainPlayer =
+      document.getElementById("mainPlayer");
 
-  const div = document.createElement("div");
+    const nowPlaying =
+      document.getElementById("nowPlaying");
 
-  div.style.padding = "10px";
-  div.style.margin = "10px";
-  div.style.background = "#1d1d1d";
-  div.style.borderRadius = "10px";
+    const search = document.createElement("input");
 
-  div.innerHTML = `
-    <h3 style="color:white">${file.name}</h3>
+    search.type = "text";
+    search.placeholder = "Search episodes...";
+    search.style.width = "100%";
+    search.style.padding = "12px";
+    search.style.margin = "20px 0";
 
-    <audio controls style="width:100%;">
-      <source src="${audioUrl}" type="audio/mpeg">
-    </audio>
-  `;
+    document.body.appendChild(search);
 
-  document.body.appendChild(div);
+    const episodeList =
+      document.createElement("div");
 
-});  
+    episodeList.className =
+      "episode-list";
+
+    document.body.appendChild(episodeList);
+
+    function renderEpisodes(filter = "") {
+
+      episodeList.innerHTML = "";
+
+      mp3s
+        .filter(file =>
+          file.name
+            .toLowerCase()
+            .includes(filter.toLowerCase())
+        )
+        .forEach(file => {
+
+          const audioUrl =
+            `https://archive.org/download/${archiveId}/${encodeURIComponent(file.name)}`;
+
+          const item =
+            document.createElement("div");
+
+          item.className = "card";
+
+          item.style.cursor = "pointer";
+
+          item.innerHTML = `
+            <h3>${file.name}</h3>
+          `;
+
+          item.addEventListener(
+            "click",
+            () => {
+
+              mainPlayer.src = audioUrl;
+
+              nowPlaying.textContent =
+                file.name;
+
+              localStorage.setItem(
+                "lastPlayed",
+                JSON.stringify({
+                  archiveId,
+                  fileName: file.name,
+                  audioUrl
+                })
+              );
+
+              mainPlayer.play();
+
+            }
+          );
+
+          episodeList.appendChild(item);
+
+        });
+    }
+
+    search.addEventListener(
+      "input",
+      () => renderEpisodes(search.value)
+    );
+
+    renderEpisodes();
 
   })
-  .catch(err => {
-    console.error(err);
-
-    document.body.innerHTML += `
-      <p style="color:red;padding:20px;">
-        Error loading archive
-      </p>
-    `;
+  .catch(error => {
+    console.error(error);
   });
