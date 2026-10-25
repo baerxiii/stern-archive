@@ -27,9 +27,14 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       card.className = "card";
 
       card.innerHTML = `
-        <h3>${file.name}</h3>
-        <audio controls preload="none" src="${audioUrl}"></audio>
-      `;
+  <h3>${file.name}</h3>
+
+  <audio
+      controls
+      preload="none"
+      src="${audioUrl}">
+  </audio>
+`;
 
       const player = card.querySelector("audio");
 
