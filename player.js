@@ -71,7 +71,7 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       mainPlayer.src = audioUrl;
 
       nowPlaying.textContent =
-        file.name;
+        displayName;
 
       localStorage.setItem(
         "currentEpisode",
