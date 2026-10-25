@@ -16,6 +16,11 @@ if (!archiveId) {
   throw new Error("Missing archiveId");
 }
 
+const mainPlayer = document.getElementById("audioPlayer");
+if (!mainPlayer) {
+  console.error("No audioPlayer element found on the page.");
+}
+
 function parseDateFromFileName(fileName) {
   const match = fileName.match(/(\d{4})_(\d{2})_(\d{2})/);
   if (!match) return null;
@@ -27,7 +32,7 @@ function parseDateFromFileName(fileName) {
 function formatEpisodeLabel(fileName) {
   const date = parseDateFromFileName(fileName);
   if (!date) {
-    return fileName;
+    return fileName.replace(/\.[^/.]+$/, "");
   }
 
   return date.toLocaleDateString("en-US", {
@@ -70,6 +75,10 @@ fetch(`https://archive.org/metadata/${archiveId}`)
     return response.json();
   })
   .then(data => {
+    if (!mainPlayer) {
+      throw new Error("audioPlayer element is missing.");
+    }
+
     const mp3s = (data.files || [])
       .filter(file => typeof file?.name === "string" && file.name.toLowerCase().endsWith(".mp3"))
       .sort((a, b) => {
@@ -78,68 +87,37 @@ fetch(`https://archive.org/metadata/${archiveId}`)
         return aDate - bDate || a.name.localeCompare(b.name);
       });
 
-    const playerArea = document.createElement("div");
-    playerArea.className = "card";
-    playerArea.innerHTML = `
-      <h2 id="nowPlaying">Select an Episode</h2>
-      <audio id="mainPlayer" controls style="width:100%;margin-top:10px;"></audio>
-    `;
-    document.body.appendChild(playerArea);
-
-    const mainPlayer = document.getElementById("mainPlayer");
-    const nowPlaying = document.getElementById("nowPlaying");
-
     const controls = document.createElement("div");
-    controls.style.display = "flex";
-    controls.style.gap = "10px";
-    controls.style.alignItems = "center";
-    controls.style.margin = "12px 0 20px";
-    controls.style.flexWrap = "wrap";
+    controls.className = "transport-controls";
 
     const prevButton = document.createElement("button");
     prevButton.textContent = "◀ Prev";
-    prevButton.style.padding = "10px 14px";
-    prevButton.style.border = "none";
-    prevButton.style.borderRadius = "8px";
-    prevButton.style.background = "#2d2d2d";
-    prevButton.style.color = "white";
-    prevButton.style.cursor = "pointer";
+    prevButton.className = "transport-btn";
 
     const nextButton = document.createElement("button");
     nextButton.textContent = "Next ▶";
-    nextButton.style.padding = "10px 14px";
-    nextButton.style.border = "none";
-    nextButton.style.borderRadius = "8px";
-    nextButton.style.background = "#2d2d2d";
-    nextButton.style.color = "white";
-    nextButton.style.cursor = "pointer";
+    nextButton.className = "transport-btn";
 
     const timeDisplay = document.createElement("div");
+    timeDisplay.className = "time-display";
     timeDisplay.textContent = "0:00 / 0:00";
-    timeDisplay.style.fontSize = "14px";
-    timeDisplay.style.color = "#d0d0d0";
-    timeDisplay.style.marginLeft = "6px";
 
     controls.appendChild(prevButton);
     controls.appendChild(nextButton);
     controls.appendChild(timeDisplay);
-    document.body.appendChild(controls);
+
+    mainPlayer.insertAdjacentElement("afterend", controls);
 
     const search = document.createElement("input");
     search.type = "text";
     search.placeholder = "Search episodes...";
-    search.style.width = "100%";
-    search.style.padding = "12px";
-    search.style.margin = "20px 0";
-    search.style.background = "#1d1d1d";
-    search.style.color = "white";
-    search.style.border = "none";
-    search.style.borderRadius = "8px";
-    document.body.appendChild(search);
+    search.className = "episode-search";
+    search.style.marginTop = "18px";
+    mainPlayer.parentElement.insertBefore(search, controls.nextSibling);
 
     const episodeList = document.createElement("div");
     episodeList.className = "episode-list";
-    document.body.appendChild(episodeList);
+    mainPlayer.parentElement.insertBefore(episodeList, search.nextSibling);
 
     let currentIndex = -1;
 
@@ -171,7 +149,7 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       const displayName = formatEpisodeLabel(file.name);
 
       mainPlayer.src = audioUrl;
-      nowPlaying.textContent = displayName;
+      document.getElementById("nowPlaying")?.textContent = displayName;
       saveCurrentEpisode(file, audioUrl);
 
       prevButton.disabled = currentIndex <= 0;
@@ -188,9 +166,7 @@ fetch(`https://archive.org/metadata/${archiveId}`)
         }
       }
 
-      mainPlayer.play().catch(err => {
-        console.log("Autoplay blocked:", err);
-      });
+      mainPlayer.play().catch(() => {});
     }
 
     function goToEpisode(offset) {
@@ -228,43 +204,60 @@ fetch(`https://archive.org/metadata/${archiveId}`)
         .filter(file => file.name.toLowerCase().includes(normalizedFilter))
         .forEach(file => {
           const monthInfo = getMonthKey(file.name);
-          if (!monthInfo) return;
+          const monthKey = monthInfo ? monthInfo.monthLabel : "Unsorted";
+          const displayName = monthInfo ? monthInfo.dayLabel : file.name.replace(/\.[^/.]+$/, "");
 
-          if (!grouped[monthInfo.monthLabel]) {
-            grouped[monthInfo.monthLabel] = [];
+          if (!grouped[monthKey]) {
+            grouped[monthKey] = [];
           }
 
-          grouped[monthInfo.monthLabel].push({
+          grouped[monthKey].push({
             file,
-            displayName: monthInfo.dayLabel,
-            date: monthInfo.date
+            displayName,
+            date: monthInfo ? monthInfo.date : new Date(0)
           });
         });
 
       if (Object.keys(grouped).length === 0) {
-        episodeList.innerHTML = `<p style="padding:12px;">No episodes found.</p>`;
+        episodeList.innerHTML = `<p class="empty-state-text">No episodes found.</p>`;
         return;
       }
 
-      Object.keys(grouped)
-        .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
-        .forEach(month => {
-          const header = document.createElement("h2");
-          header.textContent = `📅 ${month}`;
-          header.style.marginTop = "30px";
-          episodeList.appendChild(header);
+      const monthEntries = Object.entries(grouped).sort(([a], [b]) => {
+        const aTime = new Date(a).getTime();
+        const bTime = new Date(b).getTime();
+        if (a === "Unsorted") return 1;
+        if (b === "Unsorted") return -1;
+        return aTime - bTime;
+      });
 
-          grouped[month]
-            .sort((a, b) => a.date - b.date)
-            .forEach(item => {
-              const card = document.createElement("div");
-              card.className = "card";
-              card.style.cursor = "pointer";
-              card.innerHTML = `<h3>▶ ${item.displayName}</h3>`;
-              card.addEventListener("click", () => loadEpisode(item.file));
-              episodeList.appendChild(card);
-            });
-        });
+      monthEntries.forEach(([month, entries], index) => {
+        const group = document.createElement("details");
+        group.className = "month-group";
+        group.open = index === 0;
+
+        const summary = document.createElement("summary");
+        summary.className = "month-summary";
+        summary.innerHTML = `<span>📅 ${month}</span><span class="month-count">${entries.length}</span>`;
+
+        const list = document.createElement("div");
+        list.className = "month-list";
+
+        entries
+          .sort((a, b) => a.date - b.date)
+          .forEach(item => {
+            const card = document.createElement("button");
+            card.type = "button";
+            card.className = "episode-card";
+            card.textContent = item.displayName;
+            card.addEventListener("click", () => loadEpisode(item.file));
+            list.appendChild(card);
+          });
+
+        group.appendChild(summary);
+        group.appendChild(list);
+        episodeList.appendChild(group);
+      });
     }
 
     search.addEventListener("input", event => {
@@ -293,13 +286,7 @@ fetch(`https://archive.org/metadata/${archiveId}`)
     if (lastEpisode && lastEpisode.archiveId === archiveId) {
       const resumeButton = document.createElement("button");
       resumeButton.textContent = "Resume last episode";
-      resumeButton.style.margin = "12px 0 20px";
-      resumeButton.style.padding = "10px 14px";
-      resumeButton.style.border = "none";
-      resumeButton.style.borderRadius = "8px";
-      resumeButton.style.background = "#2d2d2d";
-      resumeButton.style.color = "white";
-      resumeButton.style.cursor = "pointer";
+      resumeButton.className = "resume-btn";
 
       resumeButton.addEventListener("click", () => {
         const file = mp3s.find(item => item.name === lastEpisode.fileName);
@@ -308,8 +295,8 @@ fetch(`https://archive.org/metadata/${archiveId}`)
         }
       });
 
-      document.body.insertBefore(resumeButton, search);
-      nowPlaying.textContent = `Resume: ${lastEpisode.displayName || lastEpisode.fileName}`;
+      mainPlayer.parentElement.insertBefore(resumeButton, search);
+      document.getElementById("nowPlaying")?.textContent = `Resume: ${lastEpisode.displayName || lastEpisode.fileName}`;
 
       const file = mp3s.find(item => item.name === lastEpisode.fileName);
       if (file) {
