@@ -126,9 +126,36 @@ fetch(`https://archive.org/metadata/${archiveId}`)
           card.className = "card";
           card.style.cursor = "pointer";
 
-          card.innerHTML = `
-            <h3>${file.name}</h3>
-          `;
+          const match = file.name.match(
+  /(\d{4})_(\d{2})_(\d{2})/
+);
+
+let displayName = file.name;
+
+if (match) {
+
+  const year = match[1];
+  const month = match[2];
+  const day = match[3];
+
+  const date = new Date(
+    `${year}-${month}-${day}`
+  );
+
+  displayName = date.toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "long",
+      day: "2-digit"
+    }
+  );
+}
+
+card.innerHTML = `
+  <h3>${displayName}</h3>
+`;
+
 
           card.addEventListener(
             "click",
