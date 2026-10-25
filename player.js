@@ -20,18 +20,29 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       </p>
     `;
 
-    mp3s.slice(0, 20).forEach(file => {
+  mp3s.forEach(file => {
 
-      const div = document.createElement("div");
+  const audioUrl =
+    `https://archive.org/download/${archiveId}/${encodeURIComponent(file.name)}`;
 
-      div.style.color = "white";
-      div.style.padding = "10px";
+  const div = document.createElement("div");
 
-      div.textContent = file.name;
+  div.style.padding = "10px";
+  div.style.margin = "10px";
+  div.style.background = "#1d1d1d";
+  div.style.borderRadius = "10px";
 
-      document.body.appendChild(div);
+  div.innerHTML = `
+    <h3 style="color:white">${file.name}</h3>
 
-    });
+    <audio controls style="width:100%;">
+      <source src="${audioUrl}" type="audio/mpeg">
+    </audio>
+  `;
+
+  document.body.appendChild(div);
+
+});  
 
   })
   .catch(err => {
