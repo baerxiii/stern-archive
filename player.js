@@ -10,69 +10,36 @@ fetch(`https://archive.org/metadata/${archiveId}`)
   .then(response => response.json())
   .then(data => {
 
-    const files = data.files.filter(file =>
+    const mp3s = data.files.filter(file =>
       file.name.toLowerCase().endsWith(".mp3")
     );
 
-    const container = document.createElement("div");
-    container.className = "episode-list";
+    document.body.innerHTML += `
+      <p style="color:white;padding:20px;">
+        Found ${mp3s.length} MP3 files
+      </p>
+    `;
 
-    files.forEach(file => {
+    mp3s.slice(0, 20).forEach(file => {
 
-      const audioUrl =
-        `https://archive.org/download/${archiveId}/${encodeURIComponent(file.name)}`;
+      const div = document.createElement("div");
 
-      const card = document.createElement("div");
+      div.style.color = "white";
+      div.style.padding = "10px";
 
-      card.className = "card";
+      div.textContent = file.name;
 
-      card.innerHTML = `
-  <h3>${file.name}</h3>
-
-  <audio
-      controls
-      preload="none"
-      src="${audioUrl}">
-  </audio>
-`;
-
-      const player = card.querySelector("audio");
-
-      const key = archiveId + "_" + file.name;
-
-      player.addEventListener("loadedmetadata", () => {
-        const saved = localStorage.getItem(key);
-
-        if (saved) {
-          player.currentTime = parseFloat(saved);
-        }
-      });
-
-      player.addEventListener("timeupdate", () => {
-        localStorage.setItem(
-          key,
-          player.currentTime
-        );
-      });
-
-      player.addEventListener("play", () => {
-        localStorage.setItem(
-          "lastPlayed",
-          JSON.stringify({
-            title: file.name,
-            url: window.location.href
-          })
-        );
-      });
-
-      container.appendChild(card);
+      document.body.appendChild(div);
 
     });
 
-    
   })
-  .catch(error => {
-    console.error(error);
-    document.body.innerHTML +=
-      "<p>Failed to load archive metadata.</p>";
+  .catch(err => {
+    console.error(err);
+
+    document.body.innerHTML += `
+      <p style="color:red;padding:20px;">
+        Error loading archive
+      </p>
+    `;
   });
