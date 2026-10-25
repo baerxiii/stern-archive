@@ -157,10 +157,17 @@ card.innerHTML = `
 `;
 
 
-          card.addEventListener(
-            "click",
-            () => loadEpisode(file)
-          );
+          card.addEventListener("click", () => {
+
+  loadEpisode(file);
+
+  setTimeout(() => {
+    mainPlayer.play().catch(err => {
+      console.log("Autoplay blocked:", err);
+    });
+  }, 100);
+
+});
 
           episodeList.appendChild(card);
 
