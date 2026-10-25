@@ -71,12 +71,17 @@ audio{
 }
 
 .episode-list{
-  display:grid;
-  gap:15px;
-  padding:20px;
+    display:grid;
+    gap:15px;
+    padding:20px;
+}
+
+.card{
+    background:#1d1d1d;
+    padding:15px;
+    border-radius:10px;
 }
 
 .card audio{
-  width:100%;
-  margin-top:10px;
+    width:100%;
 }
