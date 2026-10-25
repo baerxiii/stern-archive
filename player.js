@@ -8,6 +8,8 @@ if (pageTitle) {
   pageTitle.textContent = title || "Episodes";
 }
 
+const nowPlaying = document.getElementById("nowPlaying");
+
 if (!archiveId) {
   document.body.innerHTML += `
     <p style="color:#f8d7da;padding:20px;">
@@ -191,7 +193,9 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       const displayName = formatEpisodeLabel(file.name);
 
       mainPlayer.src = audioUrl;
-      document.getElementById("nowPlaying")?.textContent = displayName;
+      if (nowPlaying) {
+        nowPlaying.textContent = displayName;
+      }
       saveCurrentEpisode(file, audioUrl);
 
       prevButton.disabled = currentIndex <= 0;
@@ -338,7 +342,9 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       });
 
       mainPlayer.parentElement.insertBefore(resumeButton, search);
-      document.getElementById("nowPlaying")?.textContent = `Resume: ${lastEpisode.displayName || lastEpisode.fileName}`;
+      if (nowPlaying) {
+        nowPlaying.textContent = `Resume: ${lastEpisode.displayName || lastEpisode.fileName}`;
+      }
 
       const file = mp3s.find(item => item.name === lastEpisode.fileName);
       if (file) {
@@ -368,3 +374,4 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       </p>
     `;
   });
+
