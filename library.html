@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Library</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="left-cluster">
+        <button type="button" class="back-btn" onclick="window.history.length > 1 ? history.back() : location.href='index.html';">← Back</button>
+        <a class="nav-link secondary" href="index.html">Home</a>
+      </div>
+      <div class="brand-wrap compact">
+        <span class="brand-mark">📚</span>
+        <h1>Library</h1>
+      </div>
+    </header>
 
-<header>
-    <button type="button" class="back-btn" onclick="window.history.length > 1 ? history.back() : location.href='index.html';">← Back</button>
-    <h1>Library</h1>
+    <div class="toolbar">
+      <input type="text" id="searchBox" placeholder="Search archive titles...">
+    </div>
 
-    <input
-        type="text"
-        id="searchBox"
-        placeholder="Search..."
-    >
-</header>
+    <main>
+      <div id="library" class="library-grid"></div>
+    </main>
+  </div>
 
-<div id="library"></div>
-
-<script src="app.js"></script>
-
+  <script src="app.js"></script>
 </body>
 </html>

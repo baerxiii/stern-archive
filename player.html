@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Player</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="left-cluster">
+        <button type="button" class="back-btn" onclick="window.history.length > 1 ? history.back() : location.href='index.html';">← Back</button>
+        <a class="nav-link secondary" href="library.html">Library</a>
+      </div>
+      <div class="brand-wrap compact">
+        <span class="brand-mark">🎧</span>
+        <h1 id="title">Loading...</h1>
+      </div>
+    </header>
 
-<header>
-    <button type="button" class="back-btn" onclick="window.history.length > 1 ? history.back() : location.href='index.html';">← Back</button>
-    <h1 id="title">Loading...</h1>
-</header>
+    <main class="player-shell">
+      <div class="player-panel">
+        <div class="player-container">
+          <audio id="audioPlayer" controls></audio>
+        </div>
+      </div>
+    </main>
+  </div>
 
-<div class="player-container">
-
-    <audio
-        id="audioPlayer"
-        controls
-    ></audio>
-
-</div>
-
-<script src="player.js"></script>
-
+  <script src="player.js"></script>
 </body>
 </html>

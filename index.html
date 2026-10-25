@@ -1,29 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stern Archive</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stern Archive</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <span class="brand-mark">🎙</span>
+        <h1>Stern Archive</h1>
+      </div>
+      <nav class="nav-actions">
+        <a class="nav-link" href="library.html">Browse Library</a>
+      </nav>
+    </header>
 
-<header>
-    <h1>🎙 Stern Archive</h1>
-</header>
+    <main class="hero-panel">
+      <div class="hero-copy">
+        <p class="eyebrow">Your personal collection</p>
+        <h2>Relive the moments that made Stern unforgettable.</h2>
+        <p>
+          Dive into timeless interviews, outrageous moments, and classic episodes from one beautifully organized archive.
+        </p>
+        <a class="btn" href="library.html">Browse Library</a>
+      </div>
 
-<div class="hero">
-    <h2>Your Personal Stern Collection</h2>
+      <div class="hero-card">
+        <p class="card-label">Continue listening</p>
+        <div id="continueCard" class="continue-list"></div>
+      </div>
+    </main>
+  </div>
 
-    <a class="btn" href="library.html">Browse Library</a>
-</div>
-
-<section>
-    <h2>Continue Listening</h2>
-    <div id="continueCard"></div>
-</section>
-
-<script src="app.js"></script>
-
+  <script src="app.js"></script>
 </body>
 </html>
