@@ -317,7 +317,6 @@ card.innerHTML = `
 
     }
 
-  })
   .catch(error => {
 
     console.error(error);
