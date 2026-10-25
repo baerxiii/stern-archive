@@ -1,7 +1,13 @@
 let libraryData = [];
 const CUSTOM_LIBRARY_KEY = "sternArchiveCustomLibrary";
 
-function loadCustomLibrary() {
+const SUPABASE_URL = (window.STERN_ARCHIVE_CONFIG && window.STERN_ARCHIVE_CONFIG.supabaseUrl) || "";
+const SUPABASE_ANON_KEY = (window.STERN_ARCHIVE_CONFIG && window.STERN_ARCHIVE_CONFIG.supabaseAnonKey) || "";
+const supabaseClient = window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
+function loadLocalCustomLibrary() {
   try {
     return JSON.parse(localStorage.getItem(CUSTOM_LIBRARY_KEY) || "[]");
   } catch (error) {
@@ -9,13 +15,70 @@ function loadCustomLibrary() {
   }
 }
 
-function saveCustomLibrary(items) {
+function saveLocalCustomLibrary(items) {
   localStorage.setItem(CUSTOM_LIBRARY_KEY, JSON.stringify(items));
 }
 
-function getAllLibraryEntries() {
-  const customLibrary = loadCustomLibrary();
-  return [...libraryData, ...customLibrary];
+async function getCurrentUser() {
+  if (!supabaseClient) return null;
+
+  const { data: { user }, error } = await supabaseClient.auth.getUser();
+  if (error || !user) return null;
+  return user;
+}
+
+async function loadCustomLibrary() {
+  if (supabaseClient) {
+    const user = await getCurrentUser();
+    if (user) {
+      const { data, error } = await supabaseClient
+        .from("custom_library")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: true });
+
+      if (!error && Array.isArray(data)) {
+        return data.map((item) => ({
+          id: item.id,
+          title: item.title,
+          year: item.year,
+          archiveId: item.archive_id,
+        }));
+      }
+    }
+  }
+
+  return loadLocalCustomLibrary();
+}
+
+async function saveCustomLibrary(items) {
+  if (supabaseClient) {
+    const user = await getCurrentUser();
+    if (user) {
+      const remoteItems = items.map((item) => ({
+        id: item.id || `${item.archiveId}-${Date.now()}`,
+        user_id: user.id,
+        archive_id: item.archiveId,
+        title: item.title,
+        year: item.year,
+      }));
+
+      const { error } = await supabaseClient
+        .from("custom_library")
+        .upsert(remoteItems, { onConflict: "id" });
+
+      if (!error) {
+        return;
+      }
+    }
+  }
+
+  saveLocalCustomLibrary(items);
+}
+
+async function getAllLibraryEntries() {
+  const customLibrary = await loadCustomLibrary();
+  return [...(window.__DEFAULT_LIBRARY__ || []), ...customLibrary];
 }
 
 function normalizeArchiveId(rawValue) {
@@ -51,7 +114,6 @@ async function validateArchiveId(archiveId) {
 
 function buildLibrary(items) {
   const library = document.getElementById("library");
-
   if (!library) return;
 
   library.innerHTML = "";
@@ -72,8 +134,9 @@ function buildLibrary(items) {
   });
 }
 
-function syncLibrary() {
-  libraryData = getAllLibraryEntries();
+async function syncLibrary() {
+  const allEntries = await getAllLibraryEntries();
+  libraryData = allEntries;
   buildLibrary(libraryData);
   buildContinueListening();
 }
@@ -121,16 +184,16 @@ function setupArchiveForm() {
 
       await validateArchiveId(normalizedArchiveId);
 
-      const customLibrary = loadCustomLibrary();
+      const customLibrary = await loadCustomLibrary();
       const newEntry = {
         id: `${normalizedArchiveId}-${Date.now()}`,
         title: customTitle,
         year: customYear,
-        archiveId: normalizedArchiveId
+        archiveId: normalizedArchiveId,
       };
 
       customLibrary.push(newEntry);
-      saveCustomLibrary(customLibrary);
+      await saveCustomLibrary(customLibrary);
 
       archiveInput.value = "";
       archiveTitle.value = "";
@@ -138,8 +201,7 @@ function setupArchiveForm() {
       archivePanel.classList.add("hidden");
       archiveMessage.textContent = "";
 
-      libraryData = getAllLibraryEntries();
-      buildLibrary(libraryData);
+      await syncLibrary();
     } catch (error) {
       archiveMessage.textContent = error.message || "Could not add that archive.";
       archiveMessage.classList.add("error");
@@ -147,27 +209,28 @@ function setupArchiveForm() {
   });
 }
 
-fetch("library.json")
-  .then(response => response.json())
-  .then(data => {
-    libraryData = data;
-    syncLibrary();
-    setupArchiveForm();
-  })
-  .catch(error => {
+async function initializeLibrary() {
+  try {
+    const response = await fetch("library.json");
+    const data = await response.json();
+    window.__DEFAULT_LIBRARY__ = data;
+  } catch (error) {
     console.error("Failed to load library.json", error);
-    libraryData = [];
-    syncLibrary();
-    setupArchiveForm();
-  });
+    window.__DEFAULT_LIBRARY__ = [];
+  }
+
+  await syncLibrary();
+  setupArchiveForm();
+  setupAuthControls();
+}
 
 const searchBox = document.getElementById("searchBox");
 
 if (searchBox) {
-  searchBox.addEventListener("input", () => {
+  searchBox.addEventListener("input", async () => {
     const search = searchBox.value.toLowerCase();
-
-    const filtered = libraryData.filter(item =>
+    const available = await getAllLibraryEntries();
+    const filtered = available.filter(item =>
       item.title.toLowerCase().includes(search)
     );
 
@@ -177,12 +240,9 @@ if (searchBox) {
 
 function buildContinueListening() {
   const card = document.getElementById("continueCard");
-
   if (!card) return;
 
-  const lastPlayed = JSON.parse(
-    localStorage.getItem("lastPlayed")
-  );
+  const lastPlayed = JSON.parse(localStorage.getItem("lastPlayed") || "null");
 
   if (!lastPlayed) {
     card.innerHTML = `
@@ -203,3 +263,87 @@ function buildContinueListening() {
     </div>
   `;
 }
+
+function setupAuthControls() {
+  const emailInput = document.getElementById("emailInput");
+  const passwordInput = document.getElementById("passwordInput");
+  const signInBtn = document.getElementById("signInBtn");
+  const signUpBtn = document.getElementById("signUpBtn");
+  const signOutBtn = document.getElementById("signOutBtn");
+  const authStatus = document.getElementById("authStatus");
+
+  if (!supabaseClient || !emailInput || !passwordInput || !signInBtn || !signUpBtn || !signOutBtn) {
+    return;
+  }
+
+  const updateStatus = async () => {
+    const user = await getCurrentUser();
+    if (authStatus) {
+      authStatus.textContent = user ? `Signed in as ${user.email}` : "Not signed in";
+    }
+
+    signOutBtn.disabled = !user;
+    signInBtn.disabled = !!user;
+    signUpBtn.disabled = !!user;
+  };
+
+  signInBtn.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+      if (authStatus) authStatus.textContent = "Enter both email and password.";
+      return;
+    }
+
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error) {
+      if (authStatus) authStatus.textContent = error.message;
+      return;
+    }
+
+    passwordInput.value = "";
+    await updateStatus();
+    await syncLibrary();
+  });
+
+  signUpBtn.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+      if (authStatus) authStatus.textContent = "Enter both email and password.";
+      return;
+    }
+
+    const { error } = await supabaseClient.auth.signUp({ email, password });
+    if (error) {
+      if (authStatus) authStatus.textContent = error.message;
+      return;
+    }
+
+    passwordInput.value = "";
+    if (authStatus) authStatus.textContent = "Account created. Check your email to confirm.";
+  });
+
+  signOutBtn.addEventListener("click", async () => {
+    await supabaseClient.auth.signOut();
+    await updateStatus();
+    await syncLibrary();
+  });
+
+  updateStatus();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeLibrary);
+} else {
+  initializeLibrary();
+}
+
+window.addEventListener("load", () => {
+  const authStatus = document.getElementById("authStatus");
+  if (authStatus && !supabaseClient) {
+    authStatus.textContent = "Local-only mode: add your Supabase config to enable syncing across devices.";
+  }
+});
