@@ -121,3 +121,20 @@ input{
   border:none;
   border-radius:8px;
 }
+
+.episode-list{
+  display:grid;
+  gap:10px;
+  margin-top:20px;
+}
+
+.card{
+  background:#1d1d1d;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+.card:hover{
+  background:#2a2a2a;
+}
