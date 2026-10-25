@@ -1,45 +1,80 @@
 const params = new URLSearchParams(window.location.search);
 
-const id = params.get('id');
+const archiveId = params.get("archiveId");
+const title = params.get("title");
 
-fetch('data/library.json')
-.then(res => res.json())
-.then(data => {
+document.getElementById("title").textContent =
+  title || "Episodes";
 
-    const item = data.find(x=>x.id===id);
-
-    if(!item) return;
-
-    document.getElementById('title').textContent =
-        item.title;
-
-    const player =
-        document.getElementById('audioPlayer');
-
-    player.src = item.audioUrl;
-
-    const savedPosition =
-        localStorage.getItem(
-            'position_' + item.id
-        );
-
-    if(savedPosition){
-
-        player.currentTime =
-            parseFloat(savedPosition);
-    }
-
-    setInterval(()=>{
-
-        localStorage.setItem(
-            'position_' + item.id,
-            player.currentTime
-        );
-
-    },3000);
-
-    localStorage.setItem(
-        'lastPlayed',
-        JSON.stringify(item)
+fetch(`https://archive.org/metadata/${archiveId}`)
+  .then(response => response.json())
+  .then(data => {
+    const files = data.files.filter(file =>
+      file.name.toLowerCase().endsWith(".mp3")
     );
-});
+
+    const container = document.createElement("div");
+    container.className = "episode-list";
+
+    files.forEach(file => {
+      const audioUrl =
+        `https://archive.org/download/${archiveId}/${encodeURIComponent(file.name)}`;
+
+      const card = document.createElement("div");
+
+      card.className = "card";
+
+      card.innerHTML = `
+        <h3>${file.name}</h3>
+
+        <audio
+          controls
+          preload="none"
+          src="${audioUrl}">
+        </audio>
+      `;
+
+      const player = card.querySelector("audio");
+
+      const key =
+        archiveId + "_" + file.name;
+
+      player.addEventListener(
+        "loadedmetadata",
+        () => {
+          const saved =
+            localStorage.getItem(key);
+
+          if (saved) {
+            player.currentTime =
+              parseFloat(saved);
+          }
+        }
+      );
+
+      player.addEventListener(
+        "timeupdate",
+        () => {
+          localStorage.setItem(
+            key,
+            player.currentTime
+          );
+        }
+      );
+
+      player.addEventListener(
+        "play",
+        () => {
+        tringify({
+              title: file.name,
+              url: window.location.href
+            })
+          );
+        }
+      );
+
+      container.appendChild(card);
+    });
+
+    document.body.appendChild(container);
+  });
