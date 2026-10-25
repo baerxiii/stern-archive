@@ -247,8 +247,6 @@ card.innerHTML = `
 
         });
 
-    }
-
     search.addEventListener(
       "input",
       () => renderEpisodes(search.value)
