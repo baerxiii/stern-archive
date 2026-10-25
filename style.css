@@ -1,3 +1,16 @@
+html,
+body{
+  min-height:100%;
+}
+
+body{
+  margin:0;
+  padding:20px;
+  background:#121212;
+  color:white;
+  overflow-y:auto;
+}
+
 body{
     margin:0;
     font-family:Arial, sans-serif;
