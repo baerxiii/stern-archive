@@ -153,7 +153,7 @@ if (match) {
 }
 
 card.innerHTML = `
-  <h3>${displayName}</h3>
+  <h3>▶ ${displayName}</h3>
 `;
 
 
