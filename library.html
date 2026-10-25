@@ -20,7 +20,39 @@
     </header>
 
     <div class="toolbar">
-      <input type="text" id="searchBox" placeholder="Search archive titles...">
+      <div class="toolbar-row">
+        <input type="text" id="searchBox" placeholder="Search archive titles...">
+        <button type="button" id="addArchiveBtn" class="primary-btn">Add Archive</button>
+      </div>
+
+      <div id="addArchivePanel" class="archive-panel hidden">
+        <div class="archive-panel-header">
+          <h2>Add an Archive</h2>
+          <button type="button" id="closeArchivePanel" class="icon-btn" aria-label="Close">×</button>
+        </div>
+
+        <div class="archive-form-grid">
+          <label>
+            <span>Archive URL or ID</span>
+            <input id="archiveInput" type="text" placeholder="https://archive.org/details/... or stern-...">
+          </label>
+
+          <label>
+            <span>Title</span>
+            <input id="archiveTitle" type="text" placeholder="My archive title">
+          </label>
+
+          <label>
+            <span>Year</span>
+            <input id="archiveYear" type="text" placeholder="2024">
+          </label>
+        </div>
+
+        <div class="archive-actions">
+          <button type="button" id="saveArchiveBtn" class="primary-btn">Save Archive</button>
+          <p id="archiveMessage" class="archive-message" aria-live="polite"></p>
+        </div>
+      </div>
     </div>
 
     <main>
