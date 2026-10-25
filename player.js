@@ -9,6 +9,7 @@ document.getElementById("title").textContent =
 fetch(`https://archive.org/metadata/${archiveId}`)
   .then(response => response.json())
   .then(data => {
+
     const files = data.files.filter(file =>
       file.name.toLowerCase().endsWith(".mp3")
     );
@@ -17,6 +18,7 @@ fetch(`https://archive.org/metadata/${archiveId}`)
     container.className = "episode-list";
 
     files.forEach(file => {
+
       const audioUrl =
         `https://archive.org/download/${archiveId}/${encodeURIComponent(file.name)}`;
 
@@ -42,10 +44,11 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       player.addEventListener(
         "loadedmetadata",
         () => {
+
           const saved =
             localStorage.getItem(key);
 
-          if (saved) {
+          if(saved){
             player.currentTime =
               parseFloat(saved);
           }
@@ -55,6 +58,7 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       player.addEventListener(
         "timeupdate",
         () => {
+
           localStorage.setItem(
             key,
             player.currentTime
@@ -63,9 +67,8 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       );
 
       player.addEventListener(
-        "play",
-        () => {
-        tringify({
+         "lastPlayed",
+            JSON.stringify({
               title: file.name,
               url: window.location.href
             })
@@ -74,7 +77,15 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       );
 
       container.appendChild(card);
+
     });
 
     document.body.appendChild(container);
+
+  })
+  .catch(error => {
+    console.error(error);
+
+    document.body.innerHTML +=
+      "<p>Failed to load archive metadata.</p>";
   });
