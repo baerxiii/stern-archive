@@ -1,7 +1,10 @@
 const params = new URLSearchParams(window.location.search);
 const archiveId = params.get("archiveId");
 const title = params.get("title");
-const archiveYear = Number((title || archiveId || "").match(/\b(19|20)\d{2}\b/)?.[0] || "");
+const archiveYear = (() => {
+  const match = (title || archiveId || "").match(/\b(19|20)\d{2}\b/);
+  return match ? Number(match[0]) : null;
+})();
 
 const pageTitle = document.getElementById("title");
 if (pageTitle) {
@@ -24,7 +27,7 @@ if (!mainPlayer) {
   console.error("No audioPlayer element found on the page.");
 }
 
-function parseDateFromFileName(fileName, fallbackYear = null) {
+function parseDateFromFileName(fileName, fallbackYear = archiveYear) {
   const normalized = fileName.toLowerCase();
 
   const datePatterns = [
@@ -53,7 +56,11 @@ function parseDateFromFileName(fileName, fallbackYear = null) {
       month = Number(match[2]);
       year = Number(match[3]);
     } else {
-      const resolvedYear = fallbackYear || new Date().getFullYear();
+      const resolvedYear = Number.isFinite(fallbackYear) ? fallbackYear : null;
+      if (!resolvedYear) {
+        return null;
+      }
+
       month = Number(match[1]);
       day = Number(match[2]);
       year = resolvedYear;
@@ -74,7 +81,7 @@ function parseDateFromFileName(fileName, fallbackYear = null) {
 }
 
 function formatEpisodeLabel(fileName) {
-  const date = parseDateFromFileName(fileName, archiveYear || null);
+  const date = parseDateFromFileName(fileName, archiveYear);
   if (!date) {
     return fileName.replace(/\.[^/.]+$/, "");
   }
@@ -97,7 +104,7 @@ function formatTime(seconds) {
 }
 
 function getMonthKey(fileName) {
-  const date = parseDateFromFileName(fileName, archiveYear || null);
+  const date = parseDateFromFileName(fileName, archiveYear);
   if (!date) return null;
 
   return {
@@ -126,8 +133,8 @@ fetch(`https://archive.org/metadata/${archiveId}`)
     const mp3s = (data.files || [])
       .filter(file => typeof file?.name === "string" && file.name.toLowerCase().endsWith(".mp3"))
       .sort((a, b) => {
-        const aDate = parseDateFromFileName(a.name, archiveYear || null)?.getTime() ?? Number.MAX_SAFE_INTEGER;
-        const bDate = parseDateFromFileName(b.name, archiveYear || null)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const aDate = parseDateFromFileName(a.name, archiveYear)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const bDate = parseDateFromFileName(b.name, archiveYear)?.getTime() ?? Number.MAX_SAFE_INTEGER;
         return aDate - bDate || a.name.localeCompare(b.name);
       });
 
@@ -374,4 +381,3 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       </p>
     `;
   });
-
