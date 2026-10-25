@@ -19,32 +19,20 @@ function saveLocalCustomLibrary(items) {
   localStorage.setItem(CUSTOM_LIBRARY_KEY, JSON.stringify(items));
 }
 
-async function getCurrentUser() {
-  if (!supabaseClient) return null;
-
-  const { data: { user }, error } = await supabaseClient.auth.getUser();
-  if (error || !user) return null;
-  return user;
-}
-
 async function loadCustomLibrary() {
   if (supabaseClient) {
-    const user = await getCurrentUser();
-    if (user) {
-      const { data, error } = await supabaseClient
-        .from("custom_library")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: true });
+    const { data, error } = await supabaseClient
+      .from("custom_library")
+      .select("*")
+      .order("created_at", { ascending: true });
 
-      if (!error && Array.isArray(data)) {
-        return data.map((item) => ({
-          id: item.id,
-          title: item.title,
-          year: item.year,
-          archiveId: item.archive_id,
-        }));
-      }
+    if (!error && Array.isArray(data)) {
+      return data.map((item) => ({
+        id: item.id,
+        title: item.title,
+        year: item.year,
+        archiveId: item.archive_id,
+      }));
     }
   }
 
@@ -53,23 +41,19 @@ async function loadCustomLibrary() {
 
 async function saveCustomLibrary(items) {
   if (supabaseClient) {
-    const user = await getCurrentUser();
-    if (user) {
-      const remoteItems = items.map((item) => ({
-        id: item.id || `${item.archiveId}-${Date.now()}`,
-        user_id: user.id,
-        archive_id: item.archiveId,
-        title: item.title,
-        year: item.year,
-      }));
+    const remoteItems = items.map((item) => ({
+      id: item.id || `${item.archiveId}-${Date.now()}`,
+      archive_id: item.archiveId,
+      title: item.title,
+      year: item.year,
+    }));
 
-      const { error } = await supabaseClient
-        .from("custom_library")
-        .upsert(remoteItems, { onConflict: "id" });
+    const { error } = await supabaseClient
+      .from("custom_library")
+      .upsert(remoteItems, { onConflict: "id" });
 
-      if (!error) {
-        return;
-      }
+    if (!error) {
+      return;
     }
   }
 
@@ -221,7 +205,6 @@ async function initializeLibrary() {
 
   await syncLibrary();
   setupArchiveForm();
-  setupAuthControls();
 }
 
 const searchBox = document.getElementById("searchBox");
@@ -264,86 +247,8 @@ function buildContinueListening() {
   `;
 }
 
-function setupAuthControls() {
-  const emailInput = document.getElementById("emailInput");
-  const passwordInput = document.getElementById("passwordInput");
-  const signInBtn = document.getElementById("signInBtn");
-  const signUpBtn = document.getElementById("signUpBtn");
-  const signOutBtn = document.getElementById("signOutBtn");
-  const authStatus = document.getElementById("authStatus");
-
-  if (!supabaseClient || !emailInput || !passwordInput || !signInBtn || !signUpBtn || !signOutBtn) {
-    return;
-  }
-
-  const updateStatus = async () => {
-    const user = await getCurrentUser();
-    if (authStatus) {
-      authStatus.textContent = user ? `Signed in as ${user.email}` : "Not signed in";
-    }
-
-    signOutBtn.disabled = !user;
-    signInBtn.disabled = !!user;
-    signUpBtn.disabled = !!user;
-  };
-
-  signInBtn.addEventListener("click", async () => {
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    if (!email || !password) {
-      if (authStatus) authStatus.textContent = "Enter both email and password.";
-      return;
-    }
-
-    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if (error) {
-      if (authStatus) authStatus.textContent = error.message;
-      return;
-    }
-
-    passwordInput.value = "";
-    await updateStatus();
-    await syncLibrary();
-  });
-
-  signUpBtn.addEventListener("click", async () => {
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    if (!email || !password) {
-      if (authStatus) authStatus.textContent = "Enter both email and password.";
-      return;
-    }
-
-    const { error } = await supabaseClient.auth.signUp({ email, password });
-    if (error) {
-      if (authStatus) authStatus.textContent = error.message;
-      return;
-    }
-
-    passwordInput.value = "";
-    if (authStatus) authStatus.textContent = "Account created. Check your email to confirm.";
-  });
-
-  signOutBtn.addEventListener("click", async () => {
-    await supabaseClient.auth.signOut();
-    await updateStatus();
-    await syncLibrary();
-  });
-
-  updateStatus();
-}
-
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initializeLibrary);
 } else {
   initializeLibrary();
 }
-
-window.addEventListener("load", () => {
-  const authStatus = document.getElementById("authStatus");
-  if (authStatus && !supabaseClient) {
-    authStatus.textContent = "Local-only mode: add your Supabase config to enable syncing across devices.";
-  }
-});
