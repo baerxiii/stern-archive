@@ -108,27 +108,101 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       mainPlayer.play();
     }
 
-    function renderEpisodes(filter = "") {
+function renderEpisodes(filter = "") {
 
-      episodeList.innerHTML = "";
+  episodeList.innerHTML = "";
 
-      mp3s
-        .filter(file =>
-          file.name
-            .toLowerCase()
-            .includes(filter.toLowerCase())
-        )
-        .forEach(file => {
+  const grouped = {};
 
-          const card =
-            document.createElement("div");
+  mp3s
+    .filter(file =>
+      file.name
+        .toLowerCase()
+        .includes(filter.toLowerCase())
+    )
+    .forEach(file => {
 
-          card.className = "card";
-          card.style.cursor = "pointer";
+      const match =
+        file.name.match(/(\d{4})_(\d{2})_(\d{2})/);
 
-          const match = file.name.match(
-  /(\d{4})_(\d{2})_(\d{2})/
-);
+      if (!match) return;
+
+      const year = match[1];
+      const month = match[2];
+      const day = match[3];
+
+      const date = new Date(
+        `${year}-${month}-${day}`
+      );
+
+      const monthName =
+        date.toLocaleDateString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "long"
+          }
+        );
+
+      const displayName =
+        date.toLocaleDateString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "long",
+            day: "2-digit"
+          }
+        );
+
+      if (!grouped[monthName]) {
+        grouped[monthName] = [];
+      }
+
+      grouped[monthName].push({
+        file,
+        displayName
+      });
+
+    });
+
+  Object.keys(grouped).forEach(month => {
+
+    const header =
+      document.createElement("h2");
+
+    header.textContent =
+      `📅 ${month}`;
+
+    header.style.marginTop = "30px";
+
+    episodeList.appendChild(header);
+
+    grouped[month].forEach(item => {
+
+      const card =
+        document.createElement("div");
+
+      card.className = "card";
+
+      card.style.cursor =
+        "pointer";
+
+      card.innerHTML = `
+        <h3>▶ ${item.displayName}</h3>
+      `;
+
+      card.addEventListener(
+        "click",
+        () => loadEpisode(item.file)
+      );
+
+      episodeList.appendChild(card);
+
+    });
+
+  });
+
+}
 
 let displayName = file.name;
 
