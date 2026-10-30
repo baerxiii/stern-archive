@@ -2,8 +2,12 @@ const params = new URLSearchParams(window.location.search);
 const archiveId = params.get("archiveId");
 const title = params.get("title");
 const archiveYear = (() => {
+  const match = (title || archiveId || "").match(/\b(19|20)\d{2}\b/);
+  return match ? Number(match[0]) : null;
+})();
 
-  let metadata = {};
+let metadata = {};
+
 
 fetch("metadata.json")
   .then(response => response.json())
@@ -460,3 +464,4 @@ function renderNotes(fileName) {
   });
 
 }
+                     
