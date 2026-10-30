@@ -1,18 +1,18 @@
 const params = new URLSearchParams(window.location.search);
 const archiveId = params.get("archiveId");
 const title = params.get("title");
+
 const archiveYear = (() => {
 
   const fullYearMatch =
-    (title || archiveId || "")
-      .match(/\b(19|20)\d{2}\b/);
+    archiveId.match(/(19|20)\d{2}/);
 
   if (fullYearMatch) {
     return Number(fullYearMatch[0]);
   }
 
   const shortYearMatch =
-    archiveId.match(/-(\d{2})-cf$/i);
+    archiveId.match(/-(\d{2})-cf/i);
 
   if (shortYearMatch) {
 
@@ -20,11 +20,17 @@ const archiveYear = (() => {
       Number(shortYearMatch[1]);
 
     return 2000 + yy;
+
   }
 
   return null;
 
 })();
+
+console.log(
+  "archiveYear =",
+  archiveYear
+);
 
 document
   .getElementById("backButton")
