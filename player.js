@@ -176,6 +176,16 @@ if (archiveYear) {
     );
 
   console.log(
+  "Loaded segment file:",
+  archiveYear
+);
+
+console.log(
+  "Loaded entries:",
+  Object.keys(segmentData).length
+);
+
+  console.log(
   "Loaded segment count:",
   Object.keys(segmentData).length
 );
