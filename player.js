@@ -212,12 +212,19 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       throw new Error("audioPlayer element is missing.");
     }
 
+console.log("archiveYear =", archiveYear);
+    
 if (archiveYear) {
 
   segmentData =
     await loadSegmentFile(
       archiveYear
     );
+
+  console.log(
+  "segmentData keys count =",
+  Object.keys(segmentData).length
+);
 
   console.log(
   "archiveYear:",
