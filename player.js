@@ -462,6 +462,3 @@ function renderNotes(fileName) {
       </p>
     `;
   });
-
-}
-                     
