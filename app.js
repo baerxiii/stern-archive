@@ -103,16 +103,43 @@ function buildLibrary(items) {
   library.innerHTML = "";
 
   items.forEach(item => {
+
+    const isCustom = !!item.id;
+
     library.innerHTML += `
       <article class="library-card card">
         <div class="card-topline">
-          <span class="status-pill">${item.year || "Archive"}</span>
+          <span class="status-pill">
+            ${item.year || "Archive"}
+          </span>
         </div>
+
         <h3>${item.title}</h3>
+
         <p>Archive collection</p>
-        <a href="player.html?archiveId=${item.archiveId}&title=${encodeURIComponent(item.title)}">
-          Open archive
-        </a>
+
+        <div class="card-actions">
+
+          <a
+            class="primary-btn"
+            href="player.html?archiveId=${item.archiveId}&title=${encodeURIComponent(item.title)}">
+            Open Archive
+          </a>
+
+          ${
+            isCustom
+              ? `
+                <button
+                  class="delete-archive-btn"
+                  data-id="${item.id}">
+                  🗑 Delete
+                </button>
+              `
+              : ""
+          }
+
+        </div>
+
       </article>
     `;
   });
@@ -246,6 +273,58 @@ function buildContinueListening() {
     </div>
   `;
 }
+
+document.addEventListener(
+  "click",
+  async (event) => {
+
+    if (
+      !event.target.classList.contains(
+        "delete-archive-btn"
+      )
+    ) {
+      return;
+    }
+
+    const archiveId =
+      event.target.dataset.id;
+
+    const confirmed = confirm(
+      "Are you sure you want to delete this archive?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+
+      let customLibrary =
+        await loadCustomLibrary();
+
+      customLibrary =
+        customLibrary.filter(
+          item => item.id !== archiveId
+        );
+
+      await saveCustomLibrary(
+        customLibrary
+      );
+
+      await syncLibrary();
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "Failed to delete archive."
+      );
+
+    }
+
+  }
+);
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initializeLibrary);
