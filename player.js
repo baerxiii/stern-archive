@@ -19,20 +19,8 @@ document
 
   });
 
-let metadata = {};
+let segmentData = {};
 
-
-fetch("metadata.json")
-  .then(response => response.json())
-  .then(async data => {
-    metadata = data;
-    console.log("Metadata loaded:", metadata);
-  })
-  .catch(error => {
-    console.error("Failed to load metadata.json", error);
-  });
-
- 
 const pageTitle = document.getElementById("title");
 if (pageTitle) {
   pageTitle.textContent = title || "Episodes";
@@ -175,7 +163,7 @@ fetch(`https://archive.org/metadata/${archiveId}`)
 
     return response.json();
   })
-  .then(data => {
+  .then(async data => {
     if (!mainPlayer) {
       throw new Error("audioPlayer element is missing.");
     }
@@ -238,8 +226,6 @@ episodeList.parentElement.insertBefore(
   episodeList
 );
 
-    let segmentData = {};
-
     let currentIndex = -1;
 
     function updateTimeDisplay() {
@@ -261,31 +247,7 @@ episodeList.parentElement.insertBefore(
       );
     }
 
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const year =
-    String(date.getFullYear()).slice(-2);
-
-  const marksFrigginUrl =
-    `https://www.marksfriggin.com/news${year}/${month}-${day}.htm`;
-
-  showNotes.innerHTML = `
-    <div class="card">
-      <h3>📖 Show Notes</h3>
-
-      <a
-        href="${marksFrigginUrl}"
-        target="_blank"
-        class="episode-link">
-
-        Open MarksFriggin Summary
-
-      </a>
-    </div>
-  `;
-}
-
-function renderSegments(fileName) {
+ function renderSegments(fileName) {
 
   const date =
     parseDateFromFileName(fileName);
@@ -343,36 +305,7 @@ function renderSegments(fileName) {
   `;
 }
         
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const year =
-    String(date.getFullYear()).slice(-2);
-
-  const marksFrigginUrl =
-    `https://www.marksfriggin.com/news${year}/${month}-${day}.htm`;
-
-  showNotes.innerHTML = `
-    <div class="card">
-
-      <h3>📖 Show Notes</h3>
-
-      <p>
-        Listen while following along with the
-        show summary and segment breakdown.
-      </p>
-
-      <a
-        href="${marksFrigginUrl}"
-        target="_blank"
-        class="episode-link"
-      >
-        Open MarksFriggin Summary
-      </a>
-
-    </div>
-  `;
-}
-
+  
     
     function loadEpisode(file, { skipResume = false } = {}) {
       if (!file) return;
