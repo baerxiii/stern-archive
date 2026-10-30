@@ -2,6 +2,17 @@ const params = new URLSearchParams(window.location.search);
 const archiveId = params.get("archiveId");
 const title = params.get("title");
 const archiveYear = (() => {
+
+  let metadata = {};
+
+fetch("metadata.json")
+  .then(r => r.json())
+  .then(data => {
+    metadata = data;
+  })
+  .catch(() => {
+    metadata = {};
+  });
   const match = (title || archiveId || "").match(/\b(19|20)\d{2}\b/);
   return match ? Number(match[0]) : null;
 })();
@@ -170,6 +181,15 @@ fetch(`https://archive.org/metadata/${archiveId}`)
     episodeList.className = "episode-list";
     mainPlayer.parentElement.insertBefore(episodeList, search.nextSibling);
 
+    const showNotes = document.createElement("div");
+showNotes.id = "showNotes";
+showNotes.className = "show-notes";
+
+episodeList.parentElement.insertBefore(
+  showNotes,
+  episodeList
+);
+
     let currentIndex = -1;
 
     function updateTimeDisplay() {
@@ -191,6 +211,63 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       );
     }
 
+function renderNotes(fileName) {
+
+  const date = parseDateFromFileName(
+    fileName,
+    archiveYear
+  );
+
+  if (!date) {
+    showNotes.innerHTML = "";
+    return;
+  }
+
+  const dateKey =
+    date.toISOString().split("T")[0];
+
+  const entry =
+    metadata[dateKey];
+
+  if (!entry) {
+
+    showNotes.innerHTML = `
+      <div class="card">
+        <h3>Show Notes</h3>
+        <p>No notes available.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  showNotes.innerHTML = `
+    <div class="card">
+
+      <h3>Show Notes</h3>
+
+      <p>
+        <a
+         href="${entry.url}"
+         target="_blank">
+         Open MarksFriggin Summary
+        </a>
+      </p>
+
+      <ul>
+        ${entry.segments.map(segment => `
+          <li>
+            ${segment.time}
+            -
+            ${segment.title}
+          </li>
+        `).join("")}
+      </ul>
+
+    </div>
+  `;
+}
+    
     function loadEpisode(file, { skipResume = false } = {}) {
       if (!file) return;
 
@@ -198,6 +275,7 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       const audioUrl = `https://archive.org/download/${archiveId}/${encodeURIComponent(file.name)}`;
       const positionKey = `${archiveId}_${file.name}`;
       const displayName = formatEpisodeLabel(file.name);
+      renderNotes(file.name);
 
       mainPlayer.src = audioUrl;
       if (nowPlaying) {
