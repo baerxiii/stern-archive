@@ -6,6 +6,18 @@ const archiveYear = (() => {
   let metadata = {};
 
 fetch("metadata.json")
+  .then(response => response.json())
+  .then(data => {
+    metadata = data;
+    console.log("Metadata loaded:", metadata);
+  })
+  .catch(error => {
+    console.error("Failed to load metadata.json", error);
+  });
+
+  let metadata = {};
+
+fetch("metadata.json")
   .then(r => r.json())
   .then(data => {
     metadata = data;
