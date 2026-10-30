@@ -61,29 +61,7 @@ function parseDateFromFileName(fileName) {
   );
 }
 
-  for (const pattern of datePatterns) {
-    const match = normalized.match(pattern);
-    if (!match) continue;
-
-    let year;
-    let month;
-    let day;
-
-    if (match[1] && match[1].length === 4) {
-      year = Number(match[1]);
-      month = Number(match[2]);
-      day = Number(match[3] || match[2]);
-    } else if (match[3] && match[3].length === 4) {
-      day = Number(match[1]);
-      month = Number(match[2]);
-      year = Number(match[3]);
-    } else {
-      const resolvedYear = Number.isFinite(fallbackYear) ? fallbackYear : null;
-      if (!resolvedYear) {
-        return null;
-      }
-
-      month = Number(match[1]);
+        month = Number(match[1]);
       day = Number(match[2]);
       year = resolvedYear;
     }
@@ -122,13 +100,6 @@ function formatEpisodeLabel(fileName) {
       day: "numeric"
     }
   );
-}
-
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "2-digit"
-  });
 }
 
 function formatTime(seconds) {
@@ -255,96 +226,7 @@ episodeList.parentElement.insertBefore(
         })
       );
     }
-
-function renderNotes(fileName) {
-
-  const date = parseDateFromFileName(
-    fileName,
-    archiveYear
-  );
-
-  if (!date) {
-    showNotes.innerHTML = "";
-    return;
-  }
-
-  const month =
-    date.getMonth() + 1;
-
-  const day =
-    date.getDate();
-
-  const year =
-    String(date.getFullYear()).slice(-2);
-
-  const marksFrigginUrl =
-    `https://www.marksfriggin.com/news${year}/${month}-${day}.htm`;
-
-  showNotes.innerHTML = `
-    <div class="card">
-
-      <h3>📖 Show Notes</h3>
-
-      <p>
-        Click below to open the show summary:
-      </p>
-
-      <a
-        href="${marksFrigginUrl}"
-        target="_blank"
-        class="episode-link"
-      >
-        Open MarksFriggin Summary
-      </a>
-
-    </div>
-  `;
-}
-  const dateKey =
-    date.toISOString().split("T")[0];
-
-  const entry =
-    metadata[dateKey];
-
-  if (!entry) {
-
-    showNotes.innerHTML = `
-      <div class="card">
-        <h3>Show Notes</h3>
-        <p>No notes available.</p>
-      </div>
-    `;
-
-    return;
-  }
-
-  showNotes.innerHTML = `
-    <div class="card">
-
-      <h3>Show Notes</h3>
-
-      <p>
-        <a
-         href="${entry.url}"
-         target="_blank">
-         Open MarksFriggin Summary
-        </a>
-      </p>
-
-      <ul>
-        ${entry.segments.map(segment => `
-          <li>
-            ${segment.time}
-            -
-            ${segment.title}
-          </li>
-        `).join("")}
-      </ul>
-
-    </div>
-  `;
-}
-    
+  
     function loadEpisode(file, { skipResume = false } = {}) {
       if (!file) return;
 
