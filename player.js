@@ -178,6 +178,8 @@ async function loadSegmentFile(year) {
 
 }
 
+
+
 fetch(`https://archive.org/metadata/${archiveId}`)
   .then(response => {
     if (!response.ok) {
@@ -197,6 +199,16 @@ if (archiveYear) {
     await loadSegmentFile(
       archiveYear
     );
+
+  console.log(
+  "archiveYear:",
+  archiveYear
+);
+
+console.log(
+  "segmentData keys:",
+  Object.keys(segmentData).length
+);
 
   console.log(
   "Loaded segment file:",
