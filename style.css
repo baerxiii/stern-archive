@@ -245,3 +245,15 @@ h2{
   padding:12px;
   color:#d0d0d0;
 }
+
+.show-notes{
+  margin:20px 0;
+}
+
+.show-notes ul{
+  padding-left:20px;
+}
+
+.show-notes li{
+  margin-bottom:6px;
+}
