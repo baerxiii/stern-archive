@@ -43,22 +43,29 @@ if (!mainPlayer) {
 
 function parseDateFromFileName(fileName) {
 
-  const match =
-    fileName.match(/(\d{2})-(\d{2})-(\d{2})/);
+  let match =
+    fileName.match(/(\d{4})_(\d{2})_(\d{2})/);
 
-  if (!match) {
-    return null;
+  if (match) {
+    return new Date(
+      Number(match[1]),
+      Number(match[2]) - 1,
+      Number(match[3])
+    );
   }
 
-  const month = Number(match[1]);
-  const day = Number(match[2]);
-  const year = 2000 + Number(match[3]);
+  match =
+    fileName.match(/(\d{2})-(\d{2})-(\d{2})/);
 
-  return new Date(
-    year,
-    month - 1,
-    day
-  );
+  if (match) {
+    return new Date(
+      2000 + Number(match[3]),
+      Number(match[1]) - 1,
+      Number(match[2])
+    );
+  }
+
+  return null;
 }
 
 function formatEpisodeLabel(fileName) {
