@@ -15,20 +15,7 @@ fetch("metadata.json")
     console.error("Failed to load metadata.json", error);
   });
 
-  let metadata = {};
-
-fetch("metadata.json")
-  .then(r => r.json())
-  .then(data => {
-    metadata = data;
-  })
-  .catch(() => {
-    metadata = {};
-  });
-  const match = (title || archiveId || "").match(/\b(19|20)\d{2}\b/);
-  return match ? Number(match[0]) : null;
-})();
-
+ 
 const pageTitle = document.getElementById("title");
 if (pageTitle) {
   pageTitle.textContent = title || "Episodes";
