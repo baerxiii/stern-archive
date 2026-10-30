@@ -241,6 +241,23 @@ function renderNotes(fileName) {
     </div>
   `;
 }
+
+    function renderNotes(fileName) {
+
+  console.log("renderNotes called for:", fileName);
+
+  if (!showNotes) {
+    console.log("showNotes div not found");
+    return;
+  }
+
+  showNotes.innerHTML = `
+    <div class="card">
+      <h3>📖 Show Notes</h3>
+      <p>Hello from renderNotes()</p>
+    </div>
+  `;
+}
     
     function loadEpisode(file, { skipResume = false } = {}) {
       if (!file) return;
