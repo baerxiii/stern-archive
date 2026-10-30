@@ -61,24 +61,6 @@ function parseDateFromFileName(fileName) {
   );
 }
 
-        month = Number(match[1]);
-      day = Number(match[2]);
-      year = resolvedYear;
-
-    if (
-      Number.isFinite(year) &&
-      Number.isFinite(month) &&
-      Number.isFinite(day) &&
-      month >= 1 && month <= 12 &&
-      day >= 1 && day <= 31
-    ) {
-      return new Date(year, month - 1, day);
-    }
-  }
-
-  return null;
-}
-
 function formatEpisodeLabel(fileName) {
 
   const date =
@@ -225,7 +207,41 @@ episodeList.parentElement.insertBefore(
         })
       );
     }
-  
+
+function renderNotes(fileName) {
+
+  const date =
+    parseDateFromFileName(fileName);
+
+  if (!date) {
+    showNotes.innerHTML = "";
+    return;
+  }
+
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year =
+    String(date.getFullYear()).slice(-2);
+
+  const marksFrigginUrl =
+    `https://www.marksfriggin.com/news${year}/${month}-${day}.htm`;
+
+  showNotes.innerHTML = `
+    <div class="card">
+      <h3>📖 Show Notes</h3>
+
+      <a
+        href="${marksFrigginUrl}"
+        target="_blank"
+        class="episode-link">
+
+        Open MarksFriggin Summary
+
+      </a>
+    </div>
+  `;
+}
+    
     function loadEpisode(file, { skipResume = false } = {}) {
       if (!file) return;
 
