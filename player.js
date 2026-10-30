@@ -458,3 +458,5 @@ function renderNotes(fileName) {
       </p>
     `;
   });
+
+}
