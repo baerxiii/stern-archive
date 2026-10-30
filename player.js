@@ -175,6 +175,16 @@ if (archiveYear) {
       archiveYear
     );
 
+  console.log(
+  "Loaded segment count:",
+  Object.keys(segmentData).length
+);
+
+console.log(
+  "First segment key:",
+  Object.keys(segmentData)[0]
+);
+
 }
     
     const mp3s = (data.files || [])
