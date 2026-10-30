@@ -41,17 +41,25 @@ if (!mainPlayer) {
   console.error("No audioPlayer element found on the page.");
 }
 
-function parseDateFromFileName(fileName, fallbackYear = archiveYear) {
-  const normalized = fileName.toLowerCase();
+function parseDateFromFileName(fileName) {
 
-  const datePatterns = [
-    /(\d{4})[_-](\d{2})[_-](\d{2})/,
-    /(\d{4})[_-](\d{2})(\d{2})/,
-    /(\d{4})(\d{2})(\d{2})/,
-    /(\d{2})[_-](\d{2})[_-](\d{4})/,
-    /(\d{2})[_-](\d{2})/,
-    /(\d{2})(\d{2})/
-  ];
+  const match =
+    fileName.match(/(\d{2})-(\d{2})-(\d{2})/);
+
+  if (!match) {
+    return null;
+  }
+
+  const month = Number(match[1]);
+  const day = Number(match[2]);
+  const year = 2000 + Number(match[3]);
+
+  return new Date(
+    year,
+    month - 1,
+    day
+  );
+}
 
   for (const pattern of datePatterns) {
     const match = normalized.match(pattern);
@@ -95,10 +103,26 @@ function parseDateFromFileName(fileName, fallbackYear = archiveYear) {
 }
 
 function formatEpisodeLabel(fileName) {
-  const date = parseDateFromFileName(fileName, archiveYear);
+
+  const date =
+    parseDateFromFileName(fileName);
+
   if (!date) {
-    return fileName.replace(/\.[^/.]+$/, "");
+    return fileName
+      .replace(".mp3", "")
+      .replaceAll("_", " ");
   }
+
+  return date.toLocaleDateString(
+    "en-US",
+    {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    }
+  );
+}
 
   return date.toLocaleDateString("en-US", {
     year: "numeric",
@@ -118,16 +142,34 @@ function formatTime(seconds) {
 }
 
 function getMonthKey(fileName) {
-  const date = parseDateFromFileName(fileName, archiveYear);
+
+  const date =
+    parseDateFromFileName(fileName);
+
   if (!date) return null;
 
   return {
     date,
-    monthLabel: date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long"
-    }),
-    dayLabel: formatEpisodeLabel(fileName)
+
+    monthLabel:
+      date.toLocaleDateString(
+        "en-US",
+        {
+          year: "numeric",
+          month: "long"
+        }
+      ),
+
+    dayLabel:
+      date.toLocaleDateString(
+        "en-US",
+        {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        }
+      )
   };
 }
 
