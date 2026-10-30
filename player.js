@@ -262,6 +262,42 @@ episodeList.parentElement.insertBefore(
   let entry =
   segmentData[dateKey];
 
+console.log("Episode date:", dateKey);
+console.log("Direct match:", entry);
+
+if (!entry) {
+
+  const episodeDate =
+    new Date(dateKey);
+
+  for (const key of Object.keys(segmentData)) {
+
+    const segmentDate =
+      new Date(key);
+
+    const daysApart =
+      Math.abs(
+        (episodeDate - segmentDate) /
+        (1000 * 60 * 60 * 24)
+      );
+
+    if (daysApart <= 7) {
+
+      console.log(
+        "Using fallback:",
+        key
+      );
+
+      entry =
+        segmentData[key];
+
+      break;
+    }
+
+  }
+
+}
+
 if (!entry) {
 
   const availableDates =
