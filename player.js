@@ -251,20 +251,43 @@ function renderNotes(fileName) {
 
     function renderNotes(fileName) {
 
-  console.log("renderNotes called for:", fileName);
+  const date =
+    parseDateFromFileName(fileName);
 
-  if (!showNotes) {
-    console.log("showNotes div not found");
+  if (!date || !showNotes) {
     return;
   }
 
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const year =
+    String(date.getFullYear()).slice(-2);
+
+  const marksFrigginUrl =
+    `https://www.marksfriggin.com/news${year}/${month}-${day}.htm`;
+
   showNotes.innerHTML = `
     <div class="card">
+
       <h3>📖 Show Notes</h3>
-      <p>Hello from renderNotes()</p>
+
+      <p>
+        Listen while following along with the
+        show summary and segment breakdown.
+      </p>
+
+      <a
+        href="${marksFrigginUrl}"
+        target="_blank"
+        class="episode-link"
+      >
+        Open MarksFriggin Summary
+      </a>
+
     </div>
   `;
 }
+
     
     function loadEpisode(file, { skipResume = false } = {}) {
       if (!file) return;
