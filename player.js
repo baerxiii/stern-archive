@@ -259,8 +259,36 @@ episodeList.parentElement.insertBefore(
   const dateKey =
     date.toISOString().split("T")[0];
 
-  const entry =
-    segmentData[dateKey];
+  let entry =
+  segmentData[dateKey];
+
+if (!entry) {
+
+  const availableDates =
+    Object.keys(segmentData)
+      .sort();
+
+  for (const availableDate of availableDates) {
+
+    const segmentDate =
+      new Date(availableDate);
+
+    const episodeDate =
+      new Date(dateKey);
+
+    const diffDays =
+      Math.abs(
+        (episodeDate - segmentDate) /
+        (1000 * 60 * 60 * 24)
+      );
+
+    if (diffDays <= 7) {
+      entry =
+        segmentData[availableDate];
+      break;
+    }
+  }
+}
 
   if (
     !entry ||
