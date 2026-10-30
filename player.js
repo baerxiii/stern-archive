@@ -275,6 +275,11 @@ episodeList.parentElement.insertBefore(
 console.log("Episode date:", dateKey);
 console.log("Direct match:", entry);
 
+   console.log(
+  "Segment keys:",
+  Object.keys(segmentData)
+);
+
 if (!entry) {
 
   const episodeDate =
