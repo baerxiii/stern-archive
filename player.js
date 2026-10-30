@@ -158,7 +158,7 @@ async function loadSegmentFile(year) {
   try {
 
     console.log(
-      "Loading segment file:",
+      "Trying to load:",
       `segments/${year}.json`
     );
 
@@ -168,7 +168,7 @@ async function loadSegmentFile(year) {
       );
 
     console.log(
-      "Segment status:",
+      "Response status:",
       response.status
     );
 
@@ -180,7 +180,7 @@ async function loadSegmentFile(year) {
       await response.json();
 
     console.log(
-      "Segment entries:",
+      "Loaded keys:",
       Object.keys(data).length
     );
 
@@ -189,7 +189,7 @@ async function loadSegmentFile(year) {
   } catch (error) {
 
     console.error(
-      "Segment load failed:",
+      "Segment loading failed:",
       error
     );
 
@@ -197,7 +197,6 @@ async function loadSegmentFile(year) {
   }
 
 }
-
 
 
 fetch(`https://archive.org/metadata/${archiveId}`)
@@ -219,6 +218,16 @@ if (archiveYear) {
     await loadSegmentFile(
       archiveYear
     );
+
+  console.log(
+  "archiveYear:",
+  archiveYear
+);
+
+console.log(
+  "segmentData:",
+  segmentData
+);
 
   console.log(
   "archiveYear:",
