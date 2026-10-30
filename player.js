@@ -64,7 +64,6 @@ function parseDateFromFileName(fileName) {
         month = Number(match[1]);
       day = Number(match[2]);
       year = resolvedYear;
-    }
 
     if (
       Number.isFinite(year) &&
