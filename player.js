@@ -6,6 +6,19 @@ const archiveYear = (() => {
   return match ? Number(match[0]) : null;
 })();
 
+document
+  .getElementById("backButton")
+  ?.addEventListener("click", () => {
+
+    if (history.length > 1) {
+      history.back();
+    } else {
+      window.location.href =
+        "library.html";
+    }
+
+  });
+
 let metadata = {};
 
 
