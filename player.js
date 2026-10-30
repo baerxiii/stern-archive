@@ -137,18 +137,41 @@ async function loadSegmentFile(year) {
 
   try {
 
+    console.log(
+      "Loading segment file:",
+      `segments/${year}.json`
+    );
+
     const response =
       await fetch(
         `segments/${year}.json`
       );
 
+    console.log(
+      "Segment status:",
+      response.status
+    );
+
     if (!response.ok) {
       return {};
     }
 
-    return await response.json();
+    const data =
+      await response.json();
 
-  } catch {
+    console.log(
+      "Segment entries:",
+      Object.keys(data).length
+    );
+
+    return data;
+
+  } catch (error) {
+
+    console.error(
+      "Segment load failed:",
+      error
+    );
 
     return {};
   }
