@@ -2,8 +2,28 @@ const params = new URLSearchParams(window.location.search);
 const archiveId = params.get("archiveId");
 const title = params.get("title");
 const archiveYear = (() => {
-  const match = (title || archiveId || "").match(/\b(19|20)\d{2}\b/);
-  return match ? Number(match[0]) : null;
+
+  const fullYearMatch =
+    (title || archiveId || "")
+      .match(/\b(19|20)\d{2}\b/);
+
+  if (fullYearMatch) {
+    return Number(fullYearMatch[0]);
+  }
+
+  const shortYearMatch =
+    archiveId.match(/-(\d{2})-cf$/i);
+
+  if (shortYearMatch) {
+
+    const yy =
+      Number(shortYearMatch[1]);
+
+    return 2000 + yy;
+  }
+
+  return null;
+
 })();
 
 document
