@@ -24,7 +24,7 @@ let metadata = {};
 
 fetch("metadata.json")
   .then(response => response.json())
-  .then(data => {
+  .then(async data => {
     metadata = data;
     console.log("Metadata loaded:", metadata);
   })
@@ -145,6 +145,28 @@ function getMonthKey(fileName) {
   };
 }
 
+async function loadSegmentFile(year) {
+
+  try {
+
+    const response =
+      await fetch(
+        `segments/${year}.json`
+      );
+
+    if (!response.ok) {
+      return {};
+    }
+
+    return await response.json();
+
+  } catch {
+
+    return {};
+  }
+
+}
+
 fetch(`https://archive.org/metadata/${archiveId}`)
   .then(response => {
     if (!response.ok) {
@@ -158,6 +180,15 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       throw new Error("audioPlayer element is missing.");
     }
 
+if (archiveYear) {
+
+  segmentData =
+    await loadSegmentFile(
+      archiveYear
+    );
+
+}
+    
     const mp3s = (data.files || [])
       .filter(file => typeof file?.name === "string" && file.name.toLowerCase().endsWith(".mp3"))
       .sort((a, b) => {
@@ -207,6 +238,8 @@ episodeList.parentElement.insertBefore(
   episodeList
 );
 
+    let segmentData = {};
+
     let currentIndex = -1;
 
     function updateTimeDisplay() {
@@ -227,16 +260,6 @@ episodeList.parentElement.insertBefore(
         })
       );
     }
-
-function renderNotes(fileName) {
-
-  const date =
-    parseDateFromFileName(fileName);
-
-  if (!date) {
-    showNotes.innerHTML = "";
-    return;
-  }
 
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -262,7 +285,7 @@ function renderNotes(fileName) {
   `;
 }
 
-    function renderNotes(fileName) {
+function renderSegments(fileName) {
 
   const date =
     parseDateFromFileName(fileName);
@@ -271,6 +294,55 @@ function renderNotes(fileName) {
     return;
   }
 
+  const dateKey =
+    date.toISOString().split("T")[0];
+
+  const entry =
+    segmentData[dateKey];
+
+  if (
+    !entry ||
+    !entry.segments ||
+    entry.segments.length === 0
+  ) {
+
+    showNotes.innerHTML = `
+      <div class="card">
+        <h3>📖 Topics Discussed</h3>
+        <p>No segment data available.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  showNotes.innerHTML = `
+    <div class="card">
+
+      <h3>📖 Topics Discussed</h3>
+
+      <ul class="segment-list">
+
+        ${entry.segments.map(segment => `
+          <li>
+
+            ${
+              segment.time
+                ? `<strong>${segment.time}</strong> - `
+                : ""
+            }
+
+            ${segment.title}
+
+          </li>
+        `).join("")}
+
+      </ul>
+
+    </div>
+  `;
+}
+        
   const month = date.getMonth() + 1;
   const day = date.getDate();
   const year =
@@ -309,7 +381,7 @@ function renderNotes(fileName) {
       const audioUrl = `https://archive.org/download/${archiveId}/${encodeURIComponent(file.name)}`;
       const positionKey = `${archiveId}_${file.name}`;
       const displayName = formatEpisodeLabel(file.name);
-      renderNotes(file.name);
+      renderSegments(file.name);
 
       mainPlayer.src = audioUrl;
       if (nowPlaying) {
