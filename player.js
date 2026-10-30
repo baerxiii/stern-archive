@@ -226,6 +226,38 @@ function renderNotes(fileName) {
     return;
   }
 
+  const month =
+    date.getMonth() + 1;
+
+  const day =
+    date.getDate();
+
+  const year =
+    String(date.getFullYear()).slice(-2);
+
+  const marksFrigginUrl =
+    `https://www.marksfriggin.com/news${year}/${month}-${day}.htm`;
+
+  showNotes.innerHTML = `
+    <div class="card">
+
+      <h3>📖 Show Notes</h3>
+
+      <p>
+        Click below to open the show summary:
+      </p>
+
+      <a
+        href="${marksFrigginUrl}"
+        target="_blank"
+        class="episode-link"
+      >
+        Open MarksFriggin Summary
+      </a>
+
+    </div>
+  `;
+}
   const dateKey =
     date.toISOString().split("T")[0];
 
