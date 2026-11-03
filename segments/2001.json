@@ -1,5 +1,8 @@
 {
   "2001-01-01": {
+    "segments": []
+  },
+  "2001-01-02": {
     "segments": [
       {
         "title": "Howard Returns From Vacation",
@@ -28,7 +31,11 @@
       {
         "title": "Howard On Pat Cooper's Shit List Again",
         "time": "9:45am"
-      },
+      }
+    ]
+  },
+  "2001-01-03": {
+    "segments": [
       {
         "title": "Various Stuff",
         "time": "6:05am"
@@ -44,6 +51,14 @@
       {
         "title": "More Various Stuff",
         "time": "7:55am"
+      }
+    ]
+  },
+  "2001-01-04": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Gary Coleman Calls In To Talk About Razor Scooters",
@@ -56,6 +71,14 @@
       {
         "title": "Win Fred's Money With Crazy Cabbie",
         "time": "9:15am"
+      }
+    ]
+  },
+  "2001-01-05": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Crazy Cabbie VS. The Wassup Guy Scott Brooks",
@@ -72,6 +95,9 @@
     ]
   },
   "2001-01-15": {
+    "segments": []
+  },
+  "2001-01-16": {
     "segments": [
       {
         "title": "Various Stuff",
@@ -84,6 +110,14 @@
       {
         "title": "Elegant Elliott Offen Comes In",
         "time": "9:00am"
+      }
+    ]
+  },
+  "2001-01-17": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Las Vegas/Los Angeles Trip Update",
@@ -104,6 +138,14 @@
       {
         "title": "Brad - Houston The Porn Star Update",
         "time": "10:20am"
+      }
+    ]
+  },
+  "2001-01-18": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Evaluating Bill And Mike",
@@ -116,6 +158,14 @@
       {
         "title": "Battle Of The Bands: The Losers vs. The Flutie Brothers",
         "time": "8:45am"
+      }
+    ]
+  },
+  "2001-01-19": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Win Fred's Money",
@@ -156,6 +206,14 @@
       {
         "title": "The Vegas Trip Discussion",
         "time": "9:50am"
+      }
+    ]
+  },
+  "2001-01-23": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "AJ Benza Comes In",
@@ -164,6 +222,14 @@
       {
         "title": "Drew Carey Comes In",
         "time": "8:30am"
+      }
+    ]
+  },
+  "2001-01-24": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Steve Ledoux Tells Us How To Win The Lottery",
@@ -188,6 +254,14 @@
       {
         "title": "Howard's Father Calls In",
         "time": "9:00am"
+      }
+    ]
+  },
+  "2001-01-25": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Leanna Heart And Joey Boots Come In",
@@ -208,6 +282,14 @@
       {
         "title": "Terry Collects Everyone's Spit",
         "time": "9:20am"
+      }
+    ]
+  },
+  "2001-01-26": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Tracy Finally Calls In",
@@ -234,6 +316,18 @@
   "2001-01-29": {
     "segments": []
   },
+  "2001-01-30": {
+    "segments": []
+  },
+  "2001-01-31": {
+    "segments": []
+  },
+  "2001-02-01": {
+    "segments": []
+  },
+  "2001-02-02": {
+    "segments": []
+  },
   "2001-01-08": {
     "segments": [
       {
@@ -251,6 +345,14 @@
       {
         "title": "Howard Calls His Father",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-01-09": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Gary Garver At The American Music Awards",
@@ -263,6 +365,14 @@
       {
         "title": "Richard Lewis Comes In",
         "time": "8:40am"
+      }
+    ]
+  },
+  "2001-01-10": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Chuck Zito Comes In",
@@ -283,6 +393,14 @@
       {
         "title": "Fruity Nutcake The Rapping Granny Introduces Robin's News",
         "time": "9:25am"
+      }
+    ]
+  },
+  "2001-01-11": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Stuttering John Not Going To Los Angeles",
@@ -299,7 +417,11 @@
       {
         "title": "Win Crazy Cabbie's Money",
         "time": "8:45am"
-      },
+      }
+    ]
+  },
+  "2001-01-12": {
+    "segments": [
       {
         "title": "Happy Birthday Howard",
         "time": "6:05am"
@@ -343,6 +465,14 @@
       {
         "title": "More Various Stuff",
         "time": "8:25am"
+      }
+    ]
+  },
+  "2001-10-02": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Boxer Bernard Hopkins Comes In",
@@ -359,6 +489,14 @@
       {
         "title": "Mark Harris Comes In",
         "time": "8:50am"
+      }
+    ]
+  },
+  "2001-10-03": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Ben Stiller Comes In",
@@ -367,6 +505,14 @@
       {
         "title": "No Ol' Dirty Bastard Today & Other Stuff",
         "time": "9:00am"
+      }
+    ]
+  },
+  "2001-10-04": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Chris Booker's J-Lo Experience",
@@ -391,10 +537,22 @@
       {
         "title": "Howard's New Obsession, Jolene Blalock",
         "time": "10:10am"
+      }
+    ]
+  },
+  "2001-10-05": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "The Gossip Game With Puppetry Of The Penis Guys",
         "time": "7:00am"
+      },
+      {
+        "title": "More Various Stuff",
+        "time": "7:45am"
       },
       {
         "title": "Jon Hein From JumpTheShark.com Comes In",
@@ -431,6 +589,14 @@
       {
         "title": "The Girls Of Completely Bare Come In",
         "time": "9:00am"
+      }
+    ]
+  },
+  "2001-10-16": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Breast Cancer Awareness Exam",
@@ -451,6 +617,14 @@
       {
         "title": "Another F-Emmy Award",
         "time": "9:30am"
+      }
+    ]
+  },
+  "2001-10-17": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "F-Emmy Awards Continue",
@@ -463,7 +637,11 @@
       {
         "title": "''Who Wants To Be A Princess'' Winner Comes In",
         "time": "9:25am"
-      },
+      }
+    ]
+  },
+  "2001-10-18": {
+    "segments": [
       {
         "title": "Howard Stern's Master Tape Theatre - October 18, 2001",
         "time": "6:00am"
@@ -475,6 +653,10 @@
       {
         "title": "Paul McCartney Comes In",
         "time": "8:25am"
+      },
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Naked Car Wash Girls",
@@ -489,8 +671,20 @@
         "time": "8:10am"
       },
       {
+        "title": "Paul McCartney Comes In",
+        "time": "8:40am"
+      },
+      {
         "title": "Naked Car Wash Girls Return",
         "time": "9:55am"
+      }
+    ]
+  },
+  "2001-10-19": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Sheila's New Implants",
@@ -535,7 +729,11 @@
       {
         "title": "Insane Clown Posse Comes In",
         "time": "9:00am"
-      },
+      }
+    ]
+  },
+  "2001-10-23": {
+    "segments": [
       {
         "title": "Various Stuff",
         "time": "6:05am"
@@ -555,6 +753,14 @@
       {
         "title": "Suzanne Vega Comes In",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-10-24": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Win Fred's Money With Bob Saget",
@@ -567,6 +773,14 @@
       {
         "title": "Incubus Performs Live In The Studio",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-10-25": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "John The Stutterer's Bunny Ranch Experience",
@@ -575,6 +789,14 @@
       {
         "title": "More Various Stuff",
         "time": "8:15am"
+      }
+    ]
+  },
+  "2001-10-26": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Jaid Barrymore Calls In",
@@ -615,6 +837,14 @@
       {
         "title": "More Various Discussions",
         "time": "9:50am"
+      }
+    ]
+  },
+  "2001-10-30": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Bill Sardi Suggests Garlic To Protect Against Anthrax",
@@ -627,6 +857,14 @@
       {
         "title": "Former Hollywood Madam Heidi Fleiss Calls In",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-10-31": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:00am"
       },
       {
         "title": "Kym And Julissa From The Black Entertainment Television Network",
@@ -639,6 +877,14 @@
       {
         "title": "Singer Chris Barron Calls In",
         "time": "9:55am"
+      }
+    ]
+  },
+  "2001-11-01": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Comedian Richard Lewis Comes In",
@@ -651,6 +897,14 @@
       {
         "title": "Comedian Robert Schimmel Comes In",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-11-02": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:00am"
       },
       {
         "title": "The Gossip Game With John Stamos And Bill The Slow Adult",
@@ -663,6 +917,9 @@
     ]
   },
   "2001-10-08": {
+    "segments": []
+  },
+  "2001-10-09": {
     "segments": [
       {
         "title": "Various Stuff",
@@ -691,6 +948,14 @@
       {
         "title": "Playboy Evaluations And Other Stuff",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-10-10": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "The 2001 F-Emmy Awards Begin",
@@ -707,6 +972,14 @@
       {
         "title": "Chris Kattan Comes In",
         "time": "8:50am"
+      }
+    ]
+  },
+  "2001-10-11": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "The F-Emmy Awards Day Two",
@@ -715,6 +988,18 @@
       {
         "title": "Rose McGowan Comes In",
         "time": "7:55am"
+      },
+      {
+        "title": "More F-Emmy Awards",
+        "time": "8:45am"
+      }
+    ]
+  },
+  "2001-10-12": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "More F-Emmy Awards Given Out",
@@ -767,6 +1052,14 @@
       {
         "title": "Dennis Rodman And Jenna Jameson Come In",
         "time": "9:00am"
+      }
+    ]
+  },
+  "2001-11-13": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "William Shatner Comes In",
@@ -779,6 +1072,14 @@
       {
         "title": "Porn Star Tabitha Stevens Comes In",
         "time": "8:50am"
+      }
+    ]
+  },
+  "2001-11-14": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Dita Von Teese Comes In",
@@ -789,12 +1090,24 @@
         "time": "7:45am"
       },
       {
+        "title": "More Various Stuff",
+        "time": "8:35am"
+      },
+      {
         "title": "Comedian Bernie Mac Comes In",
         "time": "8:50am"
       },
       {
         "title": "A Quick Q & A With Howard",
         "time": "9:40am"
+      }
+    ]
+  },
+  "2001-11-15": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Terry Burnham's Testosterone Test Results",
@@ -819,6 +1132,14 @@
       {
         "title": "Bill O'Reilly Calls In",
         "time": "9:15am"
+      }
+    ]
+  },
+  "2001-11-16": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Holy Water Enema Woman Calls In",
@@ -831,6 +1152,10 @@
       {
         "title": "Matchmaker Marie Massa Brings In Howard's Possible Soul Mates",
         "time": "7:40am"
+      },
+      {
+        "title": "More Various Stuff",
+        "time": "8:25am"
       },
       {
         "title": "$25,000 Queen For A Day Contest",
@@ -870,6 +1195,18 @@
       }
     ]
   },
+  "2001-11-20": {
+    "segments": []
+  },
+  "2001-11-21": {
+    "segments": []
+  },
+  "2001-11-22": {
+    "segments": []
+  },
+  "2001-11-23": {
+    "segments": []
+  },
   "2001-11-26": {
     "segments": [
       {
@@ -887,6 +1224,14 @@
       {
         "title": "Comedian Greg Fitzsimmons Sits In",
         "time": "9:25am"
+      }
+    ]
+  },
+  "2001-11-27": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Busta Rhymes Comes In",
@@ -907,6 +1252,14 @@
       {
         "title": "Xbox Giveaway, Gay Chicken And Other Stuff",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-11-28": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Penthouse Pet Of The Year Megan Mason Comes In",
@@ -915,6 +1268,14 @@
       {
         "title": "The Jackie Discussion",
         "time": "10:10am"
+      }
+    ]
+  },
+  "2001-11-29": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Professor Theodore Green's Taliban Support",
@@ -927,6 +1288,14 @@
       {
         "title": "John Mellencamp Comes In",
         "time": "9:00am"
+      }
+    ]
+  },
+  "2001-11-30": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Yucko The Clown Returns",
@@ -967,6 +1336,14 @@
       {
         "title": "Robin Leach Comes In",
         "time": "9:00am"
+      }
+    ]
+  },
+  "2001-11-06": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Robin's ''Millionaire'' Appearance Reviewed",
@@ -979,6 +1356,14 @@
       {
         "title": "More Various Stuff",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-11-07": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Dallas Talks Hollow Earth Again",
@@ -999,6 +1384,14 @@
       {
         "title": "Ed McMahon And The ''F***, Marry, Kill'' Game",
         "time": "8:30am"
+      }
+    ]
+  },
+  "2001-11-08": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Kid Rock Comes In",
@@ -1011,6 +1404,14 @@
       {
         "title": "Kathie Lee Sends Howard A Letter",
         "time": "9:45am"
+      }
+    ]
+  },
+  "2001-11-09": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Arm Wrestler John Brzenk Calls In",
@@ -1047,6 +1448,14 @@
       {
         "title": "P.O.D. Performs Live",
         "time": "9:00am"
+      }
+    ]
+  },
+  "2001-12-11": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Erin Brockovich Calls In",
@@ -1063,6 +1472,14 @@
       {
         "title": "Lingerie Wrestler Stacy Keibler Calls In",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-12-12": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Shane's Time Release Handcuffs",
@@ -1071,18 +1488,42 @@
       {
         "title": "Fred The Elephant Boy Spins The Wheel Of Sex",
         "time": "8:25am"
+      }
+    ]
+  },
+  "2001-12-13": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Comedian Jim Florentine Comes In",
         "time": "7:20am"
       },
       {
+        "title": "More Various Stuff",
+        "time": "7:50am"
+      },
+      {
         "title": "Stuttering John's Beer Challenge",
         "time": "9:05am"
+      }
+    ]
+  },
+  "2001-12-14": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Illusionist Criss Angel Comes In",
         "time": "7:40am"
+      },
+      {
+        "title": "Stuttering John's Beer Challenge",
+        "time": "8:10am"
       },
       {
         "title": "Jewish Wheel Of Sex (And Gossip Game) With Lindsey Vuolo",
@@ -1098,7 +1539,31 @@
       }
     ]
   },
+  "2001-12-18": {
+    "segments": []
+  },
+  "2001-12-19": {
+    "segments": []
+  },
+  "2001-12-20": {
+    "segments": []
+  },
+  "2001-12-21": {
+    "segments": []
+  },
   "2001-12-24": {
+    "segments": []
+  },
+  "2001-12-25": {
+    "segments": []
+  },
+  "2001-12-26": {
+    "segments": []
+  },
+  "2001-12-27": {
+    "segments": []
+  },
+  "2001-12-28": {
     "segments": []
   },
   "2001-12-03": {
@@ -1114,10 +1579,18 @@
       {
         "title": "Kathleen's Circumcision Nightmare",
         "time": "9:05am"
-      },
+      }
+    ]
+  },
+  "2001-12-04": {
+    "segments": [
       {
         "title": "Howard Stern's Master Tape Theatre - December 4, 2001",
         "time": "6:00am"
+      },
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "KC Interviews The Singing Psychic",
@@ -1134,6 +1607,14 @@
       {
         "title": "High Pitch Erik Spins The Wheel Of Sex",
         "time": "9:30am"
+      }
+    ]
+  },
+  "2001-12-05": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:00am"
       },
       {
         "title": "Bob Reynolds' Butt Wedge Drug Test Cheat",
@@ -1150,6 +1631,14 @@
       {
         "title": "Comedian Bobby Slayton Sits In",
         "time": "9:25am"
+      }
+    ]
+  },
+  "2001-12-06": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Steven The Stripper",
@@ -1170,6 +1659,14 @@
       {
         "title": "Kenrda's Playboy Evaluation",
         "time": "8:50am"
+      }
+    ]
+  },
+  "2001-12-07": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Jerry's Strap-On Problem",
@@ -1178,6 +1675,10 @@
       {
         "title": "Porn Star Mary Carey And Her Retarded Mom",
         "time": "7:15am"
+      },
+      {
+        "title": "More Various Stuff",
+        "time": "7:50am"
       },
       {
         "title": "Porn Star Holly Landers Plays The Gossip Game",
@@ -1190,7 +1691,17 @@
       {
         "title": "Practicing For Jeopardy",
         "time": "9:10am"
-      },
+      }
+    ]
+  },
+  "2002-01-01": {
+    "segments": []
+  },
+  "2002-01-02": {
+    "segments": []
+  },
+  "2002-01-03": {
+    "segments": [
       {
         "title": "Howard Returns Live",
         "time": "6:05am"
@@ -1206,7 +1717,11 @@
       {
         "title": "Sad Sack Of The Year: Scott The Engineer",
         "time": "9:20am"
-      },
+      }
+    ]
+  },
+  "2002-01-04": {
+    "segments": [
       {
         "title": "Various Stuff",
         "time": "6:05am"
@@ -1246,6 +1761,14 @@
       {
         "title": "Comedian Kathy Griffin Comes In",
         "time": "8:45am"
+      }
+    ]
+  },
+  "2001-02-13": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Miss Cracked Magazine Drops In",
@@ -1262,6 +1785,14 @@
       {
         "title": "Mr. Skin And Oscar Nominations",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-02-14": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Margie Carr's Sylvester Stallone Story",
@@ -1282,6 +1813,14 @@
       {
         "title": "Al Pacino's Baby Calls In",
         "time": "9:35am"
+      }
+    ]
+  },
+  "2001-02-15": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Albany Parade Update",
@@ -1306,6 +1845,14 @@
       {
         "title": "Frank Stallone Debates Margie",
         "time": "9:20am"
+      }
+    ]
+  },
+  "2001-02-16": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Gervase Peterson From Survivor 1 Calls In",
@@ -1336,6 +1883,18 @@
   "2001-02-19": {
     "segments": []
   },
+  "2001-02-20": {
+    "segments": []
+  },
+  "2001-02-21": {
+    "segments": []
+  },
+  "2001-02-22": {
+    "segments": []
+  },
+  "2001-02-23": {
+    "segments": []
+  },
   "2001-02-26": {
     "segments": [
       {
@@ -1353,6 +1912,14 @@
       {
         "title": "Banished Survivor Kimmi Comes In",
         "time": "8:00am"
+      }
+    ]
+  },
+  "2001-02-27": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Dr. Irene Kassorla Calls In",
@@ -1361,6 +1928,14 @@
       {
         "title": "Gary Garver At The Grammys",
         "time": "8:15am"
+      }
+    ]
+  },
+  "2001-02-28": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Temptation Island's Mandy Comes In",
@@ -1377,6 +1952,14 @@
       {
         "title": "More Various Stuff",
         "time": "9:35am"
+      }
+    ]
+  },
+  "2001-03-01": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Janine Lindemulder Comes In",
@@ -1389,6 +1972,14 @@
       {
         "title": "Buffalo Press Conference",
         "time": "8:40am"
+      }
+    ]
+  },
+  "2001-03-02": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Mandy From Temptation Island Update",
@@ -1437,6 +2028,14 @@
       {
         "title": "More L.A. Trip Discussions",
         "time": "9:15am"
+      }
+    ]
+  },
+  "2001-02-06": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Jackie's Script Reading",
@@ -1445,6 +2044,14 @@
       {
         "title": "Howard Loses His Mind Over Censoring",
         "time": "9:45am"
+      }
+    ]
+  },
+  "2001-02-07": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Mary Ellen Wants Howard's Help",
@@ -1461,6 +2068,14 @@
       {
         "title": "A Listener Says Goodbye",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-02-08": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Mary Ellen Update",
@@ -1485,6 +2100,14 @@
       {
         "title": "Crazy Cabbie's Second Chance To Win $10,000",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-02-09": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Reverend Dave Hill",
@@ -1529,6 +2152,14 @@
       {
         "title": "Heather Nicole Wants To Be In Porn",
         "time": "9:25am"
+      }
+    ]
+  },
+  "2001-03-13": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Crazy Cabbie Fired And Rehired Again",
@@ -1553,6 +2184,14 @@
       {
         "title": "Hypnotist Paul McKenna Hypnotizes Fred",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-03-14": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Actor Ray Liotta Comes In",
@@ -1569,12 +2208,19 @@
       {
         "title": "Big Black's Turn To Co-Host",
         "time": "9:35am"
-      },
+      }
+    ]
+  },
+  "2001-03-15": {
+    "segments": [
       {
         "title": "Master Tape Theatre - March 15, 2001",
         "time": "6:00am"
       }
     ]
+  },
+  "2001-03-16": {
+    "segments": []
   },
   "2001-03-19": {
     "segments": [
@@ -1601,6 +2247,14 @@
       {
         "title": "''Queer As Folk'' Star Hal Sparks Comes In",
         "time": "8:50am"
+      }
+    ]
+  },
+  "2001-03-20": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Two Disgruntled XFL Cheerleaders Come In",
@@ -1609,7 +2263,11 @@
       {
         "title": "Howard Plays Battle Of Wits With Playboy Playmates",
         "time": "8:55am"
-      },
+      }
+    ]
+  },
+  "2001-03-21": {
+    "segments": [
       {
         "title": "Mariann From Brooklyn Comes In",
         "time": "6:20am"
@@ -1629,6 +2287,14 @@
       {
         "title": "Headwound Paul Comes In",
         "time": "9:40am"
+      }
+    ]
+  },
+  "2001-03-22": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Talking Garbage With King Of All Blacks",
@@ -1649,6 +2315,14 @@
       {
         "title": "WWF's Vince McMahon Comes In",
         "time": "8:50am"
+      }
+    ]
+  },
+  "2001-03-23": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "The Judy Garland Tapes",
@@ -1681,6 +2355,14 @@
       {
         "title": "More Cabbie And Other Stuff",
         "time": "8:35am"
+      }
+    ]
+  },
+  "2001-03-27": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "NBA Star John Salley Calls In",
@@ -1701,6 +2383,14 @@
       {
         "title": "The Final Lie Detector Test Results",
         "time": "10:05am"
+      }
+    ]
+  },
+  "2001-03-28": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Howard Receives Hartford Advocate Award",
@@ -1721,6 +2411,14 @@
       {
         "title": "Elegant Elliott Offen Comes In",
         "time": "9:15am"
+      }
+    ]
+  },
+  "2001-03-29": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Ken Baker's Tumor Story",
@@ -1733,6 +2431,14 @@
       {
         "title": "Elliott Offen Returns To See His Long Lost Daughter",
         "time": "9:20am"
+      }
+    ]
+  },
+  "2001-03-30": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "The Gossip Game With Guest Rabbi Shmuley Boteach",
@@ -1773,6 +2479,14 @@
       {
         "title": "Howard's Kylie Bax Dating Problem",
         "time": "9:50am"
+      }
+    ]
+  },
+  "2001-03-06": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Howard's Hair And The Sopranos",
@@ -1801,6 +2515,14 @@
       {
         "title": "KC's Financial Troubles",
         "time": "9:45am"
+      }
+    ]
+  },
+  "2001-03-07": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "More On Jackie's Negotiations",
@@ -1817,6 +2539,14 @@
       {
         "title": "Gilbert Gottfried Hangs Out During The News",
         "time": "9:20am"
+      }
+    ]
+  },
+  "2001-03-08": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Henry Hill Calls In",
@@ -1841,6 +2571,14 @@
       {
         "title": "... I Mean Kip's Bunny Ranch Stories",
         "time": "10:05am"
+      }
+    ]
+  },
+  "2001-03-09": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Doody Dude Neil Identifies Dog Poo",
@@ -1877,6 +2615,14 @@
       {
         "title": "Survivor Outcast Amber Brkich Comes In",
         "time": "9:05am"
+      }
+    ]
+  },
+  "2001-04-17": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Cabbie Vs. Angry Black Fight Information",
@@ -1897,6 +2643,14 @@
       {
         "title": "Markee Ramone Calls In",
         "time": "9:40am"
+      }
+    ]
+  },
+  "2001-04-18": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Crazy Cabbie Calls In",
@@ -1917,6 +2671,14 @@
       {
         "title": "Scott And Ronnie Fighting",
         "time": "10:05am"
+      }
+    ]
+  },
+  "2001-04-19": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Joey Ramone Tribute",
@@ -1929,6 +2691,14 @@
       {
         "title": "Carly Gets Evaluated",
         "time": "9:15am"
+      }
+    ]
+  },
+  "2001-04-20": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Cabbie Vs.. Angry Black Pay-Per-View Event Is A Go",
@@ -1973,6 +2743,14 @@
       {
         "title": "''Survivor'' Loser Jerri Manthey Comes In",
         "time": "8:50am"
+      }
+    ]
+  },
+  "2001-04-03": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Gary The Retard's Directorial Debut",
@@ -1993,6 +2771,14 @@
       {
         "title": "Howard's College Friend Andrea Comes In",
         "time": "9:25am"
+      }
+    ]
+  },
+  "2001-04-04": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Chaunce Hayden's Interview With Leila Arcieri",
@@ -2005,10 +2791,18 @@
       {
         "title": "More Leila Tape",
         "time": "8:35am"
-      },
+      }
+    ]
+  },
+  "2001-04-05": {
+    "segments": [
       {
         "title": "Howard Stern Master Tape Theatre - April 5, 2001",
         "time": "6:00am"
+      },
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Steve Enlarged His Penis Without Surgery",
@@ -2025,6 +2819,14 @@
       {
         "title": "Howard's HDTV Lesson",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-04-06": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "David Spade And Beetlejuice",
@@ -2069,6 +2871,14 @@
       {
         "title": "Hot Weather Person Jillian Barberie Comes In",
         "time": "8:25am"
+      }
+    ]
+  },
+  "2001-04-24": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Jack Nicolson's Sister Donna Rose Calls In",
@@ -2081,6 +2891,14 @@
       {
         "title": "Mark Harris Comes In",
         "time": "8:50am"
+      }
+    ]
+  },
+  "2001-04-25": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Alien Abductee Riley Martin Calls In",
@@ -2101,6 +2919,14 @@
       {
         "title": "Hank Vs. Gary In Rock And Roll Trivia",
         "time": "9:15am"
+      }
+    ]
+  },
+  "2001-04-26": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "''Kill All Them Jews'' Composer Calls In",
@@ -2117,7 +2943,11 @@
       {
         "title": "Green Day Performs Live",
         "time": "9:00am"
-      },
+      }
+    ]
+  },
+  "2001-04-27": {
+    "segments": [
       {
         "title": "The 'Contention For Attention' Pre-Fight Activities",
         "time": "6:05am"
@@ -2153,7 +2983,11 @@
       {
         "title": "Post Fight Wrap Up With Crazy Cabbie And Angry Black",
         "time": "7:55am"
-      },
+      }
+    ]
+  },
+  "2001-05-01": {
+    "segments": [
       {
         "title": "Master Tape Theatre - May 1, 2001",
         "time": "6:00am"
@@ -2173,6 +3007,14 @@
       {
         "title": "Henry Hill Falls Off The Wagon",
         "time": "10:10am"
+      }
+    ]
+  },
+  "2001-05-02": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Guy Who Slept With Girlfriend's Mother",
@@ -2185,6 +3027,14 @@
       {
         "title": "Saturday Show And Party Planning",
         "time": "9:05am"
+      }
+    ]
+  },
+  "2001-05-03": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Scores Party Nightmare",
@@ -2213,7 +3063,11 @@
       {
         "title": "Dave Chappelle And Stephen Baldwin Call In",
         "time": "10:20am"
-      },
+      }
+    ]
+  },
+  "2001-05-04": {
+    "segments": [
       {
         "title": "Scores Party Discussion",
         "time": "6:05am"
@@ -2233,6 +3087,18 @@
     ]
   },
   "2001-04-09": {
+    "segments": []
+  },
+  "2001-04-10": {
+    "segments": []
+  },
+  "2001-04-11": {
+    "segments": []
+  },
+  "2001-04-12": {
+    "segments": []
+  },
+  "2001-04-13": {
     "segments": []
   },
   "2001-05-14": {
@@ -2256,7 +3122,11 @@
       {
         "title": "Virginity For Sale",
         "time": "10:05am"
-      },
+      }
+    ]
+  },
+  "2001-05-15": {
+    "segments": [
       {
         "title": "Various Stuff",
         "time": "6:05am"
@@ -2284,6 +3154,14 @@
       {
         "title": "Spring '01 Intern Beauty Pageant",
         "time": "8:45am"
+      }
+    ]
+  },
+  "2001-05-16": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Jill's Test Of The Shenis",
@@ -2300,6 +3178,14 @@
       {
         "title": "Megan Wants To Date Howard",
         "time": "9:05am"
+      }
+    ]
+  },
+  "2001-05-17": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Introducing Slow John",
@@ -2312,6 +3198,14 @@
       {
         "title": "Kay Hanley Sings For Howard",
         "time": "8:50am"
+      }
+    ]
+  },
+  "2001-05-18": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Playboy Lingerie Model Quiz",
@@ -2340,6 +3234,14 @@
       {
         "title": "Jon Bon Jovi Shows Up",
         "time": "9:15am"
+      }
+    ]
+  },
+  "2001-05-22": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Deborah Norville Calls In",
@@ -2356,6 +3258,14 @@
       {
         "title": "Killing Time",
         "time": "9:20am"
+      }
+    ]
+  },
+  "2001-05-23": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "REO Speedwagon's Kevin Cronin Calls In",
@@ -2380,6 +3290,14 @@
       {
         "title": "''The Sopranos'' Actor Joseph Gannascoli Calls In",
         "time": "9:25am"
+      }
+    ]
+  },
+  "2001-05-24": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Chris Marshall Survives TV Marriage Show",
@@ -2403,7 +3321,13 @@
       }
     ]
   },
+  "2001-05-25": {
+    "segments": []
+  },
   "2001-05-28": {
+    "segments": []
+  },
+  "2001-05-29": {
     "segments": [
       {
         "title": "Various Stuff",
@@ -2420,6 +3344,14 @@
       {
         "title": "Craig's ''Gene Simmons'' Fools A French Fan",
         "time": "10:00am"
+      }
+    ]
+  },
+  "2001-05-30": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Goof On Kathie Lee Gifford Time",
@@ -2444,6 +3376,14 @@
       {
         "title": "Playboy Evaluations With Guest Miss October Nichole Van Croft",
         "time": "9:05am"
+      }
+    ]
+  },
+  "2001-05-31": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Greg Miller's Neuticles",
@@ -2466,6 +3406,9 @@
         "time": "9:05am"
       }
     ]
+  },
+  "2001-06-01": {
+    "segments": []
   },
   "2001-05-07": {
     "segments": [
@@ -2492,6 +3435,14 @@
       {
         "title": "Howard's Weekend",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-05-08": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Fotius Problem With Kids With No Parents",
@@ -2516,6 +3467,14 @@
       {
         "title": "Ol' Dirty Bastard's Brother, Menace, Drops In",
         "time": "9:50am"
+      }
+    ]
+  },
+  "2001-05-09": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Don King Tries To Give Away A Million Bucks",
@@ -2532,6 +3491,14 @@
       {
         "title": "All In The Beetlejuice Family",
         "time": "9:20am"
+      }
+    ]
+  },
+  "2001-05-10": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Richard's 'Pull My Finger' Fart CDs",
@@ -2544,6 +3511,14 @@
       {
         "title": "Donald Trump Calls In",
         "time": "10:20am"
+      }
+    ]
+  },
+  "2001-05-11": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Miss Carrie's Man Problems",
@@ -2596,7 +3571,11 @@
       {
         "title": "''Put Your Mitts On A Misfit'' Million Dollar Contest Update",
         "time": "10:10am"
-      },
+      }
+    ]
+  },
+  "2001-06-12": {
+    "segments": [
       {
         "title": "Fear Factor Discussion",
         "time": "6:05am"
@@ -2624,6 +3603,18 @@
       {
         "title": "''Put Your Mitts On A Misfit'' Update 3",
         "time": "10:00am"
+      }
+    ]
+  },
+  "2001-06-13": {
+    "segments": [
+      {
+        "title": "''Put Your Mitts On A Misfit'' Million Dollar Contest Update",
+        "time": "6:05am"
+      },
+      {
+        "title": "Various Stuff",
+        "time": "6:40am"
       },
       {
         "title": "Where Are They Now: Former Interns",
@@ -2640,7 +3631,11 @@
       {
         "title": "Phony Incestuous Brother And Sister Couple Come In",
         "time": "9:15am"
-      },
+      }
+    ]
+  },
+  "2001-06-14": {
+    "segments": [
       {
         "title": "''Put Your Mitts On A Misfit'' Million Dollar Contest Winner Announced",
         "time": "6:05am"
@@ -2660,6 +3655,14 @@
       {
         "title": "Strippers And Erections",
         "time": "9:20am"
+      }
+    ]
+  },
+  "2001-06-15": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "The Gossip Game With Guest Sarah Silverman",
@@ -2712,6 +3715,14 @@
       {
         "title": "Wacky Sophia (Sonny) Tells Us The Secret Of 666",
         "time": "9:50am"
+      }
+    ]
+  },
+  "2001-06-19": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Mary Crosby Plugs ViaCreme",
@@ -2732,6 +3743,14 @@
       {
         "title": "Trip Giveaways",
         "time": "9:35am"
+      }
+    ]
+  },
+  "2001-06-20": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Greg And Mike From Prevention Of Animal Sexual Abuse",
@@ -2748,6 +3767,14 @@
       {
         "title": "Big Black Sits In For The News",
         "time": "10:00am"
+      }
+    ]
+  },
+  "2001-06-21": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Actor David Lander (Squiggy) Calls In",
@@ -2764,6 +3791,14 @@
       {
         "title": "Teasers For Tomorrow's Show",
         "time": "9:45am"
+      }
+    ]
+  },
+  "2001-06-22": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Robert Blake's Friend John Solari Comes In",
@@ -2808,6 +3843,14 @@
       {
         "title": "Gass Passes Out During Commercial Break",
         "time": "9:45am"
+      }
+    ]
+  },
+  "2001-06-26": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Jeanette From ''Fear Factor'' Comes In",
@@ -2824,7 +3867,11 @@
       {
         "title": "Guess Vinnie's Weight... And His Secret",
         "time": "9:10am"
-      },
+      }
+    ]
+  },
+  "2001-06-27": {
+    "segments": [
       {
         "title": "Master Tape Theatre - June 27, 2001",
         "time": "6:00am"
@@ -2848,6 +3895,14 @@
       {
         "title": "''Password'' The Game With Beetlejuice",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-06-28": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Jimmy Kimmel and Adam Carolla Call In",
@@ -2860,6 +3915,14 @@
       {
         "title": "Shawn And Marlon Wayans Come In",
         "time": "9:15am"
+      }
+    ]
+  },
+  "2001-06-29": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Jason Jameson's LethalSports.com",
@@ -2908,6 +3971,14 @@
       {
         "title": "Crazy Cabbie And Other Stuff",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-06-05": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Finding Howard's Soul Mate",
@@ -2924,6 +3995,14 @@
       {
         "title": "Elegant Elliott Offen's Big Announcement",
         "time": "9:35am"
+      }
+    ]
+  },
+  "2001-06-06": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Howard's Clogged Toilet Story",
@@ -2936,6 +4015,14 @@
       {
         "title": "Howard's Sweaty Back And Gary's Spin Class",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-06-07": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "AJ's Baby Date",
@@ -2948,6 +4035,14 @@
       {
         "title": "Comedian Bernie Mac Comes In",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-06-08": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Crazy Stunts",
@@ -2988,6 +4083,14 @@
       {
         "title": "Fred On Two Wheels",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-07-17": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Poor, Pathetic Mike Gange",
@@ -3012,6 +4115,14 @@
       {
         "title": "Howard Talks To His Mommy",
         "time": "9:50am"
+      }
+    ]
+  },
+  "2001-07-18": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Joey Boots Talks Premature Ejaculation",
@@ -3028,6 +4139,14 @@
       {
         "title": "KC Screws Up Another Game",
         "time": "9:50am"
+      }
+    ]
+  },
+  "2001-07-19": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Teabag Balzack Calls In",
@@ -3044,6 +4163,14 @@
       {
         "title": "The Lizzy Grubman Game",
         "time": "9:45am"
+      }
+    ]
+  },
+  "2001-07-20": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Premiere Magazine's Michael Solomon Calls In",
@@ -3060,6 +4187,18 @@
     ]
   },
   "2001-07-02": {
+    "segments": []
+  },
+  "2001-07-03": {
+    "segments": []
+  },
+  "2001-07-04": {
+    "segments": []
+  },
+  "2001-07-05": {
+    "segments": []
+  },
+  "2001-07-06": {
     "segments": []
   },
   "2001-07-23": {
@@ -3087,6 +4226,22 @@
       {
         "title": "How To Make Your Marriage Last... According To Howard",
         "time": "10:30am"
+      }
+    ]
+  },
+  "2001-07-24": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
+      }
+    ]
+  },
+  "2001-07-25": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Crazy Cabbie's Baby Update",
@@ -3107,6 +4262,14 @@
       {
         "title": "AJ Benza Update",
         "time": "9:40am"
+      }
+    ]
+  },
+  "2001-07-26": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Michael's PointofLife.com",
@@ -3127,6 +4290,14 @@
       {
         "title": "Latrice's Playboy Evaluation",
         "time": "9:55am"
+      }
+    ]
+  },
+  "2001-07-27": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "The Gossip Game With Guest David E. Letterman",
@@ -3167,7 +4338,11 @@
       {
         "title": "Hank The Dwarf vs. Beetlejuice",
         "time": "9:35am"
-      },
+      }
+    ]
+  },
+  "2001-07-31": {
+    "segments": [
       {
         "title": "Various Stuff",
         "time": "6:05am"
@@ -3183,6 +4358,14 @@
       {
         "title": "Snoop Dogg And Tha Eastsidaz Come In",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-08-01": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Vinnie's Mariah Carey Tapes",
@@ -3195,10 +4378,18 @@
       {
         "title": "Beatles Drummer Ringo Starr Comes In",
         "time": "8:40am"
-      },
+      }
+    ]
+  },
+  "2001-08-02": {
+    "segments": [
       {
         "title": "Master Tape Theatre - August 2, 2001",
         "time": "6:00am"
+      },
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Lysa Moskowitz-Mateu Update",
@@ -3223,6 +4414,14 @@
       {
         "title": "Sahvanna The Psychic Stripper",
         "time": "9:20am"
+      }
+    ]
+  },
+  "2001-08-03": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "What's My Secret With Jonathan",
@@ -3237,6 +4436,18 @@
   "2001-07-09": {
     "segments": []
   },
+  "2001-07-10": {
+    "segments": []
+  },
+  "2001-07-11": {
+    "segments": []
+  },
+  "2001-07-12": {
+    "segments": []
+  },
+  "2001-07-13": {
+    "segments": []
+  },
   "2001-08-13": {
     "segments": [
       {
@@ -3246,6 +4457,14 @@
       {
         "title": "Writer/Producer David Rosenthal Calls In",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-08-14": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Gary Garver Interviews",
@@ -3270,6 +4489,14 @@
       {
         "title": "Abe Hirschfeld Calls In From Jail",
         "time": "9:40am"
+      }
+    ]
+  },
+  "2001-08-15": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Comedian Robert Schimmel Calls In",
@@ -3286,6 +4513,14 @@
       {
         "title": "Al Pacino's Father Sal Calls In",
         "time": "9:05am"
+      }
+    ]
+  },
+  "2001-08-16": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Howard Replays Abe Hirschfeld Phone Call",
@@ -3302,6 +4537,14 @@
       {
         "title": "Howard Argues Importance Of Veterinarians",
         "time": "9:40am"
+      }
+    ]
+  },
+  "2001-08-17": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Male Queen For A Day",
@@ -3342,6 +4585,14 @@
       {
         "title": "Mr. Product Calls In",
         "time": "9:30am"
+      }
+    ]
+  },
+  "2001-08-21": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Toilet Paper Expert Ken Fishberg Calls In",
@@ -3358,6 +4609,14 @@
       {
         "title": "The Search For Robin's Phone-A-Friend",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-08-22": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Ted Zagat Calls In",
@@ -3374,6 +4633,14 @@
       {
         "title": "More Wiping Discussion",
         "time": "9:50am"
+      }
+    ]
+  },
+  "2001-08-23": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Comedian Paul Rodriguez Comes In",
@@ -3386,6 +4653,14 @@
       {
         "title": "Bob Guccione Jr. Talks Marriage",
         "time": "9:15am"
+      }
+    ]
+  },
+  "2001-08-24": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Relationship Expert Barbara De Angelis Comes In",
@@ -3398,6 +4673,18 @@
     ]
   },
   "2001-08-27": {
+    "segments": []
+  },
+  "2001-08-28": {
+    "segments": []
+  },
+  "2001-08-29": {
+    "segments": []
+  },
+  "2001-08-30": {
+    "segments": []
+  },
+  "2001-08-31": {
     "segments": []
   },
   "2001-08-06": {
@@ -3421,6 +4708,14 @@
       {
         "title": "More Afroman ''Because I Got High'' Stuff",
         "time": "9:40am"
+      }
+    ]
+  },
+  "2001-08-07": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Heather's First Lesbian Experience",
@@ -3441,6 +4736,14 @@
       {
         "title": "Disturbing Doug Stanhope Picture",
         "time": "9:05am"
+      }
+    ]
+  },
+  "2001-08-08": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Happy Birthday Robin",
@@ -3451,12 +4754,24 @@
         "time": "7:05am"
       },
       {
+        "title": "Young Looking Jonathan Sex Update",
+        "time": "7:35am"
+      },
+      {
         "title": "Shark Attack News And Pamela Anderson's Nipple",
         "time": "8:15am"
       },
       {
         "title": "Molestation Stories",
         "time": "8:45am"
+      }
+    ]
+  },
+  "2001-08-09": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "''American Pie 2'' Stars Tara Reid, Alyson Hannigan And Natasha Lyonne",
@@ -3476,6 +4791,9 @@
       }
     ]
   },
+  "2001-08-10": {
+    "segments": []
+  },
   "2001-09-10": {
     "segments": [
       {
@@ -3493,6 +4811,14 @@
       {
         "title": "Scott Einziger's Engagement Discussed",
         "time": "10:05am"
+      }
+    ]
+  },
+  "2001-09-11": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Hiccup Guy Seth Dowel Calls In",
@@ -3505,7 +4831,14 @@
       {
         "title": "World Trade Center Coverage",
         "time": "8:45am"
-      },
+      }
+    ]
+  },
+  "2001-09-12": {
+    "segments": []
+  },
+  "2001-09-13": {
+    "segments": [
       {
         "title": "Day Three",
         "time": "6:01am"
@@ -3520,6 +4853,9 @@
       }
     ]
   },
+  "2001-09-14": {
+    "segments": []
+  },
   "2001-09-17": {
     "segments": [
       {
@@ -3529,7 +4865,14 @@
       {
         "title": "Elliott Offen Gets One Minute Of Air Time",
         "time": "10:30am"
-      },
+      }
+    ]
+  },
+  "2001-09-18": {
+    "segments": []
+  },
+  "2001-09-19": {
+    "segments": [
       {
         "title": "Various Stuff",
         "time": "6:05am"
@@ -3545,6 +4888,14 @@
       {
         "title": "Uncle Beetlejuice Visits",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-09-20": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Serj Tankian From System Of A Down Calls In",
@@ -3557,6 +4908,14 @@
       {
         "title": "Former Camera Woman Tara Comes In",
         "time": "8:55am"
+      }
+    ]
+  },
+  "2001-09-21": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Help Families Of Lost Fire, EMS And Police From The Trade Center Disaster",
@@ -3605,6 +4964,14 @@
       {
         "title": "More Various Stuff",
         "time": "9:00am"
+      }
+    ]
+  },
+  "2001-09-25": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "''The Man Show'' Producer Dan Talks Rosie",
@@ -3617,6 +4984,14 @@
       {
         "title": "Goofing On Listener Songs",
         "time": "9:25am"
+      }
+    ]
+  },
+  "2001-09-26": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Psychic Anthony Carr Calls In",
@@ -3625,6 +5000,21 @@
       {
         "title": "''Spawn'' Creator Todd McFarlane Calls In",
         "time": "8:05am"
+      },
+      {
+        "title": "More Various Stuff",
+        "time": "8:15am"
+      }
+    ]
+  },
+  "2001-09-27": {
+    "segments": []
+  },
+  "2001-09-28": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
       },
       {
         "title": "Matchmaker Marie Massa Calls In",
@@ -3645,6 +5035,9 @@
     ]
   },
   "2001-09-03": {
+    "segments": []
+  },
+  "2001-09-04": {
     "segments": [
       {
         "title": "Howard Returns From Vacation",
@@ -3673,7 +5066,11 @@
       {
         "title": "Nude Model Laurie Wallace's Lesbian Experiences",
         "time": "9:00am"
-      },
+      }
+    ]
+  },
+  "2001-09-05": {
+    "segments": [
       {
         "title": "Howard's Thoughts On Hank The Dwarf's Death",
         "time": "6:05am"
@@ -3685,7 +5082,11 @@
       {
         "title": "Death Explained To Gary The Retard",
         "time": "8:30am"
-      },
+      }
+    ]
+  },
+  "2001-09-06": {
+    "segments": [
       {
         "title": "Various Stuff",
         "time": "6:05am"
@@ -3705,7 +5106,11 @@
       {
         "title": "Staind Performs Live In The Studio",
         "time": "9:15am"
-      },
+      }
+    ]
+  },
+  "2007-07-13": {
+    "segments": [
       {
         "title": "Howard Stern Master Tape Theatre - September 7, 2001",
         "time": "6:00am"
@@ -3753,6 +5158,42 @@
       {
         "title": "Robin's Upcoming ''Millionaire'' Appearance",
         "time": "9:10am"
+      }
+    ]
+  },
+  "2001-09-07": {
+    "segments": [
+      {
+        "title": "Various Stuff",
+        "time": "6:05am"
+      },
+      {
+        "title": "''Bob Hope'' Calls In",
+        "time": "6:30am"
+      },
+      {
+        "title": "More MTV VMA Stories",
+        "time": "6:45am"
+      },
+      {
+        "title": "Slash Comes In",
+        "time": "7:15am"
+      },
+      {
+        "title": "The Gossip Game With Guest Lawrence Taylor",
+        "time": "7:50am"
+      },
+      {
+        "title": "Mark Wahlberg Comes In",
+        "time": "8:30am"
+      },
+      {
+        "title": "The Hank Memorial Still Going Strong",
+        "time": "9:30am"
+      },
+      {
+        "title": "Robin's Upcoming ''Millionaire'' Appearance",
+        "time": "9:45am"
       }
     ]
   }

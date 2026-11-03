@@ -1,0 +1,42 @@
+{
+  "1990-02-16": {
+    "segments": [
+      {
+        "title": "Master Tape Theatre - February 16, 1990",
+        "time": "6:00am"
+      }
+    ]
+  },
+  "1990-06-08": {
+    "segments": [
+      {
+        "title": "Master Tape Theatre - June 8, 1990",
+        "time": "6:00am"
+      },
+      {
+        "title": "Master Tape Theatre - June 18, 1990",
+        "time": "3:35pm"
+      }
+    ]
+  },
+  "1990-06-25": {
+    "segments": [
+      {
+        "title": "Master Tape Theatre - June 25, 1990",
+        "time": "8:00pm"
+      }
+    ]
+  },
+  "1990-07-30": {
+    "segments": [
+      {
+        "title": "Master Tape Theatre - July 30, 1990",
+        "time": "2:55pm"
+      },
+      {
+        "title": "Master Tape Theatre - October 10, 1990",
+        "time": "3:15pm"
+      }
+    ]
+  }
+}
