@@ -293,3 +293,18 @@ h2{
 .delete-archive-btn:hover{
   background:#8e0000;
 }
+
+.segment-jump{
+  display:block;
+  width:100%;
+  text-align:left;
+  background:none;
+  border:none;
+  color:#4da6ff;
+  cursor:pointer;
+  padding:6px 0;
+}
+
+.segment-jump:hover{
+  text-decoration:underline;
+}
