@@ -325,6 +325,38 @@ episodeList.parentElement.insertBefore(
 
     let currentIndex = -1;
 
+    document.addEventListener(
+  "click",
+  event => {
+
+    const button =
+      event.target.closest(
+        ".segment-jump"
+      );
+
+    if (!button) {
+      return;
+    }
+
+    const time =
+      button.dataset.time;
+
+    if (!time) {
+      return;
+    }
+
+    const jumpTo =
+      estimateOffset(
+        time,
+        mainPlayer.duration || 0
+      );
+
+    mainPlayer.currentTime =
+      jumpTo;
+
+  }
+);
+
     function updateTimeDisplay() {
       const current = Number(mainPlayer.currentTime) || 0;
       const duration = Number(mainPlayer.duration) || 0;
@@ -344,6 +376,56 @@ episodeList.parentElement.insertBefore(
       );
     }
 
+function estimateOffset(timeString, duration) {
+
+  const match =
+    timeString.match(
+      /(\d+):(\d+)(am|pm)/i
+    );
+
+  if (!match) {
+    return 0;
+  }
+
+  let hour =
+    Number(match[1]);
+
+  const minute =
+    Number(match[2]);
+
+  const period =
+    match[3].toLowerCase();
+
+  if (
+    period === "pm" &&
+    hour !== 12
+  ) {
+    hour += 12;
+  }
+
+  if (
+    period === "am" &&
+    hour === 12
+  ) {
+    hour = 0;
+  }
+
+  const minutesFromStart =
+    (hour * 60 + minute) -
+    (6 * 60);
+
+  if (minutesFromStart < 0) {
+    return 0;
+  }
+
+  const showLengthMinutes = 240;
+
+  return (
+    minutesFromStart /
+    showLengthMinutes
+  ) * duration;
+}
+    
  function renderSegments(fileName) {
 
   const date =
@@ -454,15 +536,21 @@ if (!entry) {
         ${entry.segments.map(segment => `
           <li>
 
-            ${
-              segment.time
-                ? `<strong>${segment.time}</strong> - `
-                : ""
-            }
+  <button
+    class="segment-jump"
+    data-time="${segment.time || ""}">
 
-            ${segment.title}
+    ${
+      segment.time
+        ? `${segment.time} - `
+        : ""
+    }
 
-          </li>
+    ${segment.title}
+
+  </button>
+
+</li>
         `).join("")}
 
       </ul>
