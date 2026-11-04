@@ -1,37 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player</title>
+  <meta name="theme-color" content="#101114">
+  <title>Player · Stern Archive</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="modern.css">
 </head>
-<body>
+<body class="player-page">
   <div class="page-shell">
-    <header class="topbar">
+    <header class="topbar player-topbar">
       <div class="left-cluster">
-        <button type="button" class="back-btn" onclick="window.history.length > 1 ? history.back() : location.href='index.html';">← Back</button>
-        <a class="nav-link secondary" href="library.html">Library</a>
+        <a class="nav-link secondary" href="library.html">← Library</a>
       </div>
-      <div class="brand-wrap compact">
-        <span class="brand-mark">🎧</span>
-        <h1 id="title">Loading...</h1>
-        <button id="backButton" class="transport-btn">
-  ← Back to Library
-</button>
-      </div>
+      <a class="brand-wrap compact" href="index.html" aria-label="Stern Archive home">
+        <span class="brand-mark" aria-hidden="true">🎧</span>
+        <span class="brand-name">Stern Archive</span>
+      </a>
     </header>
 
     <main class="player-shell">
-      <div class="player-panel">
-        <div class="player-container">
-          <h2 id="nowPlaying" class="now-playing">Loading...</h2>
-          <audio id="audioPlayer" controls></audio>
+      <section class="player-panel">
+        <div class="player-heading">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Now in the archive</p>
+          <h1 id="title">Loading archive…</h1>
+          <p id="nowPlaying" class="now-playing">Finding your episode…</p>
         </div>
-      </div>
+        <div class="player-container">
+          <div class="player-art" aria-hidden="true"><span>🎙</span><small>STERN<br>ARCHIVE</small></div>
+          <audio id="audioPlayer" controls preload="metadata" playsinline aria-label="Episode audio player"></audio>
+          <p class="player-hint">Playback may need a tap to resume if your browser blocks autoplay.</p>
+        </div>
+      </section>
     </main>
   </div>
-
   <script src="player.js"></script>
+  <script src="playback-recovery.js"></script>
 </body>
 </html>
