@@ -38,6 +38,11 @@ fetch(rssUrl)
         "item"
       );
 
+    document.getElementById(
+  "episodeCount"
+).textContent =
+  `${items.length} episodes available`;
+
     const episodes =
       document.getElementById(
         "episodes"
@@ -49,6 +54,18 @@ fetch(rssUrl)
         item.querySelector(
           "title"
         )?.textContent;
+
+      const pubDate =
+  item.querySelector(
+    "pubDate"
+  )?.textContent;
+
+const description =
+  item.querySelector(
+    "description"
+  )?.textContent
+    ?.replace(/<[^>]*>/g, "")
+    ?.trim();
 
       const enclosure =
         item.querySelector(
@@ -64,16 +81,41 @@ fetch(rssUrl)
         return;
       }
 
-      const button =
-        document.createElement(
-          "button"
-        );
+const button =
+  document.createElement(
+    "button"
+  );
 
-      button.className =
-        "episode-button";
+button.className =
+  "episode-button";
 
-      button.textContent =
-        title;
+const formattedDate =
+  pubDate
+    ? new Date(pubDate)
+        .toLocaleDateString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          }
+        )
+    : "";
+
+button.innerHTML = `
+  <div class="episode-title">
+    ${title}
+  </div>
+
+  <div class="episode-date">
+    ${formattedDate}
+  </div>
+
+  <div class="episode-description">
+    ${(description || "")
+      .substring(0, 250)}
+  </div>
+`;
 
       button.addEventListener(
         "click",
