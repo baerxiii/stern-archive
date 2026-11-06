@@ -117,22 +117,36 @@ button.innerHTML = `
   </div>
 `;
 
-      button.addEventListener(
-        "click",
-        () => {
+button.addEventListener(
+  "click",
+  () => {
 
-          const player =
-            document.getElementById(
-              "audioPlayer"
-            );
-
-          player.src =
-            audioUrl;
-
-          player.play();
-
-        }
+    const player =
+      document.getElementById(
+        "audioPlayer"
       );
+
+    player.src =
+      audioUrl;
+
+    document.getElementById(
+      "episodeDetails"
+    ).innerHTML = `
+      <h2>${title}</h2>
+
+      <p>
+        ${formattedDate}
+      </p>
+
+      <p>
+        ${description || ""}
+      </p>
+    `;
+
+    player.play();
+
+  }
+);
 
       episodes.appendChild(
         button
