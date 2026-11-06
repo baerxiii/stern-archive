@@ -1,22 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Podcast Player</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+    background:#0f1115;
+    color:#fff;
+    font-family:Segoe UI,sans-serif;
+    margin:0;
+}
+
+.page-shell{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+}
+
+.nav-group{
+    display:flex;
+    gap:10px;
+}
+
+.nav-btn{
+    background:#1b1f27;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:10px 14px;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+.nav-btn:hover{
+    background:#2c3440;
+}
+
+.player-card{
+    background:#181c23;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:20px;
+    border:1px solid #2d3440;
+}
+
+.player-title{
+    font-size:2rem;
+    margin-bottom:10px;
+}
+
+.player-subtitle{
+    color:#87b8ff;
+    margin-bottom:20px;
+}
+
+#audioPlayer{
+    width:100%;
+}
+
+.episode-count{
+    color:#7b8aa0;
+    margin-top:10px;
+}
+
+.episodes{
+    display:grid;
+    gap:10px;
+}
+
+.episode-button{
+    width:100%;
+    text-align:left;
+
+    background:#181c23;
+    border:1px solid #2d3440;
+
+    color:#fff;
+
+    padding:14px;
+    border-radius:12px;
+
+    cursor:pointer;
+
+    transition:.15s;
+}
+
+.episode-button:hover{
+    background:#243041;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<h1 id="podcastTitle">
-Loading...
-</h1>
+<div class="page-shell">
 
-<audio
-  id="audioPlayer"
-  controls
-  style="width:100%">
-</audio>
+    <header class="topbar">
 
-<div id="episodes"></div>
+        <div class="nav-group">
+
+            <button
+                class="nav-btn"
+                onclick="history.length > 1 ? history.back() : location.href='podcasts.html'">
+
+                ← Back
+
+            </button>
+
+            <a
+                class="nav-btn"
+                href="index.html">
+
+                🏠 Home
+
+            </a>
+
+            <a
+                class="nav-btn"
+                href="podcasts.html">
+
+                🎙 Podcasts
+
+            </a>
+
+        </div>
+
+    </header>
+
+    <div class="player-card">
+
+        <h1
+            id="podcastTitle"
+            class="player-title">
+
+            Loading Podcast...
+
+        </h1>
+
+        <div
+            id="episodeCount"
+            class="episode-count">
+
+        </div>
+
+        <audio
+            id="audioPlayer"
+            controls>
+
+        </audio>
+
+    </div>
+
+    <div
+        id="episodes"
+        class="episodes">
+
+    </div>
+
+</div>
 
 <script src="podcast-player.js"></script>
 
