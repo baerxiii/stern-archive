@@ -1,7 +1,42 @@
+let currentCategory =
+  "audio_bookspoetry";
+
 const results =
   document.getElementById(
     "results"
   );
+
+document
+  .querySelectorAll(
+    ".category-btn"
+  )
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        document
+          .querySelectorAll(
+            ".category-btn"
+          )
+          .forEach(btn =>
+            btn.classList.remove(
+              "active"
+            )
+          );
+
+        button.classList.add(
+          "active"
+        );
+
+        currentCategory =
+          button.dataset.query;
+
+      }
+    );
+
+  });
 
 async function searchBooks() {
 
@@ -20,15 +55,43 @@ async function searchBooks() {
   results.innerHTML =
     "<p>Searching...</p>";
 
+  let query = "";
+
+  if (
+    currentCategory ===
+    "audio_bookspoetry"
+  ) {
+
+    query =
+      `${search}
+       AND mediatype:(audio)
+       AND collection:(audio_bookspoetry)`;
+
+  } else if (
+    currentCategory ===
+    "oldtimeradio"
+  ) {
+
+    query =
+      `${search}
+       AND collection:(oldtimeradio)`;
+
+  } else {
+
+    query =
+      `${search}
+       AND mediatype:(audio)
+       AND subject:(${currentCategory})`;
+
+  }
+
   const url =
-  "https://archive.org/advancedsearch.php" +
-  "?q=" +
-  encodeURIComponent(
-    `${search} AND mediatype:(audio) AND (collection:(librivoxaudio) OR collection:(audio_bookspoetry))`
-  )
-+
+    "https://archive.org/advancedsearch.php" +
+    "?q=" +
+    encodeURIComponent(query) +
     "&fl[]=identifier" +
     "&fl[]=title" +
+    "&fl[]=creator" +
     "&fl[]=description" +
     "&rows=100" +
     "&page=1" +
@@ -41,51 +104,61 @@ async function searchBooks() {
 
     const data =
       await response.json();
-    data.response.docs =
-  data.response.docs.filter(
-    book =>
-      book.title &&
-      !book.title
-        .toLowerCase()
-        .includes("podcast")
-  );
+
+    const docs =
+      data.response.docs.filter(
+        item =>
+          item.title &&
+          !item.title
+            .toLowerCase()
+            .includes("podcast")
+      );
 
     results.innerHTML = "";
 
-    data.response.docs
-      .forEach(book => {
+    docs.forEach(book => {
 
-        const card =
-          document.createElement(
-            "article"
-          );
+      const card =
+        document.createElement(
+          "article"
+        );
 
-        card.className =
-          "library-card card";
+      card.className =
+        "library-card card";
 
-        card.innerHTML = `
-          <h3>
-            ${book.title || "Untitled"}
-          </h3>
+      card.innerHTML = `
+        <h3>
+          ${book.title}
+        </h3>
 
-          <p>
-            ${(book.description || "")
-              .toString()
-              .substring(0, 180)}
-          </p>
+        <p>
+          ${book.creator || ""}
+        </p>
 
-          <a href="
-            audiobook-player.html?id=${book.identifier}
-          ">
-            Open Book
-          </a>
-        `;
+        <p>
+          ${(book.description || "")
+            .toString()
+            .replace(
+              /<[^>]*>/g,
+              ""
+            )
+            .substring(0,150)}
+        </p>
 
-        results.appendChild(card);
+        <a href="
+          audiobook-player.html?id=${book.identifier}
+        ">
+          Open Book
+        </a>
+      `;
 
-      });
+      results.appendChild(
+        card
+      );
 
-  } catch (error) {
+    });
+
+  } catch(error) {
 
     console.error(error);
 
