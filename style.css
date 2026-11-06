@@ -356,3 +356,42 @@ h2{
   padding:16px;
   margin-bottom:16px;
 }
+
+.chapter-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+.chapter-btn{
+  width:100%;
+
+  display:flex;
+  justify-content:space-between;
+
+  padding:12px;
+  margin-bottom:8px;
+
+  background:#181c23;
+  color:white;
+
+  border:1px solid #2d3440;
+  border-radius:12px;
+
+  cursor:pointer;
+}
+
+.chapter-btn:hover{
+  background:#243041;
+}
+
+.audiobook-meta{
+  color:#b8c2cf;
+  margin-bottom:18px;
+}
+
+.audiobook-cover{
+  width:120px;
+  border-radius:12px;
+  margin-bottom:16px;
+}
