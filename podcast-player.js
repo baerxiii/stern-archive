@@ -104,7 +104,7 @@ const formattedDate =
 
 button.innerHTML = `
   <div class="episode-title">
-    ${title}
+    🎙 ${title}
   </div>
 
   <div class="episode-date">
@@ -113,7 +113,7 @@ button.innerHTML = `
 
   <div class="episode-description">
     ${(description || "")
-      .substring(0, 250)}
+      .substring(0, 180)}
   </div>
 `;
 
@@ -151,6 +151,51 @@ button.addEventListener(
       episodes.appendChild(
         button
       );
+
+      button.addEventListener(
+  "click",
+  () => {
+
+    const player =
+      document.getElementById(
+        "audioPlayer"
+      );
+
+    document
+      .querySelectorAll(
+        ".episode-button"
+      )
+      .forEach(btn =>
+        btn.classList.remove(
+          "playing"
+        )
+      );
+
+    button.classList.add(
+      "playing"
+    );
+
+    player.src =
+      audioUrl;
+
+    document.getElementById(
+      "episodeDetails"
+    ).innerHTML = `
+      <h2>${title}</h2>
+
+      <p>
+        ${formattedDate}
+      </p>
+
+      <p>
+        ${description || ""}
+      </p>
+    `;
+
+    player.play();
+
+  }
+);
 
     });
 
