@@ -26,7 +26,7 @@ async function searchBooks() {
   encodeURIComponent(
     `${search} AND mediatype:(audio) AND (collection:(librivoxaudio) OR collection:(audio_bookspoetry))`
   )
-) +
++
     "&fl[]=identifier" +
     "&fl[]=title" +
     "&fl[]=description" +
