@@ -3,67 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Audiobooks</title>
 
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="modern.css">
+
+<style>
+
+.category-bar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.category-btn{
+    padding:10px 14px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#1b1f27;
+    color:white;
+}
+
+.category-btn.active{
+    background:#3b82f6;
+}
+
+</style>
+
 </head>
 
 <body>
 
 <div class="page-shell">
 
-  <header class="topbar">
-
-    <a class="brand-wrap" href="index.html">
-      <span class="brand-mark">📚</span>
-      <h1>Audiobooks</h1>
-    </a>
+<header class="topbar">
 
     <div class="nav-actions">
-      <a class="nav-link" href="index.html">
-        Home
-      </a>
+
+        <a class="nav-link" href="index.html">
+            ← Home
+        </a>
+
     </div>
 
-  </header>
+</header>
 
-  <section class="toolbar">
+<h1>📚 Audiobooks</h1>
 
-    <div class="toolbar-intro">
-      <p class="eyebrow">
-        Internet Archive
-      </p>
+<div class="toolbar-row">
 
-      <h2>
-        Search Audiobooks
-      </h2>
-    </div>
-
-    <div class="toolbar-row">
-
-      <input
+    <input
         id="searchBox"
         type="text"
         placeholder="Search audiobooks...">
 
-      <button
+    <button
         id="searchBtn"
         class="primary-btn">
 
         Search
 
-      </button>
+    </button>
 
-    </div>
+</div>
 
-  </section>
+<div class="category-bar">
 
-  <div
+    <button
+        class="category-btn active"
+        data-query="audio_bookspoetry">
+
+        All
+
+    </button>
+
+    <button
+        class="category-btn"
+        data-query="history">
+
+        History
+
+    </button>
+
+    <button
+        class="category-btn"
+        data-query="biography">
+
+        Biography
+
+    </button>
+
+    <button
+        class="category-btn"
+        data-query="science">
+
+        Science
+
+    </button>
+
+    <button
+        class="category-btn"
+        data-query="military">
+
+        Military
+
+    </button>
+
+    <button
+        class="category-btn"
+        data-query="oldtimeradio">
+
+        Radio Drama
+
+    </button>
+
+</div>
+
+<div
     id="results"
     class="library-grid">
 
-  </div>
+</div>
 
 </div>
 
