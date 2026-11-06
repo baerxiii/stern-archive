@@ -1,1 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audiobooks</title>
 
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modern.css">
+</head>
+
+<body>
+
+<div class="page-shell">
+
+  <header class="topbar">
+
+    <a class="brand-wrap" href="index.html">
+      <span class="brand-mark">📚</span>
+      <h1>Audiobooks</h1>
+    </a>
+
+    <div class="nav-actions">
+      <a class="nav-link" href="index.html">
+        Home
+      </a>
+    </div>
+
+  </header>
+
+  <section class="toolbar">
+
+    <div class="toolbar-intro">
+      <p class="eyebrow">
+        Internet Archive
+      </p>
+
+      <h2>
+        Search Audiobooks
+      </h2>
+    </div>
+
+    <div class="toolbar-row">
+
+      <input
+        id="searchBox"
+        type="text"
+        placeholder="Search audiobooks...">
+
+      <button
+        id="searchBtn"
+        class="primary-btn">
+
+        Search
+
+      </button>
+
+    </div>
+
+  </section>
+
+  <div
+    id="results"
+    class="library-grid">
+
+  </div>
+
+</div>
+
+<script src="audiobooks.js"></script>
+
+</body>
+</html>
