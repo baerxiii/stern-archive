@@ -497,3 +497,14 @@ h2{
     line-height:1.4;
 }
 
+.playing{
+  border:2px solid #4da6ff !important;
+  background:#243041 !important;
+}
+
+.chapter-duration{
+  display:block;
+  margin-top:4px;
+  color:#7fb5ff;
+  font-size:.85rem;
+}
