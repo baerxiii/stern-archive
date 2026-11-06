@@ -7,9 +7,7 @@ const rssUrl =
   params.get('rss');
 
 const rssProxy =
-  `https://api.allorigins.win/raw?url=${
-    encodeURIComponent(rssUrl)
-  }`;
+  `https://corsproxy.io/?${encodeURIComponent(rssUrl)}`;
 
 fetch(rssProxy)
   .then(r => r.text())
