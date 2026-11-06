@@ -1,6 +1,6 @@
 [
   {
     "name": "Who Are These Podcasts",
-    "rss": "https://whoarethese.com/feed/"
+    "rss": "feeds/whoarethese.xml"
   }
 ]
