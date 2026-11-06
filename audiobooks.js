@@ -21,15 +21,16 @@ async function searchBooks() {
     "<p>Searching...</p>";
 
   const url =
-    "https://archive.org/advancedsearch.php" +
-    "?q=" +
-    encodeURIComponent(
-      `${search} AND mediatype:(audio)`
-    ) +
+  "https://archive.org/advancedsearch.php" +
+  "?q=" +
+  encodeURIComponent(
+    `${search} AND mediatype:(audio) AND (collection:(librivoxaudio) OR collection:(audio_bookspoetry))`
+  )
+) +
     "&fl[]=identifier" +
     "&fl[]=title" +
     "&fl[]=description" +
-    "&rows=50" +
+    "&rows=100" +
     "&page=1" +
     "&output=json";
 
@@ -40,6 +41,14 @@ async function searchBooks() {
 
     const data =
       await response.json();
+    data.response.docs =
+  data.response.docs.filter(
+    book =>
+      book.title &&
+      !book.title
+        .toLowerCase()
+        .includes("podcast")
+  );
 
     results.innerHTML = "";
 
