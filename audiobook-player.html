@@ -1,1 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>Audiobook Player</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modern.css">
+</head>
+
+<body>
+
+<div class="page-shell">
+
+  <header class="topbar">
+
+    <div class="nav-actions">
+
+      <a
+        class="nav-link"
+        href="audiobooks.html">
+
+        ← Back
+
+      </a>
+
+      <a
+        class="nav-link"
+        href="index.html">
+
+        Home
+
+      </a>
+
+    </div>
+
+  </header>
+
+  <div class="player-shell">
+
+    <div class="player-panel">
+
+      <div class="player-heading">
+
+        <h1 id="bookTitle">
+          Loading...
+        </h1>
+
+      </div>
+
+      <audio
+        id="audioPlayer"
+        controls>
+
+      </audio>
+
+      <div
+        id="chapters"
+        class="show-notes">
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script src="audiobook-player.js"></script>
+
+</body>
+</html>
 
