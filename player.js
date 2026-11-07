@@ -1,5 +1,5 @@
 const params = new URLSearchParams(window.location.search);
-const archiveId = params.get("archiveId");
+const archiveId = params.get("archiveId") || "";
 const title = params.get("title");
 
 const archiveYear = (() => {
@@ -67,6 +67,7 @@ const mainPlayer = document.getElementById("audioPlayer");
 if (!mainPlayer) {
   console.error("No audioPlayer element found on the page.");
 }
+const playback = ListeningHistory.attach(mainPlayer);
 
 function parseDateFromFileName(fileName) {
 
@@ -365,15 +366,21 @@ episodeList.parentElement.insertBefore(
 
     function saveCurrentEpisode(file, audioUrl) {
       const displayName = formatEpisodeLabel(file.name);
-      localStorage.setItem(
-        "currentEpisode",
-        JSON.stringify({
-          archiveId,
-          fileName: file.name,
-          displayName,
-          audioUrl
-        })
-      );
+      try {
+        localStorage.setItem(
+          "currentEpisode",
+          JSON.stringify({
+            archiveId,
+            fileName: file.name,
+            displayName,
+            audioUrl,
+            archiveTitle: title || "Stern Archive"
+          })
+        );
+      } catch (error) {
+        console.error("Could not save the last archive episode", error);
+        document.querySelector(".player-hint").textContent = "Could not save your listening position. Check your browser storage.";
+      }
     }
 
 function estimateOffset(timeString, duration) {
@@ -561,16 +568,14 @@ if (!entry) {
         
   
     
-    function loadEpisode(file, { skipResume = false } = {}) {
+    function loadEpisode(file, { autoplay = true } = {}) {
       if (!file) return;
 
       currentIndex = mp3s.findIndex(item => item.name === file.name);
       const audioUrl = `https://archive.org/download/${archiveId}/${encodeURIComponent(file.name)}`;
-      const positionKey = `${archiveId}_${file.name}`;
       const displayName = formatEpisodeLabel(file.name);
       renderSegments(file.name);
 
-      mainPlayer.src = audioUrl;
       if (nowPlaying) {
         nowPlaying.textContent = displayName;
       }
@@ -579,18 +584,10 @@ if (!entry) {
       prevButton.disabled = currentIndex <= 0;
       nextButton.disabled = currentIndex >= mp3s.length - 1;
 
-      if (!skipResume) {
-        const savedPosition = localStorage.getItem(positionKey);
-        if (savedPosition) {
-          const restorePosition = () => {
-            mainPlayer.currentTime = parseFloat(savedPosition);
-            mainPlayer.removeEventListener("loadedmetadata", restorePosition);
-          };
-          mainPlayer.addEventListener("loadedmetadata", restorePosition, { once: true });
-        }
-      }
-
-      mainPlayer.play().catch(() => {});
+      playback.load({
+        type: "archive", collectionId: archiveId, trackId: file.name,
+        collectionTitle: title || "Stern Archive", title: displayName, audioUrl
+      }, autoplay);
     }
 
     function goToEpisode(offset) {
@@ -690,24 +687,14 @@ if (!entry) {
 
     renderEpisodes();
 
-    setInterval(() => {
-      const currentEpisode = JSON.parse(localStorage.getItem("currentEpisode") || "null");
-      if (!currentEpisode || !mainPlayer.src) {
-        return;
-      }
-
-      const position = Number(mainPlayer.currentTime);
-      if (!Number.isFinite(position) || position <= 0) {
-        return;
-      }
-
-      const key = `${currentEpisode.archiveId}_${currentEpisode.fileName}`;
-      localStorage.setItem(key, String(position));
-    }, 5000);
-
     const lastEpisode = JSON.parse(localStorage.getItem("currentEpisode") || "null");
+    const requestedFile = params.get("file");
 
-    if (lastEpisode && lastEpisode.archiveId === archiveId) {
+    if (requestedFile) {
+      const file = mp3s.find(item => item.name === requestedFile);
+      if (file) loadEpisode(file, { autoplay: false });
+      else if (nowPlaying) nowPlaying.textContent = "This episode is no longer available in the archive.";
+    } else if (lastEpisode && lastEpisode.archiveId === archiveId) {
       const resumeButton = document.createElement("button");
       resumeButton.textContent = "Resume last episode";
       resumeButton.className = "resume-btn";
@@ -715,7 +702,7 @@ if (!entry) {
       resumeButton.addEventListener("click", () => {
         const file = mp3s.find(item => item.name === lastEpisode.fileName);
         if (file) {
-          loadEpisode(file, { skipResume: false });
+          loadEpisode(file);
         }
       });
 
@@ -726,21 +713,7 @@ if (!entry) {
 
       const file = mp3s.find(item => item.name === lastEpisode.fileName);
       if (file) {
-        loadEpisode(file, { skipResume: false });
-      } else {
-        mainPlayer.src = lastEpisode.audioUrl;
-      }
-
-      const key = `${lastEpisode.archiveId}_${lastEpisode.fileName}`;
-      const savedPosition = localStorage.getItem(key);
-      if (savedPosition) {
-        mainPlayer.addEventListener(
-          "loadedmetadata",
-          () => {
-            mainPlayer.currentTime = parseFloat(savedPosition);
-          },
-          { once: true }
-        );
+        loadEpisode(file, { autoplay: false });
       }
     }
   })

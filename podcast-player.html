@@ -7,6 +7,7 @@
 <title>Podcast Player</title>
 
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="modern.css">
 
 <style>
 
@@ -137,6 +138,7 @@ body{
                 🎙 Podcasts
 
             </a>
+            <a class="nav-btn" href="history.html">History</a>
 
         </div>
 
@@ -163,15 +165,9 @@ body{
 
         </div>
 
-<div
-  id="episodeDetails"
-  class="episode-details">
-
-</div>
-        
         <audio
             id="audioPlayer"
-            controls>
+            controls preload="metadata" playsinline aria-label="Podcast audio player">
 
         </audio>
 
@@ -185,7 +181,9 @@ body{
 
 </div>
 
+<script src="listening-history.js"></script>
 <script src="podcast-player.js"></script>
+<script src="playback-recovery.js"></script>
 
 </body>
 </html>

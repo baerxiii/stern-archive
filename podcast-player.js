@@ -1,212 +1,67 @@
-const params =
-  new URLSearchParams(
-    location.search
-  );
+const params = new URLSearchParams(location.search);
+const rssUrl = params.get("rss");
+const player = document.getElementById("audioPlayer");
+const playback = ListeningHistory.attach(player);
+const episodes = document.getElementById("episodes");
+const details = document.getElementById("episodeDetails");
 
-const rssUrl =
-  params.get("rss");
+async function loadPodcast() {
+  if (!rssUrl) throw new Error("Missing podcast feed URL.");
+  const response = await fetch(rssUrl);
+  if (!response.ok) throw new Error(`Could not load podcast feed (${response.status}).`);
+  const xml = new DOMParser().parseFromString(await response.text(), "text/xml");
+  if (xml.querySelector("parsererror")) throw new Error("The podcast feed is invalid.");
+  const podcastTitle = xml.querySelector("channel > title")?.textContent || "Podcast";
+  document.getElementById("podcastTitle").textContent = podcastTitle;
+  const items = [...xml.querySelectorAll("item")].filter(item => item.querySelector("enclosure")?.getAttribute("url"));
+  document.getElementById("episodeCount").textContent = `${items.length} episodes available`;
+  let selected = false;
 
-fetch(rssUrl)
-  .then(response => response.text())
-  .then(xmlText => {
+  items.forEach(item => {
+    const title = item.querySelector("title")?.textContent || "Untitled episode";
+    const audioUrl = item.querySelector("enclosure").getAttribute("url");
+    const date = item.querySelector("pubDate")?.textContent || "";
+    const description = (item.querySelector("description")?.textContent || "").replace(/<[^>]*>/g, "").trim();
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "episode-button";
+    const heading = document.createElement("div");
+    heading.className = "episode-title";
+    heading.textContent = title;
+    const summary = document.createElement("div");
+    summary.className = "episode-description";
+    summary.textContent = description.substring(0, 180);
+    button.append(heading, summary);
 
-    const parser =
-      new DOMParser();
-
-    const xml =
-      parser.parseFromString(
-        xmlText,
-        "text/xml"
-      );
-
-    const channelTitle =
-      xml.querySelector(
-        "channel > title"
-      );
-
-    if (channelTitle) {
-
-      document.getElementById(
-        "podcastTitle"
-      ).textContent =
-        channelTitle.textContent;
-
+    function select(autoplay) {
+      episodes.querySelectorAll(".playing").forEach(element => element.classList.remove("playing"));
+      button.classList.add("playing");
+      details.replaceChildren();
+      const heading = document.createElement("h2");
+      heading.textContent = title;
+      const dateEl = document.createElement("p");
+      dateEl.textContent = date;
+      const descriptionEl = document.createElement("p");
+      descriptionEl.textContent = description;
+      details.append(heading, dateEl, descriptionEl);
+      playback.load({ type: "podcast", collectionId: rssUrl, trackId: audioUrl,
+        collectionTitle: podcastTitle, title, audioUrl }, autoplay);
     }
 
-    const items =
-      xml.querySelectorAll(
-        "item"
-      );
-
-    document.getElementById(
-  "episodeCount"
-).textContent =
-  `${items.length} episodes available`;
-
-    const episodes =
-      document.getElementById(
-        "episodes"
-      );
-
-    items.forEach(item => {
-
-      const title =
-        item.querySelector(
-          "title"
-        )?.textContent;
-
-      const pubDate =
-  item.querySelector(
-    "pubDate"
-  )?.textContent;
-
-const description =
-  item.querySelector(
-    "description"
-  )?.textContent
-    ?.replace(/<[^>]*>/g, "")
-    ?.trim();
-
-      const enclosure =
-        item.querySelector(
-          "enclosure"
-        );
-
-      const audioUrl =
-        enclosure?.getAttribute(
-          "url"
-        );
-
-      if (!audioUrl) {
-        return;
-      }
-
-const button =
-  document.createElement(
-    "button"
-  );
-
-button.className =
-  "episode-button";
-
-const formattedDate =
-  pubDate
-    ? new Date(pubDate)
-        .toLocaleDateString(
-          "en-US",
-          {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-          }
-        )
-    : "";
-
-button.innerHTML = `
-  <div class="episode-title">
-    🎙 ${title}
-  </div>
-
-  <div class="episode-date">
-    ${formattedDate}
-  </div>
-
-  <div class="episode-description">
-    ${(description || "")
-      .substring(0, 180)}
-  </div>
-`;
-
-button.addEventListener(
-  "click",
-  () => {
-
-    const player =
-      document.getElementById(
-        "audioPlayer"
-      );
-
-    player.src =
-      audioUrl;
-
-    document.getElementById(
-      "episodeDetails"
-    ).innerHTML = `
-      <h2>${title}</h2>
-
-      <p>
-        ${formattedDate}
-      </p>
-
-      <p>
-        ${description || ""}
-      </p>
-    `;
-
-    player.play();
-
-  }
-);
-
-      episodes.appendChild(
-        button
-      );
-
-      button.addEventListener(
-  "click",
-  () => {
-
-    const player =
-      document.getElementById(
-        "audioPlayer"
-      );
-
-    document
-      .querySelectorAll(
-        ".episode-button"
-      )
-      .forEach(btn =>
-        btn.classList.remove(
-          "playing"
-        )
-      );
-
-    button.classList.add(
-      "playing"
-    );
-
-    player.src =
-      audioUrl;
-
-    document.getElementById(
-      "episodeDetails"
-    ).innerHTML = `
-      <h2>${title}</h2>
-
-      <p>
-        ${formattedDate}
-      </p>
-
-      <p>
-        ${description || ""}
-      </p>
-    `;
-
-    player.play();
-
-  }
-);
-
-    });
-
-  })
-  .catch(error => {
-
-    console.error(error);
-
-    document.getElementById(
-      "podcastTitle"
-    ).textContent =
-      "Failed to load podcast feed";
-
+    button.addEventListener("click", () => select(true));
+    episodes.appendChild(button);
+    if (params.get("episode") === audioUrl) {
+      select(false);
+      selected = true;
+    }
   });
+  if (params.has("episode") && !selected) {
+    details.textContent = "This episode is no longer available in the feed.";
+  }
+}
+
+loadPodcast().catch(error => {
+  console.error(error);
+  document.getElementById("podcastTitle").textContent = "Failed to load podcast feed";
+  details.textContent = error.message;
+});

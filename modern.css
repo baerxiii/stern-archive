@@ -131,3 +131,22 @@ audio { display: block; width: 100%; min-height: 54px; accent-color: var(--accen
   .player-topbar .brand-name { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+
+.playback-extras { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 14px 0; }
+.playback-extras button, .playback-extras select { min-height: 44px; padding: 8px 14px; border: 1px solid #525158; border-radius: 10px; background: #28292e; color: #f5f2ee; font: inherit; }
+.playback-extras button { cursor: pointer; }
+.playback-extras button:hover { border-color: #e8ad67; }
+.playback-extras label { display: flex; align-items: center; gap: 8px; color: #c8c4bf; }
+.playback-status { color: #ffb6b6; }
+.playback-status:empty { display: none; }
+.history-intro { margin: 36px 0; }
+.history-intro p, .history-empty, .history-meta { color: #b8b5b1; }
+.history-section { margin: 0 0 40px; }
+.history-list { display: grid; gap: 12px; }
+.history-item { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: #202126; }
+.history-item h3 { margin: 0 0 6px; overflow-wrap: anywhere; }
+.history-item p { margin: 5px 0; overflow-wrap: anywhere; }
+@media (max-width: 700px) {
+  .history-item { align-items: stretch; flex-direction: column; }
+  .nav-group { flex-wrap: wrap; }
+}
