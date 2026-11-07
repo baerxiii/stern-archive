@@ -302,18 +302,19 @@ console.log(
     controls.appendChild(nextButton);
     controls.appendChild(timeDisplay);
 
-    mainPlayer.insertAdjacentElement("afterend", controls);
+    document.querySelector(".sticky-player").appendChild(controls);
+    const archiveEpisodes = document.getElementById("archiveEpisodes");
 
     const search = document.createElement("input");
     search.type = "text";
     search.placeholder = "Search episodes...";
     search.className = "episode-search";
     search.style.marginTop = "18px";
-    mainPlayer.parentElement.insertBefore(search, controls.nextSibling);
+    archiveEpisodes.appendChild(search);
 
     const episodeList = document.createElement("div");
     episodeList.className = "episode-list";
-    mainPlayer.parentElement.insertBefore(episodeList, search.nextSibling);
+    archiveEpisodes.appendChild(episodeList);
 
     const showNotes = document.createElement("div");
 showNotes.id = "showNotes";
@@ -379,7 +380,7 @@ episodeList.parentElement.insertBefore(
         );
       } catch (error) {
         console.error("Could not save the last archive episode", error);
-        document.querySelector(".player-hint").textContent = "Could not save your listening position. Check your browser storage.";
+        document.querySelector(".playback-status").textContent = "Could not save the last archive episode. Check your browser storage.";
       }
     }
 
@@ -706,7 +707,7 @@ if (!entry) {
         }
       });
 
-      mainPlayer.parentElement.insertBefore(resumeButton, search);
+      archiveEpisodes.insertBefore(resumeButton, search);
       if (nowPlaying) {
         nowPlaying.textContent = `Resume: ${lastEpisode.displayName || lastEpisode.fileName}`;
       }

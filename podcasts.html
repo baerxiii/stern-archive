@@ -1,36 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Podcasts</title>
-
-<style>
-body{
-    background:black;
-    color:white;
-    font-family:sans-serif;
-    padding:20px;
-}
-
-button{
-    display:block;
-    width:100%;
-    margin-bottom:10px;
-    padding:12px;
-}
-a { color: #b7d5ff; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101114">
+  <title>Podcasts · Stern Archive</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="modern.css">
 </head>
-
 <body>
-
-<nav><a href="index.html">Home</a> · <a href="history.html">History</a></nav>
-<h1>Podcasts</h1>
-
-<div id="podcastList"></div>
-
-<script src="podcasts.js"></script>
-
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="left-cluster"><a class="nav-link" href="index.html">← Home</a><a class="nav-link" href="history.html">History</a></div>
+      <a class="brand-wrap compact" href="index.html"><span class="brand-mark" aria-hidden="true">🎧</span><span class="brand-name">Stern Archive</span></a>
+    </header>
+    <main>
+      <section class="toolbar">
+        <div class="toolbar-intro"><p class="eyebrow">Stream from RSS feeds</p><h1>Podcasts</h1></div>
+        <p>Choose a podcast to browse its episodes.</p>
+      </section>
+      <div id="podcastList" class="library-grid"></div>
+    </main>
+  </div>
+  <script src="podcasts.js"></script>
 </body>
 </html>

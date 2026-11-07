@@ -36,6 +36,7 @@ async function loadPodcast() {
     function select(autoplay) {
       episodes.querySelectorAll(".playing").forEach(element => element.classList.remove("playing"));
       button.classList.add("playing");
+      document.getElementById("podcastNowPlaying").textContent = title;
       details.replaceChildren();
       const heading = document.createElement("h2");
       heading.textContent = title;

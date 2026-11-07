@@ -1,189 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Podcast Player</title>
-
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="modern.css">
-
-<style>
-
-body{
-    background:#0f1115;
-    color:#fff;
-    font-family:Segoe UI,sans-serif;
-    margin:0;
-}
-
-.page-shell{
-    max-width:1200px;
-    margin:auto;
-    padding:20px;
-}
-
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:24px;
-}
-
-.nav-group{
-    display:flex;
-    gap:10px;
-}
-
-.nav-btn{
-    background:#1b1f27;
-    color:#fff;
-    border:none;
-    border-radius:10px;
-    padding:10px 14px;
-    cursor:pointer;
-    text-decoration:none;
-}
-
-.nav-btn:hover{
-    background:#2c3440;
-}
-
-.player-card{
-    background:#181c23;
-    border-radius:18px;
-    padding:20px;
-    margin-bottom:20px;
-    border:1px solid #2d3440;
-}
-
-.player-title{
-    font-size:2rem;
-    margin-bottom:10px;
-}
-
-.player-subtitle{
-    color:#87b8ff;
-    margin-bottom:20px;
-}
-
-#audioPlayer{
-    width:100%;
-}
-
-.episode-count{
-    color:#7b8aa0;
-    margin-top:10px;
-}
-
-.episodes{
-    display:grid;
-    gap:10px;
-}
-
-.episode-button{
-    width:100%;
-    text-align:left;
-
-    background:#181c23;
-    border:1px solid #2d3440;
-
-    color:#fff;
-
-    padding:14px;
-    border-radius:12px;
-
-    cursor:pointer;
-
-    transition:.15s;
-}
-
-.episode-button:hover{
-    background:#243041;
-}
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101114">
+  <title>Podcast player · Stern Archive</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="modern.css">
 </head>
-
 <body>
-
-<div class="page-shell">
-
+  <div class="page-shell">
     <header class="topbar">
-
-        <div class="nav-group">
-
-            <button
-                class="nav-btn"
-                onclick="history.length > 1 ? history.back() : location.href='podcasts.html'">
-
-                ← Back
-
-            </button>
-
-            <a
-                class="nav-btn"
-                href="index.html">
-
-                🏠 Home
-
-            </a>
-
-            <a
-                class="nav-btn"
-                href="podcasts.html">
-
-                🎙 Podcasts
-
-            </a>
-            <a class="nav-btn" href="history.html">History</a>
-
-        </div>
-
+      <div class="left-cluster"><a class="nav-link" href="podcasts.html">← Podcasts</a><a class="nav-link" href="history.html">History</a></div>
+      <a class="brand-wrap compact" href="index.html"><span class="brand-mark" aria-hidden="true">🎧</span><span class="brand-name">Stern Archive</span></a>
     </header>
-
-    <div class="player-card">
-
-        <h1
-            id="podcastTitle"
-            class="player-title">
-
-            Loading Podcast...
-
-        </h1>
-
-        <div
-  id="episodeDetails"
-  class="episode-details">
-</div>
-
-        <div
-            id="episodeCount"
-            class="episode-count">
-
+    <main class="player-shell">
+      <section class="player-panel">
+        <div class="player-heading">
+          <p class="eyebrow">Podcast</p>
+          <h1 id="podcastTitle">Loading podcast…</h1>
+          <p id="episodeCount" class="now-playing"></p>
         </div>
-
-        <audio
-            id="audioPlayer"
-            controls preload="metadata" playsinline aria-label="Podcast audio player">
-
-        </audio>
-
-    </div>
-
-    <div
-        id="episodes"
-        class="episodes">
-
-    </div>
-
-</div>
-
-<script src="listening-history.js"></script>
-<script src="podcast-player.js"></script>
-<script src="playback-recovery.js"></script>
-
+        <div class="player-container sticky-player">
+          <p id="podcastNowPlaying" class="sticky-player-title">Choose an episode to listen</p>
+          <audio id="audioPlayer" controls preload="metadata" playsinline aria-label="Podcast audio player"></audio>
+        </div>
+        <div id="episodeDetails" class="episode-details"></div>
+        <h2 class="list-heading">Episodes</h2>
+        <div id="episodes" class="episodes"></div>
+      </section>
+    </main>
+  </div>
+  <script src="listening-history.js"></script>
+  <script src="podcast-player.js"></script>
+  <script src="playback-recovery.js"></script>
 </body>
 </html>

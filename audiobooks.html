@@ -9,30 +9,6 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="modern.css">
 
-<style>
-
-.category-bar{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom:20px;
-}
-
-.category-btn{
-    padding:10px 14px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    background:#1b1f27;
-    color:white;
-}
-
-.category-btn.active{
-    background:#3b82f6;
-}
-
-</style>
-
 </head>
 
 <body>
@@ -52,7 +28,8 @@
 
 </header>
 
-<h1>📚 Audiobooks</h1>
+<section class="toolbar">
+<div class="toolbar-intro"><p class="eyebrow">Internet Archive powered</p><h1>Audiobooks</h1></div>
 
 <div class="toolbar-row">
 
@@ -122,6 +99,7 @@
     </button>
 
 </div>
+</section>
 
 <div
     id="results"

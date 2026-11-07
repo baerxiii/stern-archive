@@ -1,229 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0">
-
-<title>Audiobook Player</title>
-
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="modern.css">
-
-<style>
-
-body{
-  background:#0f1115;
-  color:white;
-  margin:0;
-  font-family:Segoe UI,sans-serif;
-}
-
-.page-shell{
-  max-width:1200px;
-  margin:auto;
-  padding:20px;
-}
-
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:24px;
-}
-
-.nav-group{
-  display:flex;
-  gap:10px;
-}
-
-.nav-btn{
-  background:#1b1f27;
-  color:white;
-  text-decoration:none;
-  padding:10px 14px;
-  border-radius:10px;
-}
-
-.nav-btn:hover{
-  background:#293241;
-}
-
-.book-card{
-  background:#181c23;
-  border:1px solid #2d3440;
-  border-radius:18px;
-  padding:24px;
-  margin-bottom:20px;
-}
-
-.book-header{
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-}
-
-.book-cover{
-  width:180px;
-  border-radius:16px;
-  object-fit:cover;
-}
-
-.book-info{
-  flex:1;
-  min-width:280px;
-}
-
-.book-title{
-  font-size:2rem;
-  margin:0 0 10px 0;
-}
-
-.book-author{
-  color:#7fb5ff;
-  margin-bottom:12px;
-}
-
-.book-description{
-  color:#c5ceda;
-  line-height:1.5;
-}
-
-#audioPlayer{
-  width:100%;
-  margin-top:20px;
-}
-
-.chapter-list{
-  margin-top:20px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.chapter-btn{
-  width:100%;
-  text-align:left;
-
-  background:#111827;
-  border:1px solid #2d3440;
-
-  color:white;
-
-  padding:12px;
-  border-radius:12px;
-
-  cursor:pointer;
-}
-
-.chapter-btn:hover{
-  background:#243041;
-}
-
-.chapter-duration{
-  color:#7fb5ff;
-  display:block;
-  margin-top:5px;
-  font-size:.85rem;
-}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101114">
+  <title>Audiobook player · Stern Archive</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="modern.css">
 </head>
-
 <body>
-
-<div class="page-shell">
-
-<header class="topbar">
-
-  <div class="nav-group">
-
-    <a
-      class="nav-btn"
-      href="audiobooks.html">
-
-      ← Back
-
-    </a>
-
-    <a
-      class="nav-btn"
-      href="index.html">
-
-      🏠 Home
-
-    </a>
-    <a class="nav-btn" href="history.html">History</a>
-
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="left-cluster"><a class="nav-link" href="audiobooks.html">← Audiobooks</a><a class="nav-link" href="history.html">History</a></div>
+      <a class="brand-wrap compact" href="index.html"><span class="brand-mark" aria-hidden="true">🎧</span><span class="brand-name">Stern Archive</span></a>
+    </header>
+    <main class="player-shell">
+      <section class="player-panel">
+        <div class="player-heading"><p class="eyebrow">Audiobook</p><h1 id="bookTitle">Loading…</h1><p id="bookAuthor" class="now-playing"></p></div>
+        <div class="player-container sticky-player">
+          <p id="bookNowPlaying" class="sticky-player-title">Choose a chapter to listen</p>
+          <audio id="audioPlayer" controls preload="metadata" playsinline aria-label="Audiobook audio player"></audio>
+        </div>
+        <div class="book-header">
+          <img id="bookCover" class="book-cover" alt="Book cover" hidden>
+          <p id="bookDescription" class="book-description"></p>
+        </div>
+        <h2 class="list-heading">Chapters</h2>
+        <div id="chapters" class="chapter-list"></div>
+      </section>
+    </main>
   </div>
-
-</header>
-
-<div class="book-card">
-
-  <div class="book-header">
-
-    <img
-      id="bookCover"
-      class="book-cover"
-      src=""
-      alt="Book Cover">
-
-    <div class="book-info">
-
-      <h1
-        id="bookTitle"
-        class="book-title">
-
-        Loading...
-
-      </h1>
-
-      <div
-        id="bookAuthor"
-        class="book-author">
-
-      </div>
-
-      <div
-        id="bookDescription"
-        class="book-description">
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <audio
-    id="audioPlayer"
-    controls preload="metadata" playsinline aria-label="Audiobook audio player">
-
-  </audio>
-
-</div>
-
-<div
-  class="book-card">
-
-  <h2>
-    📖 Chapters
-  </h2>
-
-  <div
-    id="chapters"
-    class="chapter-list">
-
-  </div>
-
-</div>
-
-</div>
-
-<script src="listening-history.js"></script>
-<script src="audiobook-player.js"></script>
-<script src="playback-recovery.js"></script>
-
+  <script src="listening-history.js"></script>
+  <script src="audiobook-player.js"></script>
+  <script src="playback-recovery.js"></script>
 </body>
 </html>
