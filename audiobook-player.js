@@ -145,10 +145,19 @@ descriptionEl.textContent =
       tracks[0]
     );
 
-    chapters.innerHTML =
-      "<h3>📖 Chapters</h3>";
+chapters.innerHTML = "";
 
-    tracks.forEach(track => {
+const heading =
+  document.createElement("h3");
+
+heading.textContent =
+  "📖 Chapters";
+
+chapters.appendChild(
+  heading
+);
+
+tracks.forEach(track => {
 
       const button =
         document.createElement(
