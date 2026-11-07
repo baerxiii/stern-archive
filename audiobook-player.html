@@ -154,6 +154,7 @@ body{
       🏠 Home
 
     </a>
+    <a class="nav-btn" href="history.html">History</a>
 
   </div>
 
@@ -197,7 +198,7 @@ body{
 
   <audio
     id="audioPlayer"
-    controls>
+    controls preload="metadata" playsinline aria-label="Audiobook audio player">
 
   </audio>
 
@@ -220,7 +221,9 @@ body{
 
 </div>
 
+<script src="listening-history.js"></script>
 <script src="audiobook-player.js"></script>
+<script src="playback-recovery.js"></script>
 
 </body>
 </html>

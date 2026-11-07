@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101114">
+  <title>Listening history · Stern Archive</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="modern.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="nav-link secondary" href="index.html">← Home</a>
+      <a class="brand-wrap compact" href="index.html"><span class="brand-mark" aria-hidden="true">🎧</span><span class="brand-name">Stern Archive</span></a>
+    </header>
+    <main>
+      <div class="history-intro">
+        <p class="eyebrow">Pick up where you left off</p>
+        <h1>Listening history</h1>
+        <p>Positions are saved in this browser on this device. Clearing browser data removes your history.</p>
+        <p id="historyError" class="playback-status" role="status"></p>
+      </div>
+      <section class="history-section" aria-labelledby="archiveHeading">
+        <h2 id="archiveHeading">Stern archives</h2>
+        <div id="archiveHistory" class="history-list"></div>
+      </section>
+      <section class="history-section" aria-labelledby="podcastHeading">
+        <h2 id="podcastHeading">Podcasts</h2>
+        <div id="podcastHistory" class="history-list"></div>
+      </section>
+      <section class="history-section" aria-labelledby="audiobookHeading">
+        <h2 id="audiobookHeading">Audiobooks</h2>
+        <div id="audiobookHistory" class="history-list"></div>
+      </section>
+    </main>
+  </div>
+  <script src="listening-history.js"></script>
+  <script src="history.js"></script>
+</body>
+</html>

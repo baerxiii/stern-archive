@@ -7,6 +7,20 @@
   })[char]);
 
   function renderRecentlyPlayed() {
+    try {
+      const latest = ListeningHistory.read().sort((a, b) => b.updatedAt - a.updatedAt)[0];
+      if (latest) {
+        card.innerHTML = `
+          <div class="recent-art playing-art" aria-hidden="true">♫</div>
+          <div class="recent-copy"><span class="status-pill">Last played</span><h3>${escapeHtml(latest.title)}</h3><p>${escapeHtml(latest.collectionTitle)}</p></div>
+          <a class="resume-link" href="${escapeHtml(ListeningHistory.urlFor(latest))}">${latest.completed ? "Play again" : "Resume"} <span aria-hidden="true">▶</span></a>
+        `;
+        return;
+      }
+    } catch (error) {
+      card.textContent = "Could not read your listening history. Check your browser storage.";
+      return;
+    }
     let episode;
     try {
       episode = JSON.parse(localStorage.getItem("currentEpisode") || "null");
@@ -34,6 +48,6 @@
 
   renderRecentlyPlayed();
   window.addEventListener("storage", (event) => {
-    if (event.key === "currentEpisode") renderRecentlyPlayed();
+    if (event.key === "currentEpisode" || event.key === ListeningHistory.key) renderRecentlyPlayed();
   });
 })();
