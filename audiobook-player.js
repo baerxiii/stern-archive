@@ -15,7 +15,11 @@ async function loadBook() {
   document.getElementById("bookAuthor").textContent = data.metadata?.creator || "";
   document.getElementById("bookDescription").textContent = (data.metadata?.description || "")
     .toString().replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
-  if (data.misc?.image) document.getElementById("bookCover").src = data.misc.image;
+  if (data.misc?.image) {
+    const cover = document.getElementById("bookCover");
+    cover.src = data.misc.image;
+    cover.hidden = false;
+  }
 
   const tracks = (data.files || []).filter(file => typeof file.name === "string" && file.name.toLowerCase().endsWith(".mp3"));
   if (!tracks.length) {
@@ -29,6 +33,7 @@ async function loadBook() {
     const track = tracks[index];
     if (!track) return;
     currentIndex = index;
+    document.getElementById("bookNowPlaying").textContent = track.title || track.name;
     buttons.forEach((button, i) => button.classList.toggle("playing", i === index));
     const audioUrl = `https://archive.org/download/${encodeURIComponent(identifier)}/${encodeURIComponent(track.name)}`;
     playback.load({ type: "audiobook", collectionId: identifier, trackId: track.name,

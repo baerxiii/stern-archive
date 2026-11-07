@@ -26,13 +26,13 @@
         <div class="player-heading">
           <p class="eyebrow"><span class="eyebrow-dot"></span> Now in the archive</p>
           <h1 id="title">Loading archive…</h1>
-          <p id="nowPlaying" class="now-playing">Finding your episode…</p>
         </div>
-        <div class="player-container">
-          <div class="player-art" aria-hidden="true"><span>🎙</span><small>STERN<br>ARCHIVE</small></div>
+        <div class="player-container sticky-player">
+          <p id="nowPlaying" class="sticky-player-title">Choose an episode to listen</p>
           <audio id="audioPlayer" controls preload="metadata" playsinline aria-label="Episode audio player"></audio>
           <p class="player-hint">Playback may need a tap to resume if your browser blocks autoplay.</p>
         </div>
+        <div id="archiveEpisodes"></div>
       </section>
     </main>
   </div>

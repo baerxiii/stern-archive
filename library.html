@@ -20,7 +20,7 @@
         <div class="toolbar-intro"><p class="eyebrow">Find your next favorite</p><h2>Browse the archive</h2></div>
         <div class="toolbar-row">
           <input type="search" id="searchBox" placeholder="Search archive titles…" aria-label="Search archive titles">
-          <button type="button" id="addArchiveBtn" class="primary-btn">＋ Add archive</button>
+          <button type="button" id="addArchiveBtn" class="primary-btn" disabled>＋ Add archive</button>
         </div>
         <div id="addArchivePanel" class="archive-panel hidden">
           <div class="archive-panel-header"><h2>Add an archive</h2><button type="button" id="closeArchivePanel" class="icon-btn" aria-label="Close">×</button></div>
@@ -28,11 +28,23 @@
             <label><span>Archive URL or ID</span><input id="archiveInput" type="text" placeholder="https://archive.org/details/... or stern-..."></label>
             <label><span>Title</span><input id="archiveTitle" type="text" placeholder="My archive title"></label>
             <label><span>Year</span><input id="archiveYear" type="text" placeholder="2024"></label>
+            <label><span>Category</span><input id="archiveCategory" type="text" list="archiveCategories" value="Stern Show" placeholder="Choose or create a category"><datalist id="archiveCategories"></datalist></label>
           </div>
           <div class="archive-actions"><button type="button" id="saveArchiveBtn" class="primary-btn">Save archive</button><p id="archiveMessage" class="archive-message" aria-live="polite"></p></div>
         </div>
       </section>
-      <section><div id="library" class="library-grid"></div></section>
+      <p id="libraryMessage" class="archive-message" role="status"></p>
+      <section><div id="library" class="archive-library"></div></section>
+      <section class="editor-panel" aria-labelledby="editorHeading">
+        <h2 id="editorHeading">Library editors</h2>
+        <p id="authStatus" class="archive-message" role="status">Checking sign-in…</p>
+        <form id="signInForm" class="editor-form">
+          <label><span>Email</span><input id="editorEmail" type="email" autocomplete="username" required></label>
+          <label><span>Password</span><input id="editorPassword" type="password" autocomplete="current-password" required></label>
+          <button type="submit" class="transport-btn">Sign in</button>
+        </form>
+        <button id="signOutBtn" type="button" class="transport-btn" hidden>Sign out</button>
+      </section>
     </main>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
