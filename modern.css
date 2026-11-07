@@ -175,6 +175,8 @@ audio { display: block; width: 100%; min-height: 54px; accent-color: var(--accen
 .editor-form[hidden], [hidden] { display: none !important; }
 button:disabled { opacity: .5; cursor: not-allowed; }
 .sticky-player { position: sticky; top: 0; z-index: 5; margin: 0 0 24px; padding: 14px 18px; background: #191a1e; box-shadow: 0 12px 30px rgba(0,0,0,.32); }
+.chapter-selector { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: var(--ink); font-size: 14px; font-weight: 700; }
+.chapter-selector select { min-width: 0; width: 100%; min-height: 38px; padding: 7px 10px; border: 1px solid #525158; border-radius: 10px; background: #28292e; color: #f5f2ee; font: inherit; }
 .sticky-player-title { margin: 0 0 8px; color: var(--ink); font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sticky-player audio { margin: 0; }
 .sticky-player .playback-extras, .sticky-player .transport-controls { display: inline-flex; vertical-align: middle; margin: 8px 8px 0 0; gap: 6px; }
