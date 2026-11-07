@@ -3,6 +3,7 @@ const identifier = params.get("id");
 const titleEl = document.getElementById("bookTitle");
 const player = document.getElementById("audioPlayer");
 const chapters = document.getElementById("chapters");
+const chapterSelect = document.getElementById("chapterSelect");
 const playback = ListeningHistory.attach(player);
 
 function groupTracks(files) {
@@ -58,9 +59,11 @@ async function loadBook() {
   const tracks = groupTracks(data.files || []);
   if (!tracks.length) {
     chapters.textContent = "No audio files found.";
+    chapterSelect.options[0].textContent = "No chapters available";
     return;
   }
 
+  chapterSelect.replaceChildren();
   let currentIndex = -1;
   const buttons = [];
   function select(index, autoplay) {
@@ -68,6 +71,7 @@ async function loadBook() {
     if (!group) return;
     const track = group.track;
     currentIndex = index;
+    chapterSelect.value = String(index);
     document.getElementById("bookNowPlaying").textContent = track.title || track.name;
     buttons.forEach((button, i) => button.classList.toggle("playing", i === index));
     const audioUrl = `https://archive.org/download/${encodeURIComponent(identifier)}/${encodeURIComponent(track.name)}`;
@@ -77,6 +81,10 @@ async function loadBook() {
 
   tracks.forEach((group, index) => {
     const track = group.track;
+    const option = document.createElement("option");
+    option.value = String(index);
+    option.textContent = track.title || track.name;
+    chapterSelect.appendChild(option);
     const button = document.createElement("button");
     button.type = "button";
     button.className = "chapter-btn";
@@ -93,6 +101,8 @@ async function loadBook() {
     buttons.push(button);
     chapters.appendChild(button);
   });
+  chapterSelect.disabled = false;
+  chapterSelect.addEventListener("change", () => select(Number(chapterSelect.value), true));
   player.addEventListener("ended", () => {
     if (currentIndex + 1 < tracks.length) select(currentIndex + 1, true);
   });
@@ -130,6 +140,7 @@ async function loadBook() {
   if (requested) {
     index = findVariant(requested);
     if (index < 0) {
+      chapterSelect.selectedIndex = -1;
       chapters.insertAdjacentText("afterbegin", "This chapter is no longer available.");
       return;
     }
@@ -141,4 +152,9 @@ loadBook().catch(error => {
   console.error(error);
   titleEl.textContent = "Failed to load audiobook";
   chapters.textContent = error.message;
+  chapterSelect.disabled = true;
+  chapterSelect.replaceChildren();
+  const option = document.createElement("option");
+  option.textContent = "Chapters unavailable";
+  chapterSelect.appendChild(option);
 });
