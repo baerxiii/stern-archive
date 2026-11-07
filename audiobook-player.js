@@ -5,6 +5,40 @@ const player = document.getElementById("audioPlayer");
 const chapters = document.getElementById("chapters");
 const playback = ListeningHistory.attach(player);
 
+function groupTracks(files) {
+  const filesByName = new Map(files.filter(file => typeof file.name === "string")
+    .map(file => [file.name, file]));
+  const groups = new Map();
+  for (const file of files) {
+    if (typeof file.name !== "string" || !file.name.toLowerCase().endsWith(".mp3")) continue;
+    let root = file;
+    const visited = new Set([root.name]);
+    while (typeof root.original === "string" && root.original && !visited.has(root.original)) {
+      visited.add(root.original);
+      root = filesByName.get(root.original) || { name: root.original };
+    }
+    if (!groups.has(root.name)) groups.set(root.name, []);
+    groups.get(root.name).push(file);
+  }
+  return [...groups.values()].map(variants => ({
+    variants,
+    track: variants.find(file => file.source === "original") || variants[0]
+  }));
+}
+
+function formatDuration(length) {
+  if (length === undefined || length === null || length === "") return "";
+  const value = String(length);
+  if (value.includes(":")) return value;
+  const seconds = Number(value);
+  if (!Number.isFinite(seconds) || seconds < 0) return value;
+  const whole = Math.floor(seconds);
+  const hours = Math.floor(whole / 3600);
+  const minutes = Math.floor(whole / 60) % 60;
+  const remainder = String(whole % 60).padStart(2, "0");
+  return hours ? `${hours}:${String(minutes).padStart(2, "0")}:${remainder}` : `${minutes}:${remainder}`;
+}
+
 async function loadBook() {
   if (!identifier) throw new Error("Missing audiobook ID.");
   const response = await fetch(`https://archive.org/metadata/${encodeURIComponent(identifier)}`);
@@ -21,7 +55,7 @@ async function loadBook() {
     cover.hidden = false;
   }
 
-  const tracks = (data.files || []).filter(file => typeof file.name === "string" && file.name.toLowerCase().endsWith(".mp3"));
+  const tracks = groupTracks(data.files || []);
   if (!tracks.length) {
     chapters.textContent = "No audio files found.";
     return;
@@ -30,8 +64,9 @@ async function loadBook() {
   let currentIndex = -1;
   const buttons = [];
   function select(index, autoplay) {
-    const track = tracks[index];
-    if (!track) return;
+    const group = tracks[index];
+    if (!group) return;
+    const track = group.track;
     currentIndex = index;
     document.getElementById("bookNowPlaying").textContent = track.title || track.name;
     buttons.forEach((button, i) => button.classList.toggle("playing", i === index));
@@ -40,7 +75,8 @@ async function loadBook() {
       collectionTitle: bookTitle, title: track.title || track.name, audioUrl }, autoplay);
   }
 
-  tracks.forEach((track, index) => {
+  tracks.forEach((group, index) => {
+    const track = group.track;
     const button = document.createElement("button");
     button.type = "button";
     button.className = "chapter-btn";
@@ -50,7 +86,7 @@ async function loadBook() {
     if (track.length) {
       const duration = document.createElement("span");
       duration.className = "chapter-duration";
-      duration.textContent = track.length;
+      duration.textContent = formatDuration(track.length);
       button.appendChild(duration);
     }
     button.addEventListener("click", () => select(index, true));
@@ -62,24 +98,40 @@ async function loadBook() {
   });
 
   const requested = params.get("track");
-  let index = requested ? tracks.findIndex(track => track.name === requested) : -1;
-  if (requested && index < 0) {
-    chapters.insertAdjacentText("afterbegin", "This chapter is no longer available.");
-    return;
-  }
-  if (!requested) {
-    try {
-      const latest = ListeningHistory.read().find(item => item.type === "audiobook" && item.collectionId === identifier);
-      if (latest) index = tracks.findIndex(track => track.name === latest.trackId);
-      if (index < 0) {
-        const old = JSON.parse(localStorage.getItem("currentAudiobook") || "null");
-        if (old?.identifier === identifier) {
-          index = tracks.findIndex(track => old.audioUrl === `https://archive.org/download/${identifier}/${track.name}` ||
-            old.audioUrl === `https://archive.org/download/${encodeURIComponent(identifier)}/${encodeURIComponent(track.name)}`);
-        }
+  const findVariant = name => {
+    const index = tracks.findIndex(group => group.variants.some(track => track.name === name));
+    if (index >= 0) tracks[index].track = tracks[index].variants.find(track => track.name === name);
+    return index;
+  };
+  let index = -1;
+  try {
+    const saved = ListeningHistory.read().filter(item => item.type === "audiobook" && item.collectionId === identifier);
+    const restored = new Set();
+    for (const item of saved) {
+      const groupIndex = tracks.findIndex(group => group.variants.some(track => track.name === item.trackId));
+      if (groupIndex >= 0 && !restored.has(groupIndex)) {
+        findVariant(item.trackId);
+        restored.add(groupIndex);
+        if (index < 0) index = groupIndex;
       }
-    } catch (error) {
-      console.error("Could not find the last audiobook chapter", error);
+    }
+    if (!requested && index < 0) {
+      const old = JSON.parse(localStorage.getItem("currentAudiobook") || "null");
+      if (old?.identifier === identifier) {
+        const track = tracks.flatMap(group => group.variants).find(file =>
+          old.audioUrl === `https://archive.org/download/${identifier}/${file.name}` ||
+          old.audioUrl === `https://archive.org/download/${encodeURIComponent(identifier)}/${encodeURIComponent(file.name)}`);
+        if (track) index = findVariant(track.name);
+      }
+    }
+  } catch (error) {
+    console.error("Could not find the last audiobook chapter", error);
+  }
+  if (requested) {
+    index = findVariant(requested);
+    if (index < 0) {
+      chapters.insertAdjacentText("afterbegin", "This chapter is no longer available.");
+      return;
     }
   }
   select(index < 0 ? 0 : index, false);
