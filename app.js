@@ -79,8 +79,17 @@
       details.appendChild(summary);
       const list = document.createElement("div");
       list.className = "archive-category-list";
-      group.items.sort((a, b) => String(b.year || "").localeCompare(String(a.year || ""), undefined, { numeric: true }) ||
-        String(a.title).localeCompare(String(b.title)));
+      group.items.sort((a, b) => {
+        const yearA = String(a.year ?? "").trim();
+        const yearB = String(b.year ?? "").trim();
+        if (!yearA || !yearB) {
+          if (yearA !== yearB) return yearA ? -1 : 1;
+        } else {
+          const order = yearA.localeCompare(yearB, undefined, { numeric: true });
+          if (order) return order;
+        }
+        return String(a.title || a.archiveId || "").localeCompare(String(b.title || b.archiveId || ""));
+      });
       group.items.forEach(item => {
         const row = document.createElement("div");
         row.className = "archive-row";
