@@ -157,7 +157,25 @@ chapters.appendChild(
   heading
 );
 
-tracks.forEach(track => {
+const seen = new Set();
+
+const uniqueTracks =
+  tracks.filter(track => {
+
+    const key =
+      track.title || track.name;
+
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+
+    return true;
+
+  });
+
+uniqueTracks.forEach(track => {
 
       const button =
         document.createElement(
