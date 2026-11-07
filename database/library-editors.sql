@@ -1,7 +1,17 @@
--- Apply in the Supabase SQL editor. This replaces all custom_library policies.
+-- Apply in the Supabase SQL editor. Creates custom_library if it does not exist
+-- and replaces all policies on the library tables.
 begin;
 
+create table if not exists public.custom_library (
+  id text primary key,
+  archive_id text not null,
+  title text not null,
+  year text,
+  category text not null default 'Stern Show',
+  created_at timestamptz not null default now()
+);
 alter table public.custom_library add column if not exists category text not null default 'Stern Show';
+alter table public.custom_library add column if not exists created_at timestamptz not null default now();
 
 create table if not exists public.library_editors (
   user_id uuid primary key references auth.users(id) on delete cascade
