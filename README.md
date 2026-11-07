@@ -8,8 +8,9 @@ are opened. Playback requires access to the original archive or podcast feed.
 
 ## Shared archive library
 
-Archives are grouped by category; entering a new category when adding an archive
-creates it. Shared changes require an authorized Supabase email/password account.
+Archives are grouped by category and sorted by year, oldest first; entries without
+a year appear last. Entering a new category when adding an archive creates it.
+Shared changes require an authorized Supabase email/password account.
 Existing browser-only custom archives remain on that browser and can be removed
 there by an authorized editor. Deleting a default archive hides it from the shared library, and deleting
 any entry does not delete the original audio.
