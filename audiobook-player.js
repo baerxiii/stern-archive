@@ -53,9 +53,15 @@ fetch(
       data.metadata?.creator ||
       "";
 
-    descriptionEl.textContent =
-      data.metadata?.description ||
-      "";
+   const cleanDescription =
+  (data.metadata?.description || "")
+    .toString()
+    .replace(/<[^>]+>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+descriptionEl.textContent =
+  cleanDescription;
 
     if (
       data.misc &&
