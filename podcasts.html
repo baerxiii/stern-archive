@@ -35,7 +35,7 @@
       <section class="editor-panel" aria-labelledby="editorHeading">
         <h2 id="editorHeading">Podcast editors</h2>
         <p id="authStatus" class="archive-message" role="status">Checking sign-in…</p>
-        <form id="signInForm" class="editor-form">
+        <form id="signInForm" class="editor-form" onsubmit="event.preventDefault()">
           <label><span>Email</span><input id="editorEmail" type="email" autocomplete="username" required></label>
           <label><span>Password</span><input id="editorPassword" type="password" autocomplete="current-password" required></label>
           <button type="submit" class="transport-btn">Sign in</button>
@@ -51,6 +51,6 @@
       supabaseAnonKey: "sb_publishable_a6YEwdDOpkZ6BI8pHXVPnQ_WlFMlHmf"
     };
   </script>
-  <script src="podcasts.js"></script>
+  <script src="podcasts.js?v=2"></script>
 </body>
 </html>
