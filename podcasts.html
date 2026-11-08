@@ -18,10 +18,39 @@
       <section class="toolbar">
         <div class="toolbar-intro"><p class="eyebrow">Stream from RSS feeds</p><h1>Podcasts</h1></div>
         <p>Choose a podcast to browse its episodes.</p>
+        <button type="button" id="addPodcastBtn" class="primary-btn" disabled>＋ Add podcast</button>
+        <div id="addPodcastPanel" class="archive-panel hidden">
+          <div class="archive-panel-header"><h2>Add a podcast</h2><button type="button" id="closePodcastPanel" class="icon-btn" aria-label="Close">×</button></div>
+          <form id="addPodcastForm">
+            <div class="archive-form-grid">
+              <label><span>Podcast name</span><input id="podcastName" type="text" required placeholder="My podcast"></label>
+              <label><span>RSS feed URL</span><input id="podcastRss" type="url" required placeholder="https://example.com/feed.xml"></label>
+            </div>
+            <div class="archive-actions"><button type="submit" class="primary-btn">Save podcast</button><p id="podcastFormMessage" class="archive-message" role="status"></p></div>
+          </form>
+        </div>
       </section>
+      <p id="podcastMessage" class="archive-message" role="status"></p>
       <div id="podcastList" class="library-grid"></div>
+      <section class="editor-panel" aria-labelledby="editorHeading">
+        <h2 id="editorHeading">Podcast editors</h2>
+        <p id="authStatus" class="archive-message" role="status">Checking sign-in…</p>
+        <form id="signInForm" class="editor-form">
+          <label><span>Email</span><input id="editorEmail" type="email" autocomplete="username" required></label>
+          <label><span>Password</span><input id="editorPassword" type="password" autocomplete="current-password" required></label>
+          <button type="submit" class="transport-btn">Sign in</button>
+        </form>
+        <button id="signOutBtn" type="button" class="transport-btn" hidden>Sign out</button>
+      </section>
     </main>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    window.STERN_ARCHIVE_CONFIG = {
+      supabaseUrl: "https://uzbbwvihkfzdbnowhglc.supabase.co",
+      supabaseAnonKey: "sb_publishable_a6YEwdDOpkZ6BI8pHXVPnQ_WlFMlHmf"
+    };
+  </script>
   <script src="podcasts.js"></script>
 </body>
 </html>

@@ -28,4 +28,13 @@ Before enabling shared editing, a Supabase project administrator must:
 
 Until the migration is applied, the old database policies remain in force and
 shared editing is not enabled by this interface. The migration is required to
-enforce editor authorization at the database, not just in the browser.
+enforce editor authorization at the database, not just in the browser. Reapply
+`database/library-editors.sql` after pulling updates that add shared podcasts;
+it creates the shared podcast table and its editor-only insert policy.
+
+## Shared podcasts
+
+Podcast feeds added from the Podcasts page are shared with everyone. Sign in
+there with an authorized editor account, choose **Add podcast**, and enter the
+podcast name and its HTTP(S) RSS feed URL. The built-in feeds remain in
+`podcasts.json`; feeds added through the page are stored in Supabase.
