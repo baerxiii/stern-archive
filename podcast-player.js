@@ -4,10 +4,29 @@ const player = document.getElementById("audioPlayer");
 const playback = ListeningHistory.attach(player);
 const episodes = document.getElementById("episodes");
 const details = document.getElementById("episodeDetails");
+const corbettFeed = "https://www.corbettreport.com/newrss.xml";
+const corbettProxy = "https://uzbbwvihkfzdbnowhglc.supabase.co/functions/v1/corbett-feed";
 
 async function loadPodcast() {
   if (!rssUrl) throw new Error("Missing podcast feed URL.");
-  const response = await fetch(rssUrl);
+  let response;
+  try {
+    response = await fetch(rssUrl);
+  } catch (error) {
+    if (rssUrl !== corbettFeed) {
+      console.error("Could not fetch podcast feed", error);
+      throw new Error("Could not fetch this feed. Its server may not allow browser access.");
+    }
+    try {
+      response = await fetch(corbettProxy);
+    } catch (proxyError) {
+      console.error("Could not reach the podcast feed proxy", proxyError);
+      throw new Error("Could not reach the feed proxy. Check the connection and proxy deployment.");
+    }
+    if (!response.ok) {
+      throw new Error(`The feed proxy returned HTTP ${response.status}. Check its deployment and feed availability.`);
+    }
+  }
   if (!response.ok) throw new Error(`Could not load podcast feed (${response.status}).`);
   const xml = new DOMParser().parseFromString(await response.text(), "text/xml");
   if (xml.querySelector("parsererror")) throw new Error("The podcast feed is invalid.");

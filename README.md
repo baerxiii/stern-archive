@@ -38,3 +38,15 @@ Podcast feeds added from the Podcasts page are shared with everyone. Sign in
 there with an authorized editor account, choose **Add podcast**, and enter the
 podcast name and its HTTP(S) RSS feed URL. The built-in feeds remain in
 `podcasts.json`; feeds added through the page are stored in Supabase.
+
+Browsers can only read remote feeds whose hosts allow cross-origin access. The
+Corbett Report feed has an optional, feed-specific Supabase Edge Function fallback
+for when direct browser access fails. To enable it, deploy
+`supabase/functions/corbett-feed/index.ts` as an Edge Function named
+`corbett-feed` in the same Supabase project. For a dashboard deployment, create
+the function via the editor, paste in that file's contents, and disable JWT
+verification for the function so visitors can read the public feed. The CLI
+configuration in `supabase/config.toml` also disables JWT verification for this
+function. This public function can fetch only that hard-coded feed; it is not a
+general-purpose proxy. Supabase usage limits and costs apply. Other feeds still
+need to allow browser access.
