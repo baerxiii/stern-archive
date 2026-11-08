@@ -1,2 +1,3 @@
-[functions.corbett-feed]
+[functions.Corbett-feed]
 verify_jwt = false
+entrypoint = "./functions/corbett-feed/index.ts"

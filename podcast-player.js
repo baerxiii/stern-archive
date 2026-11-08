@@ -5,7 +5,7 @@ const playback = ListeningHistory.attach(player);
 const episodes = document.getElementById("episodes");
 const details = document.getElementById("episodeDetails");
 const corbettFeed = "https://www.corbettreport.com/newrss.xml";
-const corbettProxy = "https://uzbbwvihkfzdbnowhglc.supabase.co/functions/v1/corbett-feed";
+const corbettProxy = "https://uzbbwvihkfzdbnowhglc.supabase.co/functions/v1/Corbett-feed";
 
 async function loadPodcast() {
   if (!rssUrl) throw new Error("Missing podcast feed URL.");

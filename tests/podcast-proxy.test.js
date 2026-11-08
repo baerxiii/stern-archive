@@ -42,7 +42,7 @@ test("uses the Corbett proxy only when direct fetch fails", async () => {
   });
   assert.deepEqual(calls, [
     feed,
-    "https://uzbbwvihkfzdbnowhglc.supabase.co/functions/v1/corbett-feed"
+    "https://uzbbwvihkfzdbnowhglc.supabase.co/functions/v1/Corbett-feed"
   ]);
   assert.equal(elements.get("podcastTitle").textContent, "Example");
 });
