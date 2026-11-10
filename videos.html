@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="modern.css">
 </head>
-<body>
+<body id="top">
   <div class="page-shell">
     <header class="topbar">
       <div class="left-cluster"><a class="nav-link" href="index.html">← Home</a><a class="nav-link" href="library.html">Browse Library</a></div>
@@ -20,12 +20,13 @@
         <p>Choose an archive to browse its videos. Availability and playback are controlled by Internet Archive.</p>
         <button type="button" id="addVideoBtn" class="primary-btn" disabled>＋ Add video archive</button>
         <div id="addVideoPanel" class="archive-panel hidden">
-          <div class="archive-panel-header"><h2>Add a video archive</h2><button type="button" id="closeVideoPanel" class="icon-btn" aria-label="Close">×</button></div>
+          <div class="archive-panel-header"><h2 id="videoFormHeading">Add a video archive</h2><button type="button" id="closeVideoPanel" class="icon-btn" aria-label="Close">×</button></div>
           <form id="addVideoForm">
             <div class="archive-form-grid">
               <label><span>Archive.org item URL or ID</span><input id="videoArchiveInput" required placeholder="https://archive.org/details/..."></label>
               <label><span>Display name</span><input id="videoArchiveTitle" required placeholder="1999 video archive"></label>
             </div>
+            <a class="back-to-top" href="#top" aria-label="Back to top">↑ <span>Top</span></a>
             <div class="archive-actions"><button type="submit" class="primary-btn">Save archive</button><p id="videoFormMessage" class="archive-message" role="status"></p></div>
           </form>
         </div>
