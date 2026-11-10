@@ -7,8 +7,10 @@
   const panel = el("addVideoPanel");
   const form = el("addVideoForm");
   const player = el("videoPlayer");
-  let archives = [defaultArchive];
+  let archives = [];
   let editor = false;
+  let managementReady = false;
+  let editingArchive = null;
   let activeArchive = null;
   let files = [];
   let requestNumber = 0;
@@ -68,8 +70,6 @@
       card.className = "library-card";
       const title = document.createElement("h2");
       title.textContent = archive.title;
-      const id = document.createElement("p");
-      id.textContent = archive.archive_id;
       const actions = document.createElement("div");
       actions.className = "card-actions";
       const browse = document.createElement("button");
@@ -78,7 +78,14 @@
       browse.textContent = "Browse videos";
       browse.addEventListener("click", () => openArchive(archive));
       actions.appendChild(browse);
-      if (editor && archive.archive_id !== defaultArchive.archive_id) {
+      if (editor && managementReady) {
+        const edit = document.createElement("button");
+        edit.type = "button";
+        edit.className = "transport-btn";
+        edit.textContent = "Edit";
+        edit.setAttribute("aria-label", `Edit ${archive.title}`);
+        edit.addEventListener("click", () => showForm(archive));
+        actions.appendChild(edit);
         const remove = document.createElement("button");
         remove.type = "button";
         remove.className = "delete-archive-btn";
@@ -87,7 +94,7 @@
         remove.addEventListener("click", () => removeArchive(archive, remove));
         actions.appendChild(remove);
       }
-      card.append(title, id, actions);
+      card.append(title, actions);
       container.appendChild(card);
     });
   }
@@ -153,19 +160,29 @@
 
   async function refresh() {
     if (!client) {
-      message(el("videoMessage"), "Shared archives are unavailable. The built-in archive is still available.", true);
+      message(el("videoMessage"), "Shared archives are unavailable. Check your connection and reload.", true);
       renderArchives();
       return;
     }
+    managementReady = false;
     try {
       const result = await client.from("shared_video_archives").select("archive_id,title").order("title", { ascending: true });
       if (result.error) throw result.error;
-      archives = [defaultArchive, ...result.data.filter(item => item.archive_id !== defaultArchive.archive_id)];
-      message(el("videoMessage"), "");
+      archives = result.data;
+      const migration = await client.from("video_archive_migrations").select("name").eq("name", "managed-default-1998").maybeSingle();
+      if (migration.error && !["PGRST205", "42P01"].includes(migration.error.code)) throw migration.error;
+      managementReady = Boolean(migration.data);
+      if (managementReady) {
+        message(el("videoMessage"), "");
+      } else {
+        if (!archives.some(item => item.archive_id === defaultArchive.archive_id)) archives = [defaultArchive, ...archives];
+        message(el("videoMessage"), "Apply database/video-archive-management.sql to enable archive editing and removal.", true);
+      }
     } catch (error) {
       console.error("Could not load shared video archives", error);
-      message(el("videoMessage"), `Could not load shared archives: ${error.message}. Apply database/video-archives.sql if needed.`, true);
+      message(el("videoMessage"), `Could not load shared archives: ${error.message}. Check your connection and database setup.`, true);
     }
+    el("addVideoBtn").disabled = !editor || !managementReady;
     renderArchives();
   }
 
@@ -182,14 +199,14 @@
     }
     el("signInForm").hidden = Boolean(user);
     el("signOutBtn").hidden = !user;
-    el("addVideoBtn").disabled = !editor;
+    el("addVideoBtn").disabled = !editor || !managementReady;
     if (!editor) panel.classList.add("hidden");
     message(el("authStatus"), user ? (editor ? "Signed in as an authorized editor." : "This account is not authorized to edit archives.") : "Sign in with an authorized editor account to add shared archives.");
     renderArchives();
   }
 
   async function removeArchive(archive, button) {
-    if (!editor || !confirm(`Remove "${archive.title}" from the video list? The original archive will not be deleted.`)) return;
+    if (!editor || !managementReady || !confirm(`Remove "${archive.title}" from the video list? The original archive will not be deleted.`)) return;
     button.disabled = true;
     try {
       const result = await client.from("shared_video_archives").delete().eq("archive_id", archive.archive_id).select("archive_id");
@@ -205,7 +222,7 @@
         el("videoBrowser").hidden = true;
       }
       await refresh();
-      message(el("videoMessage"), "Archive removed from the shared list.");
+      if (managementReady) message(el("videoMessage"), "Archive removed from the shared list.");
     } catch (error) {
       console.error("Could not remove video archive", error);
       message(el("videoMessage"), `Could not remove archive: ${error.message}`, true);
@@ -213,11 +230,23 @@
     }
   }
 
-  el("addVideoBtn").addEventListener("click", () => {
-    panel.classList.toggle("hidden");
-    if (!panel.classList.contains("hidden")) el("videoArchiveInput").focus();
+  function showForm(archive = null) {
+    editingArchive = archive;
+    form.reset();
+    el("videoArchiveInput").value = archive?.archive_id || "";
+    el("videoArchiveTitle").value = archive?.title || "";
+    el("videoFormHeading").textContent = archive ? "Edit video archive" : "Add a video archive";
+    message(el("videoFormMessage"), "");
+    panel.classList.remove("hidden");
+    el("videoArchiveInput").focus();
+    panel.scrollIntoView({ block: "nearest" });
+  }
+
+  el("addVideoBtn").addEventListener("click", () => showForm());
+  el("closeVideoPanel").addEventListener("click", () => {
+    editingArchive = null;
+    panel.classList.add("hidden");
   });
-  el("closeVideoPanel").addEventListener("click", () => panel.classList.add("hidden"));
   el("videoSearch").addEventListener("input", renderFiles);
   player.addEventListener("error", () => {
     if (player.getAttribute("src")) message(el("videoStatus"), "Video playback failed. Try opening the archive on Internet Archive.", true);
@@ -231,29 +260,48 @@
       id = archiveId(el("videoArchiveInput").value);
       if (!el("videoArchiveTitle").value.trim()) throw new Error("Enter a display name.");
       if (!editor) throw new Error("Sign in with an authorized editor account.");
-      if (archives.some(item => item.archive_id.toLowerCase() === id.toLowerCase())) throw new Error("That archive is already in the list.");
+      if (!managementReady) throw new Error("Apply the video archive management database migration first.");
+      if (archives.some(item => item !== editingArchive && item.archive_id.toLowerCase() === id.toLowerCase())) throw new Error("That archive is already in the list.");
     } catch (error) {
       message(el("videoFormMessage"), error.message, true);
       return;
     }
     button.disabled = true;
     try {
-      message(el("videoFormMessage"), "Checking archive…");
-      const available = await fetchFiles(id);
-      if (!available.length) throw new Error("This archive does not contain MP4 videos.");
+      if (!editingArchive || editingArchive.archive_id !== id) {
+        message(el("videoFormMessage"), "Checking archive…");
+        const available = await fetchFiles(id);
+        if (!available.length) throw new Error("This archive does not contain MP4 videos.");
+      }
       const archive = { archive_id: id, title: el("videoArchiveTitle").value.trim() };
-      const result = await client.from("shared_video_archives").insert(archive).select("archive_id");
+      const previous = editingArchive;
+      const result = previous
+        ? await client.from("shared_video_archives").update(archive).eq("archive_id", previous.archive_id).select("archive_id")
+        : await client.from("shared_video_archives").insert(archive).select("archive_id");
       if (result.error) throw result.error;
-      if (!result.data?.length) throw new Error("The database did not confirm the new archive.");
-      archives.push(archive);
+      if (!result.data?.length) throw new Error("The database did not confirm the change.");
+      if (previous) {
+        archives = archives.map(item => item === previous ? archive : item);
+        if (activeArchive?.archive_id === previous.archive_id) {
+          if (previous.archive_id === id) {
+            activeArchive = archive;
+            el("videoArchiveHeading").textContent = archive.title;
+          } else {
+            await openArchive(archive);
+          }
+        }
+      } else {
+        archives.push(archive);
+      }
       renderArchives();
       form.reset();
       panel.classList.add("hidden");
+      editingArchive = null;
       message(el("videoFormMessage"), "");
-      message(el("videoMessage"), "Archive added to the shared list.");
+      message(el("videoMessage"), previous ? "Archive updated." : "Archive added to the shared list.");
     } catch (error) {
-      console.error("Could not add video archive", error);
-      message(el("videoFormMessage"), `Could not add archive: ${error.message}`, true);
+      console.error("Could not save video archive", error);
+      message(el("videoFormMessage"), `Could not save archive: ${error.message}`, true);
     } finally {
       button.disabled = false;
     }
