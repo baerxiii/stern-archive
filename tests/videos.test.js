@@ -3,6 +3,13 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const vm = require("node:vm");
 
+test("back-to-top link is outside the hidden panels and targets the page top", () => {
+  const html = fs.readFileSync("videos.html", "utf8");
+  assert.match(html, /<body id="top">/);
+  assert.match(html, /<\/main>\s*<\/div>\s*<a class="back-to-top" href="#top" aria-label="Back to top">/);
+  assert.match(fs.readFileSync("modern.css", "utf8"), /\.back-to-top\s*\{[^}]*position:\s*fixed/);
+});
+
 function setup({ authorized = true, databaseError = false, migrationMissing = false, initialArchives, fetchImpl } = {}) {
   class Element extends EventTarget {
     constructor() {
