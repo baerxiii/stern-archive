@@ -8,11 +8,20 @@ are opened. Playback requires access to the original archive or podcast feed.
 
 ## Video
 
-The Video page embeds the supplied Internet Archive item and links to its
-original page. Playback and availability depend on Internet Archive; video
-playback is not included in the site's listening history. To add another item,
-add a video card to `videos.html` using its Internet Archive embed and details
-URLs.
+The Video page lists archives and reads each item's MP4 files directly from
+Internet Archive. Choose an archive, then select and play a video; use the search
+box to filter its file list. Its embedded Archive.org player and original page
+are also available. Availability and playback depend on Internet Archive; video
+playback is not included in the site's listening history.
+
+To enable shared video archives, a Supabase administrator must first apply
+`database/library-editors.sql` (if not already applied), then apply
+`database/video-archives.sql` in the SQL editor. Sign in on the Video page with
+an authorized editor account, choose **Add video archive**, and provide an item
+URL (details or download) or ID and a display name. All visitors can browse
+added archives. Authorized editors can remove shared entries without deleting
+the original Internet Archive item. The built-in 1998 archive remains available
+even if the shared database is unavailable.
 
 ## Shared archive library
 
