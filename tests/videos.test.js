@@ -90,12 +90,13 @@ function setup({ authorized = true, databaseError = false, migrationMissing = fa
 const tick = () => new Promise(resolve => setImmediate(resolve));
 const click = element => element.dispatchEvent(new Event("click"));
 const submit = element => element.dispatchEvent(new Event("submit", { cancelable: true }));
+const cards = document => document.getElementById("videoArchives").children.flatMap(group => group.children[1]?.children || []);
 
 test("browses deduplicated MP4s, filters, and selects encoded video URLs", async () => {
   const { document } = setup();
   await tick();
   const get = id => document.getElementById(id);
-  click(get("videoArchives").children[0].children[1].children[0]);
+  click(cards(document)[0].children[1].children[0]);
   await tick();
   assert.match(get("videoStatus").textContent, /2 MP4 videos/);
   assert.match(get("videoEmbed").src, /archive\.org\/embed\/1998/);
@@ -120,23 +121,23 @@ test("authorized editors add and remove a shared item and reject duplicates and 
   await tick();
   assert.equal(shared.length, 2);
   assert.equal(shared[1].archive_id, "1999-archive");
-  assert.equal(get("videoArchives").children.length, 2);
+  assert.equal(cards(document).length, 2);
   submit(get("addVideoForm"));
   assert.match(get("videoFormMessage").textContent, /already/);
   get("videoArchiveInput").value = "https://example.com/details/example";
   submit(get("addVideoForm"));
   assert.match(get("videoFormMessage").textContent, /Archive.org/);
-  click(get("videoArchives").children[1].children[1].children[2]);
+  click(cards(document)[1].children[1].children[2]);
   await tick();
   assert.equal(shared.length, 1);
-  assert.equal(get("videoArchives").children.length, 1);
+  assert.equal(cards(document).length, 1);
 });
 
 test("reports shared database errors without inventing a default archive", async () => {
   const { document } = setup({ authorized: false, databaseError: true });
   await tick();
   assert.equal(document.getElementById("addVideoBtn").disabled, true);
-  assert.equal(document.getElementById("videoArchives").children.length, 0);
+  assert.equal(cards(document).length, 0);
   assert.match(document.getElementById("videoMessage").textContent, /missing table/);
 });
 
@@ -145,8 +146,8 @@ test("ignores an older archive's metadata response after selecting another", asy
   const { document } = setup({ fetchImpl: url => new Promise(resolve => pending.push({ url, resolve })) });
   await tick();
   const get = id => document.getElementById(id);
-  click(get("videoArchives").children[0].children[1].children[0]);
-  click(get("videoArchives").children[0].children[1].children[0]);
+  click(cards(document)[0].children[1].children[0]);
+  click(cards(document)[0].children[1].children[0]);
   pending[1].resolve({ ok: true, json: async () => ({ files: [{ name: "new.mp4" }] }) });
   await tick();
   pending[0].resolve({ ok: true, json: async () => ({ files: [{ name: "old.mp4" }] }) });
@@ -158,7 +159,7 @@ test("edits and deletes the original archive without restoring it on refresh", a
   const { document, shared } = setup();
   await tick();
   const get = id => document.getElementById(id);
-  const card = get("videoArchives").children[0];
+  const card = cards(document)[0];
   assert.equal(card.children.length, 2);
   click(card.children[1].children[0]);
   await tick();
@@ -169,10 +170,10 @@ test("edits and deletes the original archive without restoring it on refresh", a
   await tick();
   assert.equal(shared[0].title, "Renamed");
   assert.equal(get("videoArchiveHeading").textContent, "Renamed");
-  click(get("videoArchives").children[0].children[1].children[2]);
+  click(cards(document)[0].children[1].children[2]);
   await tick();
   assert.equal(shared.length, 0);
-  assert.equal(get("videoArchives").children.length, 0);
+  assert.equal(cards(document).length, 0);
   assert.equal(get("videoBrowser").hidden, true);
 });
 
@@ -180,9 +181,9 @@ test("editing an archive URL validates the new item and reloads active video lis
   const { document, shared } = setup();
   await tick();
   const get = id => document.getElementById(id);
-  click(get("videoArchives").children[0].children[1].children[0]);
+  click(cards(document)[0].children[1].children[0]);
   await tick();
-  click(get("videoArchives").children[0].children[1].children[1]);
+  click(cards(document)[0].children[1].children[1]);
   get("videoArchiveInput").value = "https://archive.org/details/new-archive";
   submit(get("addVideoForm"));
   await tick();
@@ -197,11 +198,50 @@ test("requires migration before managing archives and preserves the previous bui
   assert.equal(get("addVideoBtn").disabled, true);
   assert.match(get("videoMessage").textContent, /video-archive-management\.sql/);
   assert.equal(get("videoArchives").children.length, 1);
-  assert.equal(get("videoArchives").children[0].children[1].children.length, 1);
+  assert.equal(cards(document)[0].children[1].children.length, 1);
 });
 
 test("does not restore the built-in archive when a migrated shared list is empty", async () => {
   const { document } = setup({ initialArchives: [] });
   await tick();
-  assert.equal(document.getElementById("videoArchives").children.length, 0);
+  assert.equal(cards(document).length, 0);
+});
+
+test("groups shared archives by category and preserves existing categories when editing", async () => {
+  const { document, shared } = setup({ initialArchives: [
+    { archive_id: "one", title: "1998", category: "Stern TV" },
+    { archive_id: "two", title: "1999", category: "stern tv" },
+    { archive_id: "three", title: "Other", category: "Other" },
+    { archive_id: "four", title: "Unsorted" }
+  ] });
+  await tick();
+  const get = id => document.getElementById(id);
+  const groups = get("videoArchives").children;
+  assert.deepEqual(groups.map(group => group.children[0].children[0].textContent), ["Other", "Stern TV", "Uncategorized"]);
+  assert.equal(groups[1].children[1].children.length, 2);
+  assert.deepEqual(get("videoCategories").children.map(option => option.value), ["Other", "Stern TV", "Uncategorized"]);
+  click(groups[1].children[1].children[0].children[1].children[1]);
+  assert.equal(get("videoArchiveCategory").value, "Stern TV");
+  get("videoArchiveCategory").value = "New category";
+  submit(get("addVideoForm"));
+  await tick();
+  assert.equal(shared[0].category, "New category");
+  assert.equal(get("videoArchives").children[0].children[0].children[0].textContent, "New category");
+  assert.equal(get("videoArchives").children[0].open, true);
+});
+
+test("new archives can choose existing categories without case-duplicate groups", async () => {
+  const { document, shared } = setup({ initialArchives: [
+    { archive_id: "one", title: "1998", category: "Stern TV" }
+  ] });
+  await tick();
+  const get = id => document.getElementById(id);
+  get("videoArchiveInput").value = "1999-archive";
+  get("videoArchiveTitle").value = "1999";
+  get("videoArchiveCategory").value = "stern tv";
+  submit(get("addVideoForm"));
+  await tick();
+  assert.equal(shared[1].category, "Stern TV");
+  assert.equal(get("videoArchives").children.length, 1);
+  assert.equal(cards(document).length, 2);
 });

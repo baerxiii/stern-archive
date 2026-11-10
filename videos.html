@@ -25,6 +25,7 @@
             <div class="archive-form-grid">
               <label><span>Archive.org item URL or ID</span><input id="videoArchiveInput" required placeholder="https://archive.org/details/..."></label>
               <label><span>Display name</span><input id="videoArchiveTitle" required placeholder="1999 video archive"></label>
+              <label><span>Category</span><input id="videoArchiveCategory" list="videoCategories" placeholder="Choose or create a category"><datalist id="videoCategories"></datalist></label>
             </div>
             <a class="back-to-top" href="#top" aria-label="Back to top">↑ <span>Top</span></a>
             <div class="archive-actions"><button type="submit" class="primary-btn">Save archive</button><p id="videoFormMessage" class="archive-message" role="status"></p></div>
@@ -32,7 +33,7 @@
         </div>
       </section>
       <p id="videoMessage" class="archive-message" role="status"></p>
-      <div id="videoArchives" class="library-grid"></div>
+      <div id="videoArchives" class="video-archive-groups"></div>
       <section id="videoBrowser" class="video-card" hidden aria-labelledby="videoArchiveHeading">
         <h2 id="videoArchiveHeading"></h2>
         <p id="videoStatus" class="archive-message" role="status"></p>

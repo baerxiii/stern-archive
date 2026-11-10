@@ -17,11 +17,14 @@ playback is not included in the site's listening history.
 To enable shared video archives, a Supabase administrator must first apply
 `database/library-editors.sql` (if not already applied), then apply
 `database/video-archives.sql` and `database/video-archive-management.sql` in
-the SQL editor. The last migration moves the built-in 1998 archive into the
+the SQL editor, followed by `database/video-archive-categories.sql`. The
+management migration moves the built-in 1998 archive into the
 shared list once, preserving existing shared entries. Sign in on the Video page with
 an authorized editor account, choose **Add video archive**, and provide an item
-URL (details or download) or ID and a display name. All visitors can browse
-added archives. Authorized editors can edit or remove any listed archive,
+URL (details or download) or ID, a display name, and optionally a category.
+Type a new category name or choose an existing one; archives without a category
+appear under Uncategorized. Categories are shared and disappear when no archives
+use them. All visitors can browse added archives. Authorized editors can edit or remove any listed archive,
 including the original 1998 entry, without changing or deleting the Internet
 Archive item. If the shared database is unavailable, the page reports the error.
 
