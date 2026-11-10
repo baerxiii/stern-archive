@@ -6,6 +6,14 @@ item again. History is local to the browser and device; clearing site data remov
 it. Previously saved archive and audiobook positions are used when those items
 are opened. Playback requires access to the original archive or podcast feed.
 
+## Video
+
+The Video page embeds the supplied Internet Archive item and links to its
+original page. Playback and availability depend on Internet Archive; video
+playback is not included in the site's listening history. To add another item,
+add a video card to `videos.html` using its Internet Archive embed and details
+URLs.
+
 ## Shared archive library
 
 Archives are grouped by category and sorted by year, oldest first; entries without
