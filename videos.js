@@ -1,5 +1,6 @@
 (() => {
   const defaultArchive = { archive_id: "1998.03.11-blockbuster-awards-e", title: "1998 video archive" };
+  const defaultCategory = "Uncategorized";
   const config = window.STERN_ARCHIVE_CONFIG || {};
   const client = window.supabase && config.supabaseUrl && config.supabaseAnonKey
     ? window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey) : null;
@@ -14,6 +15,7 @@
   let activeArchive = null;
   let files = [];
   let requestNumber = 0;
+  const openCategories = new Set();
 
   function message(element, text, error = false) {
     element.textContent = text;
@@ -65,38 +67,77 @@
   function renderArchives() {
     const container = el("videoArchives");
     container.replaceChildren();
+    const groups = new Map();
     archives.forEach(archive => {
-      const card = document.createElement("article");
-      card.className = "library-card";
-      const title = document.createElement("h2");
-      title.textContent = archive.title;
-      const actions = document.createElement("div");
-      actions.className = "card-actions";
-      const browse = document.createElement("button");
-      browse.type = "button";
-      browse.className = "primary-btn";
-      browse.textContent = "Browse videos";
-      browse.addEventListener("click", () => openArchive(archive));
-      actions.appendChild(browse);
-      if (editor && managementReady) {
-        const edit = document.createElement("button");
-        edit.type = "button";
-        edit.className = "transport-btn";
-        edit.textContent = "Edit";
-        edit.setAttribute("aria-label", `Edit ${archive.title}`);
-        edit.addEventListener("click", () => showForm(archive));
-        actions.appendChild(edit);
-        const remove = document.createElement("button");
-        remove.type = "button";
-        remove.className = "delete-archive-btn";
-        remove.textContent = "Remove";
-        remove.setAttribute("aria-label", `Remove ${archive.title}`);
-        remove.addEventListener("click", () => removeArchive(archive, remove));
-        actions.appendChild(remove);
-      }
-      card.append(title, actions);
-      container.appendChild(card);
+      const category = archive.category?.trim() || defaultCategory;
+      const key = category.toLocaleLowerCase();
+      if (!groups.has(key)) groups.set(key, { name: category, items: [] });
+      groups.get(key).items.push(archive);
     });
+    const options = el("videoCategories");
+    options.replaceChildren();
+    [...groups.entries()].sort((a, b) => a[1].name.localeCompare(b[1].name)).forEach(([key, group]) => {
+      const option = document.createElement("option");
+      option.value = group.name;
+      options.appendChild(option);
+      const details = document.createElement("details");
+      details.className = "archive-category";
+      details.open = openCategories.has(key);
+      details.addEventListener("toggle", () => {
+        if (details.open) openCategories.add(key);
+        else openCategories.delete(key);
+      });
+      const summary = document.createElement("summary");
+      const heading = document.createElement("span");
+      heading.className = "category-title";
+      heading.textContent = group.name;
+      const count = document.createElement("span");
+      count.className = "status-pill";
+      count.textContent = `${group.items.length} ${group.items.length === 1 ? "archive" : "archives"}`;
+      summary.append(heading, count);
+      const list = document.createElement("div");
+      list.className = "library-grid";
+      group.items.sort((a, b) => a.title.localeCompare(b.title, undefined, { numeric: true })).forEach(archive => {
+        const card = document.createElement("article");
+        card.className = "library-card";
+        const title = document.createElement("h2");
+        title.textContent = archive.title;
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+        const browse = document.createElement("button");
+        browse.type = "button";
+        browse.className = "primary-btn";
+        browse.textContent = "Browse videos";
+        browse.addEventListener("click", () => openArchive(archive));
+        actions.appendChild(browse);
+        if (editor && managementReady) {
+          const edit = document.createElement("button");
+          edit.type = "button";
+          edit.className = "transport-btn";
+          edit.textContent = "Edit";
+          edit.setAttribute("aria-label", `Edit ${archive.title}`);
+          edit.addEventListener("click", () => showForm(archive));
+          actions.appendChild(edit);
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "delete-archive-btn";
+          remove.textContent = "Remove";
+          remove.setAttribute("aria-label", `Remove ${archive.title}`);
+          remove.addEventListener("click", () => removeArchive(archive, remove));
+          actions.appendChild(remove);
+        }
+        card.append(title, actions);
+        list.appendChild(card);
+      });
+      details.append(summary, list);
+      container.appendChild(details);
+    });
+    if (!groups.size) {
+      const empty = document.createElement("p");
+      empty.className = "empty-state-text";
+      empty.textContent = "No video archives available.";
+      container.appendChild(empty);
+    }
   }
 
   function renderFiles() {
@@ -166,7 +207,7 @@
     }
     managementReady = false;
     try {
-      const result = await client.from("shared_video_archives").select("archive_id,title").order("title", { ascending: true });
+      const result = await client.from("shared_video_archives").select("archive_id,title,category").order("title", { ascending: true });
       if (result.error) throw result.error;
       archives = result.data;
       const migration = await client.from("video_archive_migrations").select("name").eq("name", "managed-default-1998").maybeSingle();
@@ -180,7 +221,7 @@
       }
     } catch (error) {
       console.error("Could not load shared video archives", error);
-      message(el("videoMessage"), `Could not load shared archives: ${error.message}. Check your connection and database setup.`, true);
+      message(el("videoMessage"), `Could not load shared archives: ${error.message}. Check your connection and apply database/video-archive-categories.sql if needed.`, true);
     }
     el("addVideoBtn").disabled = !editor || !managementReady;
     renderArchives();
@@ -235,6 +276,7 @@
     form.reset();
     el("videoArchiveInput").value = archive?.archive_id || "";
     el("videoArchiveTitle").value = archive?.title || "";
+    el("videoArchiveCategory").value = archive?.category || "";
     el("videoFormHeading").textContent = archive ? "Edit video archive" : "Add a video archive";
     message(el("videoFormMessage"), "");
     panel.classList.remove("hidden");
@@ -273,7 +315,10 @@
         const available = await fetchFiles(id);
         if (!available.length) throw new Error("This archive does not contain MP4 videos.");
       }
-      const archive = { archive_id: id, title: el("videoArchiveTitle").value.trim() };
+      const typedCategory = el("videoArchiveCategory").value.trim() || defaultCategory;
+      const existingCategory = archives.find(item => (item.category?.trim() || defaultCategory).toLocaleLowerCase() === typedCategory.toLocaleLowerCase());
+      const archive = { archive_id: id, title: el("videoArchiveTitle").value.trim(),
+        category: existingCategory?.category?.trim() || (existingCategory ? defaultCategory : typedCategory) };
       const previous = editingArchive;
       const result = previous
         ? await client.from("shared_video_archives").update(archive).eq("archive_id", previous.archive_id).select("archive_id")
@@ -293,6 +338,7 @@
       } else {
         archives.push(archive);
       }
+      openCategories.add(archive.category.toLocaleLowerCase());
       renderArchives();
       form.reset();
       panel.classList.add("hidden");
