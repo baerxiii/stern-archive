@@ -13,6 +13,7 @@
   const formMessage = document.getElementById("podcastFormMessage");
   let podcasts = [];
   let editor = false;
+  let editingPodcast = null;
 
   function showMessage(element, text, isError = false) {
     element.textContent = text;
@@ -34,6 +35,24 @@
       link.href = `podcast-player.html?${new URLSearchParams({ rss: podcast.rss })}`;
       link.textContent = "Browse episodes";
       card.append(label, title, link);
+      if (editor && podcast.id) {
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+        const edit = document.createElement("button");
+        edit.type = "button";
+        edit.className = "transport-btn";
+        edit.textContent = "Edit";
+        edit.setAttribute("aria-label", `Edit ${podcast.name}`);
+        edit.addEventListener("click", () => showPodcastForm(podcast));
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "delete-archive-btn";
+        remove.textContent = "Delete";
+        remove.setAttribute("aria-label", `Delete ${podcast.name}`);
+        remove.addEventListener("click", () => deletePodcast(podcast, remove));
+        actions.append(edit, remove);
+        card.appendChild(actions);
+      }
       container.appendChild(card);
     });
   }
@@ -92,10 +111,23 @@
   }
 
   addButton.addEventListener("click", () => {
-    addPanel.classList.toggle("hidden");
-    if (!addPanel.classList.contains("hidden")) document.getElementById("podcastName").focus();
+    if (addPanel.classList.contains("hidden")) showPodcastForm();
+    else addPanel.classList.add("hidden");
   });
-  document.getElementById("closePodcastPanel").addEventListener("click", () => addPanel.classList.add("hidden"));
+  function showPodcastForm(podcast = null) {
+    editingPodcast = podcast;
+    document.getElementById("podcastFormHeading").textContent = podcast ? "Edit podcast" : "Add a podcast";
+    document.getElementById("podcastName").value = podcast?.name || "";
+    document.getElementById("podcastRss").value = podcast?.rss || "";
+    showMessage(formMessage, "");
+    addPanel.classList.remove("hidden");
+    document.getElementById("podcastName").focus();
+    addPanel.scrollIntoView({ block: "nearest" });
+  }
+  document.getElementById("closePodcastPanel").addEventListener("click", () => {
+    editingPodcast = null;
+    addPanel.classList.add("hidden");
+  });
 
   addForm.addEventListener("submit", async event => {
     event.preventDefault();
@@ -118,30 +150,53 @@
       showMessage(formMessage, "Sign in with an authorized editor account.", true);
       return;
     }
-    if (podcasts.some(podcast => podcast.rss.trim() === rss)) {
+    if (podcasts.some(podcast => podcast.rss.trim() === rss && podcast.id !== editingPodcast?.id)) {
       showMessage(formMessage, "That RSS feed is already on the podcast page.", true);
       return;
     }
 
     button.disabled = true;
     try {
-      showMessage(formMessage, "Saving podcast…");
-      const result = await client.from("shared_podcasts").insert({ name, rss }).select("id");
+      const previous = editingPodcast;
+      showMessage(formMessage, previous ? "Updating podcast…" : "Saving podcast…");
+      const result = previous
+        ? await client.from("shared_podcasts").update({ name, rss }).eq("id", previous.id).select("id,name,rss")
+        : await client.from("shared_podcasts").insert({ name, rss }).select("id");
       if (result.error) throw result.error;
       if (!result.data?.length) throw new Error("The database did not confirm the new podcast.");
-      podcasts.push({ name, rss });
+      if (previous) podcasts = podcasts.map(podcast => podcast.id === previous.id ? result.data[0] : podcast);
+      else podcasts.push({ id: result.data[0].id, name, rss });
       render();
       addForm.reset();
+      editingPodcast = null;
       addPanel.classList.add("hidden");
       showMessage(formMessage, "");
-      showMessage(message, "Podcast added to the shared list.");
+      showMessage(message, previous ? "Podcast updated." : "Podcast added to the shared list.");
     } catch (error) {
-      console.error("Could not add podcast", error);
-      showMessage(formMessage, `Could not add podcast: ${error.message}`, true);
+      console.error("Could not save podcast", error);
+      showMessage(formMessage, `Could not save podcast: ${error.message}`, true);
     } finally {
       button.disabled = false;
     }
   });
+
+  async function deletePodcast(podcast, button) {
+    if (!editor || !podcast.id) return;
+    if (!confirm(`Delete "${podcast.name}" from the shared podcast list?`)) return;
+    button.disabled = true;
+    try {
+      const result = await client.from("shared_podcasts").delete().eq("id", podcast.id).select("id");
+      if (result.error) throw result.error;
+      if (!result.data?.length) throw new Error("The database did not confirm the deletion.");
+      podcasts = podcasts.filter(item => item.id !== podcast.id);
+      render();
+      showMessage(message, "Podcast deleted from the shared list.");
+    } catch (error) {
+      console.error("Could not delete podcast", error);
+      showMessage(message, `Could not delete podcast: ${error.message}`, true);
+      button.disabled = false;
+    }
+  }
 
   signInForm.addEventListener("submit", async event => {
     event.preventDefault();

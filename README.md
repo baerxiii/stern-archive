@@ -32,7 +32,9 @@ Archive item. If the shared database is unavailable, the page reports the error.
 
 Archives are grouped by category and sorted by year, oldest first; entries without
 a year appear last. Entering a new category when adding an archive creates it.
-Shared changes require an authorized Supabase email/password account.
+Shared changes require an authorized Supabase email/password account. Editors can
+edit or remove any listed archive; defaults are hidden when removed, and editing
+a default replaces its library entry without changing the original audio.
 Existing browser-only custom archives remain on that browser and can be removed
 there by an authorized editor. Deleting a default archive hides it from the shared library, and deleting
 any entry does not delete the original audio.
@@ -44,7 +46,7 @@ Before enabling shared editing, a Supabase project administrator must:
    existing integrations before applying it.
 2. Create the editor's account in Supabase Auth, then authorize its user ID in
    the SQL editor with `insert into public.library_editors (user_id) values
-   ('USER_UUID');`. Repeat for each authorized editor. Only a database admin can
+   ('USER_UUID');`.    Repeat for each authorized editor. Only a database admin can
    change this allowlist; signing up alone does not grant editing access.
 3. Sign in on the archive library page using that account.
 
@@ -52,14 +54,17 @@ Until the migration is applied, the old database policies remain in force and
 shared editing is not enabled by this interface. The migration is required to
 enforce editor authorization at the database, not just in the browser. Reapply
 `database/library-editors.sql` after pulling updates that add shared podcasts;
-it creates the shared podcast table and its editor-only insert policy.
+it creates the shared podcast table and editor-only write policies.
 
 ## Shared podcasts
 
 Podcast feeds added from the Podcasts page are shared with everyone. Sign in
 there with an authorized editor account, choose **Add podcast**, and enter the
 podcast name and its HTTP(S) RSS feed URL. The built-in feeds remain in
-`podcasts.json`; feeds added through the page are stored in Supabase.
+`podcasts.json`; feeds added through the page are stored in Supabase. Editors can edit or delete
+those shared feeds; built-in feeds in `podcasts.json` are not editable on the page.
+Reapply `database/library-editors.sql` to enable podcast updates and deletions.
+Audiobooks remain live Archive.org search results and are not managed by this app.
 
 Browsers can only read remote feeds whose hosts allow cross-origin access. The
 Corbett Report feed has an optional, feed-specific Supabase Edge Function fallback

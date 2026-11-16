@@ -14,6 +14,7 @@
   const authStatus = document.getElementById("authStatus");
   let entries = [];
   let editor = false;
+  let editingEntry = null;
   const openCategories = new Set();
 
   function showMessage(element, text, isError = false) {
@@ -107,6 +108,13 @@
         link.textContent = "Open";
         actions.appendChild(link);
         if (editor) {
+          const editButton = document.createElement("button");
+          editButton.type = "button";
+          editButton.className = "transport-btn";
+          editButton.textContent = "Edit";
+          editButton.setAttribute("aria-label", `Edit ${item.title || item.archiveId}`);
+          editButton.addEventListener("click", () => showArchiveForm(item));
+          actions.appendChild(editButton);
           const button = document.createElement("button");
           button.type = "button";
           button.className = "delete-archive-btn";
@@ -213,15 +221,32 @@
     }
   }
 
+  function showArchiveForm(item = null) {
+    editingEntry = item;
+    document.getElementById("archiveFormHeading").textContent = item ? "Edit archive" : "Add an archive";
+    document.getElementById("archiveInput").value = item?.archiveId || "";
+    document.getElementById("archiveTitle").value = item?.title || "";
+    document.getElementById("archiveYear").value = item?.year || "";
+    document.getElementById("archiveCategory").value = item ? categoryOf(item) : DEFAULT_CATEGORY;
+    showMessage(formMessage, "");
+    panel.classList.remove("hidden");
+    document.getElementById("archiveInput").focus();
+    panel.scrollIntoView({ block: "nearest" });
+  }
+
   document.getElementById("addArchiveBtn").addEventListener("click", () => {
-    panel.classList.toggle("hidden");
-    if (!panel.classList.contains("hidden")) document.getElementById("archiveInput").focus();
+    if (panel.classList.contains("hidden")) showArchiveForm();
+    else panel.classList.add("hidden");
   });
-  document.getElementById("closeArchivePanel").addEventListener("click", () => panel.classList.add("hidden"));
+  document.getElementById("closeArchivePanel").addEventListener("click", () => {
+    editingEntry = null;
+    panel.classList.add("hidden");
+  });
   search.addEventListener("input", render);
 
   document.getElementById("saveArchiveBtn").addEventListener("click", async event => {
     const button = event.currentTarget;
+    const wasEditing = Boolean(editingEntry);
     const archiveId = normalizeArchiveId(document.getElementById("archiveInput").value);
     const title = document.getElementById("archiveTitle").value.trim() || archiveId;
     const year = document.getElementById("archiveYear").value.trim() || null;
@@ -236,27 +261,61 @@
     }
     button.disabled = true;
     try {
-      showMessage(formMessage, "Checking archive...");
-      const response = await fetch(`https://archive.org/metadata/${encodeURIComponent(archiveId)}`);
-      if (!response.ok) throw new Error("Could not find that archive on Archive.org.");
-      const data = await response.json();
-      if (!(data.files || []).some(file => typeof file.name === "string" && file.name.toLowerCase().endsWith(".mp3"))) {
-        throw new Error("This archive does not contain MP3 files.");
+      if (!editingEntry || archiveId !== editingEntry.archiveId) {
+        showMessage(formMessage, "Checking archive...");
+        const response = await fetch(`https://archive.org/metadata/${encodeURIComponent(archiveId)}`);
+        if (!response.ok) throw new Error("Could not find that archive on Archive.org.");
+        const data = await response.json();
+        if (!(data.files || []).some(file => typeof file.name === "string" && file.name.toLowerCase().endsWith(".mp3"))) {
+          throw new Error("This archive does not contain MP3 files.");
+        }
       }
-      const result = await client.from("custom_library").insert({
-        id: `${archiveId}-${crypto.randomUUID()}`, archive_id: archiveId, title, year, category
-      }).select("id");
-      if (result.error) throw result.error;
-      if (!result.data?.length) throw new Error("The database did not confirm the new archive.");
+      const archive = { archive_id: archiveId, title, year, category };
+      if (editingEntry?.source === "local") {
+        const local = localEntries().map(({ source, ...entry }) => entry);
+        const index = local.findIndex(entry => editingEntry.id
+          ? entry.id === editingEntry.id
+          : entry.archiveId === editingEntry.archiveId);
+        if (index < 0) throw new Error("The local archive no longer exists.");
+        local[index] = { ...local[index], archiveId, title, year, category };
+        localStorage.setItem(CUSTOM_LIBRARY_KEY, JSON.stringify(local));
+      } else if (editingEntry?.source === "shared") {
+        const result = await client.from("custom_library").update(archive).eq("id", editingEntry.id).select("id");
+        if (result.error) throw result.error;
+        if (!result.data?.length) throw new Error("The database did not confirm the update.");
+      } else if (editingEntry?.source === "default") {
+        const id = `${archiveId}-${crypto.randomUUID()}`;
+        const inserted = await client.from("custom_library").insert({ id, ...archive }).select("id");
+        if (inserted.error) throw inserted.error;
+        if (!inserted.data?.length) throw new Error("The database did not confirm the updated archive.");
+        const hidden = await client.from("hidden_default_archives")
+          .upsert({ archive_id: editingEntry.archiveId }).select("archive_id");
+        if (hidden.error || !hidden.data?.length) {
+          const rollback = await client.from("custom_library").delete().eq("id", id).select("id");
+          if (rollback.error || !rollback.data?.length) {
+            const reason = rollback.error?.message || "the database did not confirm the rollback";
+            throw new Error(`Could not replace the default archive, and the new entry could not be rolled back: ${reason}`);
+          }
+          if (hidden.error) throw hidden.error;
+          throw new Error("The database did not confirm the original archive was replaced.");
+        }
+      } else {
+        const result = await client.from("custom_library").insert({
+          id: `${archiveId}-${crypto.randomUUID()}`, ...archive
+        }).select("id");
+        if (result.error) throw result.error;
+        if (!result.data?.length) throw new Error("The database did not confirm the new archive.");
+      }
       openCategories.add(category.toLocaleLowerCase());
       await refresh();
+      editingEntry = null;
       ["archiveInput", "archiveTitle", "archiveYear"].forEach(id => { document.getElementById(id).value = ""; });
       panel.classList.add("hidden");
       showMessage(formMessage, "");
-      showMessage(message, "Archive added to the shared library.");
+      showMessage(message, wasEditing ? "Archive updated." : "Archive added to the shared library.");
     } catch (error) {
-      console.error("Could not add archive", error);
-      showMessage(formMessage, `Could not add archive: ${error.message}`, true);
+      console.error("Could not save archive", error);
+      showMessage(formMessage, `Could not save archive: ${error.message}`, true);
     } finally {
       button.disabled = false;
     }

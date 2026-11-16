@@ -48,7 +48,7 @@ grant select on public.library_editors to authenticated;
 revoke all on public.custom_library, public.hidden_default_archives, public.shared_podcasts from anon, authenticated;
 grant select on public.custom_library, public.hidden_default_archives, public.shared_podcasts to anon, authenticated;
 grant insert, update, delete on public.custom_library, public.hidden_default_archives to authenticated;
-grant insert on public.shared_podcasts to authenticated;
+grant insert, update, delete on public.shared_podcasts to authenticated;
 
 create policy "Editors can see their own authorization" on public.library_editors
   for select to authenticated using (user_id = auth.uid());
@@ -74,5 +74,10 @@ create policy "Public can read podcasts" on public.shared_podcasts
   for select to anon, authenticated using (true);
 create policy "Editors can add podcasts" on public.shared_podcasts
   for insert to authenticated with check (exists (select 1 from public.library_editors where user_id = auth.uid()));
+create policy "Editors can update podcasts" on public.shared_podcasts
+  for update to authenticated using (exists (select 1 from public.library_editors where user_id = auth.uid()))
+  with check (exists (select 1 from public.library_editors where user_id = auth.uid()));
+create policy "Editors can delete podcasts" on public.shared_podcasts
+  for delete to authenticated using (exists (select 1 from public.library_editors where user_id = auth.uid()));
 
 commit;
