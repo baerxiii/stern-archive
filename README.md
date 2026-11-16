@@ -54,7 +54,9 @@ Until the migration is applied, the old database policies remain in force and
 shared editing is not enabled by this interface. The migration is required to
 enforce editor authorization at the database, not just in the browser. Reapply
 `database/library-editors.sql` after pulling updates that add shared podcasts;
-it creates the shared podcast table and editor-only write policies.
+it creates the shared podcast table and editor-only write policies. On an existing
+installation, use `database/shared-podcast-management.sql` to restore podcast
+update and delete permissions without rerunning the broader migration.
 
 ## Shared podcasts
 
@@ -63,7 +65,6 @@ there with an authorized editor account, choose **Add podcast**, and enter the
 podcast name and its HTTP(S) RSS feed URL. The built-in feeds remain in
 `podcasts.json`; feeds added through the page are stored in Supabase. Editors can edit or delete
 those shared feeds; built-in feeds in `podcasts.json` are not editable on the page.
-Reapply `database/library-editors.sql` to enable podcast updates and deletions.
 Audiobooks remain live Archive.org search results and are not managed by this app.
 
 Browsers can only read remote feeds whose hosts allow cross-origin access. The

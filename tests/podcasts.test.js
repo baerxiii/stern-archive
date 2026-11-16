@@ -41,6 +41,7 @@ test("authorized editors can add, edit, and delete a shared RSS feed", async () 
     createElement() { return new Element(); }
   };
   const shared = [];
+  let mutationError = null;
   const client = {
     auth: { getSession: async () => ({ data: { session: { user: { id: "editor" } } } }) },
     from(table) {
@@ -61,6 +62,7 @@ test("authorized editors can add, edit, and delete a shared RSS feed", async () 
         update: values => ({
           eq: (column, id) => ({
             select: async () => {
+              if (mutationError) return { data: null, error: mutationError };
               const item = shared.find(entry => entry[column] === id);
               Object.assign(item, values);
               return { data: [item], error: null };
@@ -70,6 +72,7 @@ test("authorized editors can add, edit, and delete a shared RSS feed", async () 
         delete: () => ({
           eq: (column, id) => ({
             select: async () => {
+              if (mutationError) return { data: null, error: mutationError };
               const index = shared.findIndex(entry => entry[column] === id);
               return { data: index < 0 ? [] : shared.splice(index, 1), error: null };
             }
@@ -114,6 +117,12 @@ test("authorized editors can add, edit, and delete a shared RSS feed", async () 
   assert.deepEqual(shared, [{ id: "new-feed", name: "Updated show", rss: "https://example.com/updated.xml" }]);
 
   const updatedCard = document.getElementById("podcastList").children[1];
+  mutationError = { code: "42501", message: "permission denied for table shared_podcasts" };
+  updatedCard.children[3].children[1].dispatchEvent(new Event("click"));
+  await new Promise(resolve => setImmediate(resolve));
+  assert.match(document.getElementById("podcastMessage").textContent, /database\/shared-podcast-management\.sql/);
+  assert.equal(shared.length, 1);
+  mutationError = null;
   updatedCard.children[3].children[1].dispatchEvent(new Event("click"));
   await new Promise(resolve => setImmediate(resolve));
   assert.deepEqual(shared, []);

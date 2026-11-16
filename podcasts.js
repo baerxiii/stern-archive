@@ -20,6 +20,12 @@
     element.classList.toggle("error", isError);
   }
 
+  function mutationError(error) {
+    return error.code === "42501"
+      ? `${error.message}. Apply database/shared-podcast-management.sql in Supabase, then retry.`
+      : error.message;
+  }
+
   function render() {
     container.replaceChildren();
     podcasts.forEach(podcast => {
@@ -174,7 +180,7 @@
       showMessage(message, previous ? "Podcast updated." : "Podcast added to the shared list.");
     } catch (error) {
       console.error("Could not save podcast", error);
-      showMessage(formMessage, `Could not save podcast: ${error.message}`, true);
+      showMessage(formMessage, `Could not save podcast: ${mutationError(error)}`, true);
     } finally {
       button.disabled = false;
     }
@@ -193,7 +199,7 @@
       showMessage(message, "Podcast deleted from the shared list.");
     } catch (error) {
       console.error("Could not delete podcast", error);
-      showMessage(message, `Could not delete podcast: ${error.message}`, true);
+      showMessage(message, `Could not delete podcast: ${mutationError(error)}`, true);
       button.disabled = false;
     }
   }
