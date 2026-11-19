@@ -11,7 +11,7 @@ const archiveYear = (() => {
   const shortYearMatch = archiveId.match(/-(\d{2})-cf/i);
   if (shortYearMatch) {
     const yy = Number(shortYearMatch[1]);
-    return 2000 + yy;
+    return yy >= 70 ? 1900 + yy : 2000 + yy;
   }
 
   return null;
@@ -52,15 +52,50 @@ if (!mainPlayer) {
 }
 const playback = ListeningHistory.attach(mainPlayer);
 
-function parseDateFromFileName(fileName) {
-  let match = fileName.match(/(\d{4})_(\d{2})_(\d{2})/);
+function normalizeTwoDigitYear(yy, fallbackYear = archiveYear) {
+  const num = Number(yy);
+  if (!Number.isFinite(num)) return null;
+  if (fallbackYear && fallbackYear % 100 === num) {
+    return fallbackYear;
+  }
+  return num >= 65 ? 1900 + num : 2000 + num;
+}
+
+function parseDateFromFileName(fileName, fallbackYear = archiveYear) {
+  if (!fileName) return null;
+
+  // 1. 4-digit year first: YYYY_MM_DD, YYYY-MM-DD, YYYY.MM.DD
+  let match = fileName.match(/(19\d{2}|20\d{2})[._-](\d{2})[._-](\d{2})/);
   if (match) {
     return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
   }
 
-  match = fileName.match(/(\d{2})-(\d{2})-(\d{2})/);
+  // 2. Compact 8-digit date: YYYYMMDD
+  match = fileName.match(/(?:^|[^0-9])(19\d{2}|20\d{2})(\d{2})(\d{2})(?:[^0-9]|$)/);
   if (match) {
-    return new Date(2000 + Number(match[3]), Number(match[1]) - 1, Number(match[2]));
+    return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  }
+
+  // 3. MM-DD-YY or MM_DD_YY
+  match = fileName.match(/(?:^|[^0-9])(\d{2})[-_](\d{2})[-_](\d{2})(?:[^0-9]|$)/);
+  if (match) {
+    const month = Number(match[1]);
+    const day = Number(match[2]);
+    const year = normalizeTwoDigitYear(match[3], fallbackYear);
+    if (year && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+      return new Date(year, month - 1, day);
+    }
+  }
+
+  // 4. YY-MM-DD or YY_MM_DD (when first number looks like year or matches archiveYear % 100)
+  match = fileName.match(/(?:^|[^0-9])(\d{2})[-_](\d{2})[-_](\d{2})(?:[^0-9]|$)/);
+  if (match && fallbackYear && Number(match[1]) === fallbackYear % 100) {
+    const year = fallbackYear;
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+    if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+      return new Date(year, month - 1, day);
+    }
   }
 
   return null;
@@ -75,9 +110,9 @@ function toLocalDateKey(date) {
 }
 
 function formatEpisodeLabel(fileName) {
-  const date = parseDateFromFileName(fileName);
+  const date = parseDateFromFileName(fileName, archiveYear);
   if (!date) {
-    return fileName.replace(".mp3", "").replaceAll("_", " ");
+    return fileName.replace(/\.[^/.]+$/, "").replaceAll("_", " ");
   }
 
   return date.toLocaleDateString("en-US", {
@@ -99,7 +134,7 @@ function formatTime(seconds) {
 }
 
 function getMonthKey(fileName) {
-  const date = parseDateFromFileName(fileName);
+  const date = parseDateFromFileName(fileName, archiveYear);
   if (!date) return null;
 
   return {
@@ -233,8 +268,8 @@ fetch(`https://archive.org/metadata/${archiveId}`)
     const mp3s = (data.files || [])
       .filter(file => typeof file?.name === "string" && file.name.toLowerCase().endsWith(".mp3"))
       .sort((a, b) => {
-        const aDate = parseDateFromFileName(a.name)?.getTime() ?? Number.MAX_SAFE_INTEGER;
-        const bDate = parseDateFromFileName(b.name)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const aDate = parseDateFromFileName(a.name, archiveYear)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const bDate = parseDateFromFileName(b.name, archiveYear)?.getTime() ?? Number.MAX_SAFE_INTEGER;
         return aDate - bDate || a.name.localeCompare(b.name);
       });
 
@@ -334,7 +369,7 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       currentFileName = fileName || "";
       segmentOffsetMinutes = loadSavedOffset(currentFileName);
 
-      const date = parseDateFromFileName(fileName);
+      const date = parseDateFromFileName(fileName, archiveYear);
       if (!showNotes) return;
 
       const dateKey = toLocalDateKey(date);
