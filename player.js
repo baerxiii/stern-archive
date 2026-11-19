@@ -3,49 +3,32 @@ const archiveId = params.get("archiveId") || "";
 const title = params.get("title");
 
 const archiveYear = (() => {
-
-  const fullYearMatch =
-    archiveId.match(/(19|20)\d{2}/);
-
+  const fullYearMatch = archiveId.match(/(19|20)\d{2}/);
   if (fullYearMatch) {
     return Number(fullYearMatch[0]);
   }
 
-  const shortYearMatch =
-    archiveId.match(/-(\d{2})-cf/i);
-
+  const shortYearMatch = archiveId.match(/-(\d{2})-cf/i);
   if (shortYearMatch) {
-
-    const yy =
-      Number(shortYearMatch[1]);
-
+    const yy = Number(shortYearMatch[1]);
     return 2000 + yy;
-
   }
 
   return null;
-
 })();
 
-console.log(
-  "archiveYear =",
-  archiveYear
-);
+console.log("archiveYear =", archiveYear);
 
-document
-  .getElementById("backButton")
-  ?.addEventListener("click", () => {
-
-    if (history.length > 1) {
-      history.back();
-    } else {
-      window.location.href =
-        "library.html";
-    }
-
-  });
+document.getElementById("backButton")?.addEventListener("click", () => {
+  if (history.length > 1) {
+    history.back();
+  } else {
+    window.location.href = "library.html";
+  }
+});
 
 let segmentData = {};
+let segmentOffsetMinutes = 0; // Per-show offset in minutes (negative for commercial-free edits)
 
 const pageTitle = document.getElementById("title");
 if (pageTitle) {
@@ -70,52 +53,39 @@ if (!mainPlayer) {
 const playback = ListeningHistory.attach(mainPlayer);
 
 function parseDateFromFileName(fileName) {
-
-  let match =
-    fileName.match(/(\d{4})_(\d{2})_(\d{2})/);
-
+  let match = fileName.match(/(\d{4})_(\d{2})_(\d{2})/);
   if (match) {
-    return new Date(
-      Number(match[1]),
-      Number(match[2]) - 1,
-      Number(match[3])
-    );
+    return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
   }
 
-  match =
-    fileName.match(/(\d{2})-(\d{2})-(\d{2})/);
-
+  match = fileName.match(/(\d{2})-(\d{2})-(\d{2})/);
   if (match) {
-    return new Date(
-      2000 + Number(match[3]),
-      Number(match[1]) - 1,
-      Number(match[2])
-    );
+    return new Date(2000 + Number(match[3]), Number(match[1]) - 1, Number(match[2]));
   }
 
   return null;
 }
 
+function toLocalDateKey(date) {
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) return null;
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 function formatEpisodeLabel(fileName) {
-
-  const date =
-    parseDateFromFileName(fileName);
-
+  const date = parseDateFromFileName(fileName);
   if (!date) {
-    return fileName
-      .replace(".mp3", "")
-      .replaceAll("_", " ");
+    return fileName.replace(".mp3", "").replaceAll("_", " ");
   }
 
-  return date.toLocaleDateString(
-    "en-US",
-    {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    }
-  );
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
 }
 
 function formatTime(seconds) {
@@ -129,89 +99,125 @@ function formatTime(seconds) {
 }
 
 function getMonthKey(fileName) {
-
-  const date =
-    parseDateFromFileName(fileName);
-
+  const date = parseDateFromFileName(fileName);
   if (!date) return null;
 
   return {
     date,
-
-    monthLabel:
-      date.toLocaleDateString(
-        "en-US",
-        {
-          year: "numeric",
-          month: "long"
-        }
-      ),
-
-    dayLabel:
-      date.toLocaleDateString(
-        "en-US",
-        {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        }
-      )
+    monthLabel: date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long"
+    }),
+    dayLabel: date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    })
   };
 }
 
 async function loadSegmentFile(year) {
-
   try {
-
-    console.log(
-      "Trying to load:",
-      `segments/${year}.json`
-    );
-
-    const response =
-      await fetch(
-        `segments/${year}.json`
-      );
-
-    console.log(
-      "Response status:",
-      response.status
-    );
+    console.log("Trying to load:", `segments/${year}.json`);
+    const response = await fetch(`segments/${year}.json`);
+    console.log("Response status:", response.status);
 
     if (!response.ok) {
       return {};
     }
 
-    const data =
-      await response.json();
-
-    console.log(
-      "Loaded keys:",
-      Object.keys(data).length
-    );
-
+    const data = await response.json();
+    console.log("Loaded keys:", Object.keys(data).length);
     return data;
-
   } catch (error) {
-
-    console.error(
-      "Segment loading failed:",
-      error
-    );
-
+    console.error("Segment loading failed:", error);
     return {};
   }
-
 }
 
+function parseBroadcastTimeToMinutes(timeString) {
+  if (!timeString) return null;
+
+  const amPmMatch = String(timeString).trim().match(/^(\d{1,2}):(\d{2})\s*(am|pm)$/i);
+  if (amPmMatch) {
+    let hour = Number(amPmMatch[1]);
+    const minute = Number(amPmMatch[2]);
+    const period = amPmMatch[3].toLowerCase();
+
+    if (period === "pm" && hour !== 12) hour += 12;
+    if (period === "am" && hour === 12) hour = 0;
+
+    return hour * 60 + minute;
+  }
+
+  const twentyFourMatch = String(timeString).trim().match(/^(\d{1,2}):(\d{2})$/);
+  if (twentyFourMatch) {
+    return Number(twentyFourMatch[1]) * 60 + Number(twentyFourMatch[2]);
+  }
+
+  return null;
+}
+
+function estimateSegmentSeconds(timeString, duration, showStartHour = 6, offsetMinutes = segmentOffsetMinutes) {
+  const broadcastMins = parseBroadcastTimeToMinutes(timeString);
+  if (broadcastMins === null) return 0;
+
+  const startMins = showStartHour * 60;
+  const adjustedMins = (broadcastMins - startMins) + Number(offsetMinutes || 0);
+  const elapsedSeconds = Math.max(0, adjustedMins * 60);
+
+  if (Number.isFinite(duration) && duration > 0) {
+    return Math.min(elapsedSeconds, Math.max(0, duration - 1));
+  }
+
+  return elapsedSeconds;
+}
+
+function getOffsetStorageKey(fileName) {
+  return `sternSegmentOffset:${archiveId}:${fileName}`;
+}
+
+function loadSavedOffset(fileName) {
+  if (!fileName) return 0;
+  try {
+    const raw = localStorage.getItem(getOffsetStorageKey(fileName));
+    const parsed = Number(raw);
+    return Number.isFinite(parsed) ? parsed : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function saveOffset(fileName, mins) {
+  if (!fileName) return;
+  try {
+    localStorage.setItem(getOffsetStorageKey(fileName), String(mins));
+  } catch (error) {
+    console.warn("Could not save segment offset:", error);
+  }
+}
+
+function findSegmentEntry(dateKey) {
+  if (!dateKey || !segmentData || typeof segmentData !== "object") return null;
+  if (segmentData[dateKey]) return segmentData[dateKey];
+
+  const targetTime = new Date(`${dateKey}T12:00:00`).getTime();
+  for (const [key, value] of Object.entries(segmentData)) {
+    const candidateTime = new Date(`${key}T12:00:00`).getTime();
+    if (Number.isFinite(candidateTime) && Math.abs(targetTime - candidateTime) <= 86400000) {
+      return value;
+    }
+  }
+
+  return null;
+}
 
 fetch(`https://archive.org/metadata/${archiveId}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`Failed to load archive metadata: ${response.status}`);
     }
-
     return response.json();
   })
   .then(async data => {
@@ -219,67 +225,16 @@ fetch(`https://archive.org/metadata/${archiveId}`)
       throw new Error("audioPlayer element is missing.");
     }
 
-console.log("archiveYear =", archiveYear);
-    
-if (archiveYear) {
+    if (archiveYear) {
+      segmentData = await loadSegmentFile(archiveYear);
+      console.log("Loaded segment file:", archiveYear, "entries:", Object.keys(segmentData).length);
+    }
 
-  segmentData =
-    await loadSegmentFile(
-      archiveYear
-    );
-
-  console.log(
-  "segmentData keys count =",
-  Object.keys(segmentData).length
-);
-
-  console.log(
-  "archiveYear:",
-  archiveYear
-);
-
-console.log(
-  "segmentData:",
-  segmentData
-);
-
-  console.log(
-  "archiveYear:",
-  archiveYear
-);
-
-console.log(
-  "segmentData keys:",
-  Object.keys(segmentData).length
-);
-
-  console.log(
-  "Loaded segment file:",
-  archiveYear
-);
-
-console.log(
-  "Loaded entries:",
-  Object.keys(segmentData).length
-);
-
-  console.log(
-  "Loaded segment count:",
-  Object.keys(segmentData).length
-);
-
-console.log(
-  "First segment key:",
-  Object.keys(segmentData)[0]
-);
-
-}
-    
     const mp3s = (data.files || [])
       .filter(file => typeof file?.name === "string" && file.name.toLowerCase().endsWith(".mp3"))
       .sort((a, b) => {
-        const aDate = parseDateFromFileName(a.name, archiveYear)?.getTime() ?? Number.MAX_SAFE_INTEGER;
-        const bDate = parseDateFromFileName(b.name, archiveYear)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const aDate = parseDateFromFileName(a.name)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const bDate = parseDateFromFileName(b.name)?.getTime() ?? Number.MAX_SAFE_INTEGER;
         return aDate - bDate || a.name.localeCompare(b.name);
       });
 
@@ -287,10 +242,12 @@ console.log(
     controls.className = "transport-controls";
 
     const prevButton = document.createElement("button");
+    prevButton.type = "button";
     prevButton.textContent = "◀ Prev";
     prevButton.className = "transport-btn";
 
     const nextButton = document.createElement("button");
+    nextButton.type = "button";
     nextButton.textContent = "Next ▶";
     nextButton.className = "transport-btn";
 
@@ -302,7 +259,8 @@ console.log(
     controls.appendChild(nextButton);
     controls.appendChild(timeDisplay);
 
-    document.querySelector(".sticky-player").appendChild(controls);
+    document.querySelector(".sticky-player")?.appendChild(controls);
+
     const archiveEpisodes = document.getElementById("archiveEpisodes");
 
     const search = document.createElement("input");
@@ -317,47 +275,177 @@ console.log(
     archiveEpisodes.appendChild(episodeList);
 
     const showNotes = document.createElement("div");
-showNotes.id = "showNotes";
-showNotes.className = "show-notes";
-
-episodeList.parentElement.insertBefore(
-  showNotes,
-  episodeList
-);
+    showNotes.id = "showNotes";
+    showNotes.className = "show-notes";
+    episodeList.parentElement.insertBefore(showNotes, episodeList);
 
     let currentIndex = -1;
+    let currentFileName = "";
 
-    document.addEventListener(
-  "click",
-  event => {
-
-    const button =
-      event.target.closest(
-        ".segment-jump"
-      );
-
-    if (!button) {
-      return;
+    function updateSegmentTimeHints() {
+      const duration = Number(mainPlayer.duration) || 0;
+      showNotes.querySelectorAll(".segment-jump").forEach(btn => {
+        const rawTime = btn.dataset.time || "";
+        const estSec = estimateSegmentSeconds(rawTime, duration, 6, segmentOffsetMinutes);
+        const hintEl = btn.querySelector(".segment-offset-time");
+        if (hintEl && rawTime) {
+          hintEl.textContent = `(~${formatTime(estSec)})`;
+        }
+      });
     }
 
-    const time =
-      button.dataset.time;
+    function highlightActiveSegment() {
+      if (!showNotes || !mainPlayer) return;
+      const buttons = [...showNotes.querySelectorAll(".segment-jump")];
+      if (!buttons.length) return;
 
-    if (!time) {
-      return;
+      const currentTime = Number(mainPlayer.currentTime) || 0;
+      const duration = Number(mainPlayer.duration) || 0;
+
+      let activeButton = null;
+      for (const btn of buttons) {
+        const segStart = estimateSegmentSeconds(btn.dataset.time, duration, 6, segmentOffsetMinutes);
+        if (segStart <= currentTime) {
+          activeButton = btn;
+        } else {
+          break;
+        }
+      }
+
+      buttons.forEach(btn => btn.classList.toggle("is-active", btn === activeButton));
     }
 
-    const jumpTo =
-      estimateOffset(
-        time,
-        mainPlayer.duration || 0
+    function setSegmentOffset(newOffset) {
+      segmentOffsetMinutes = Number(newOffset) || 0;
+      if (currentFileName) {
+        saveOffset(currentFileName, segmentOffsetMinutes);
+      }
+
+      const input = showNotes.querySelector("#segmentOffsetInput");
+      if (input) {
+        input.value = String(segmentOffsetMinutes);
+      }
+
+      updateSegmentTimeHints();
+      highlightActiveSegment();
+    }
+
+    function renderSegments(fileName) {
+      currentFileName = fileName || "";
+      segmentOffsetMinutes = loadSavedOffset(currentFileName);
+
+      const date = parseDateFromFileName(fileName);
+      if (!showNotes) return;
+
+      const dateKey = toLocalDateKey(date);
+      const entry = findSegmentEntry(dateKey);
+
+      const offsetBarHtml = `
+        <div class="segment-offset-bar" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;font-size:0.9rem;">
+          <label for="segmentOffsetInput"><strong>Time Offset (min):</strong></label>
+          <button type="button" class="offset-nudge" data-delta="-5">-5m</button>
+          <button type="button" class="offset-nudge" data-delta="-1">-1m</button>
+          <input
+            id="segmentOffsetInput"
+            type="number"
+            step="1"
+            value="${segmentOffsetMinutes}"
+            style="width:70px;"
+          />
+          <button type="button" class="offset-nudge" data-delta="1">+1m</button>
+          <button type="button" class="offset-nudge" data-delta="5">+5m</button>
+          <button type="button" class="offset-reset">Reset</button>
+        </div>
+      `;
+
+      if (!entry || !Array.isArray(entry.segments) || entry.segments.length === 0) {
+        showNotes.innerHTML = `
+          <div class="card">
+            <h3>📖 Topics Discussed</h3>
+            ${offsetBarHtml}
+            <p>No segment data available for this episode.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const duration = Number(mainPlayer.duration) || 0;
+
+      showNotes.innerHTML = `
+        <div class="card">
+          <h3>📖 Topics Discussed</h3>
+          ${offsetBarHtml}
+          <ul class="segment-list">
+            ${entry.segments
+              .map((segment, idx) => {
+                const rawTime = segment.time || "";
+                const estSec = estimateSegmentSeconds(rawTime, duration, 6, segmentOffsetMinutes);
+                const labelTime = rawTime ? `${rawTime} ` : "";
+                const hintTime = rawTime ? `<span class="segment-offset-time">(~${formatTime(estSec)})</span>` : "";
+
+                return `
+                  <li>
+                    <button
+                      type="button"
+                      class="segment-jump"
+                      data-index="${idx}"
+                      data-time="${rawTime}"
+                    >
+                      <strong>${labelTime}</strong>${hintTime} - ${segment.title}
+                    </button>
+                  </li>
+                `;
+              })
+              .join("")}
+          </ul>
+        </div>
+      `;
+
+      highlightActiveSegment();
+    }
+
+    showNotes.addEventListener("click", event => {
+      const nudgeBtn = event.target.closest(".offset-nudge");
+      if (nudgeBtn) {
+        const delta = Number(nudgeBtn.dataset.delta) || 0;
+        setSegmentOffset(segmentOffsetMinutes + delta);
+        return;
+      }
+
+      const resetBtn = event.target.closest(".offset-reset");
+      if (resetBtn) {
+        setSegmentOffset(0);
+        return;
+      }
+
+      const jumpBtn = event.target.closest(".segment-jump");
+      if (!jumpBtn || !mainPlayer) return;
+
+      const seekTo = estimateSegmentSeconds(
+        jumpBtn.dataset.time,
+        mainPlayer.duration || 0,
+        6,
+        segmentOffsetMinutes
       );
 
-    mainPlayer.currentTime =
-      jumpTo;
+      const applySeek = () => {
+        mainPlayer.currentTime = seekTo;
+        highlightActiveSegment();
+        mainPlayer.play().catch(() => {});
+      };
 
-  }
-);
+      if (mainPlayer.readyState >= 1) {
+        applySeek();
+      } else {
+        mainPlayer.addEventListener("loadedmetadata", applySeek, { once: true });
+      }
+    });
+
+    showNotes.addEventListener("change", event => {
+      if (event.target?.id === "segmentOffsetInput") {
+        setSegmentOffset(Number(event.target.value) || 0);
+      }
+    });
 
     function updateTimeDisplay() {
       const current = Number(mainPlayer.currentTime) || 0;
@@ -380,195 +468,13 @@ episodeList.parentElement.insertBefore(
         );
       } catch (error) {
         console.error("Could not save the last archive episode", error);
-        document.querySelector(".playback-status").textContent = "Could not save the last archive episode. Check your browser storage.";
+        const statusEl = document.querySelector(".playback-status");
+        if (statusEl) {
+          statusEl.textContent = "Could not save the last archive episode. Check your browser storage.";
+        }
       }
     }
 
-function estimateOffset(timeString, duration) {
-
-  const match =
-    timeString.match(
-      /(\d+):(\d+)(am|pm)/i
-    );
-
-  if (!match) {
-    return 0;
-  }
-
-  let hour =
-    Number(match[1]);
-
-  const minute =
-    Number(match[2]);
-
-  const period =
-    match[3].toLowerCase();
-
-  if (
-    period === "pm" &&
-    hour !== 12
-  ) {
-    hour += 12;
-  }
-
-  if (
-    period === "am" &&
-    hour === 12
-  ) {
-    hour = 0;
-  }
-
-  const minutesFromStart =
-    (hour * 60 + minute) -
-    (6 * 60);
-
-  if (minutesFromStart < 0) {
-    return 0;
-  }
-
-  const showLengthMinutes = 240;
-
-  return (
-    minutesFromStart /
-    showLengthMinutes
-  ) * duration;
-}
-    
- function renderSegments(fileName) {
-
-  const date =
-    parseDateFromFileName(fileName);
-
-  if (!date || !showNotes) {
-    return;
-  }
-
-  const dateKey =
-    date.toISOString().split("T")[0];
-
-  let entry =
-  segmentData[dateKey];
-
-console.log("Episode date:", dateKey);
-console.log("Direct match:", entry);
-
-   console.log(
-  "Segment keys:",
-  Object.keys(segmentData)
-);
-
-if (!entry) {
-
-  const episodeDate =
-    new Date(dateKey);
-
-  for (const key of Object.keys(segmentData)) {
-
-    const segmentDate =
-      new Date(key);
-
-    const daysApart =
-      Math.abs(
-        (episodeDate - segmentDate) /
-        (1000 * 60 * 60 * 24)
-      );
-
-    if (daysApart <= 7) {
-
-      console.log(
-        "Using fallback:",
-        key
-      );
-
-      entry =
-        segmentData[key];
-
-      break;
-    }
-
-  }
-
-}
-
-if (!entry) {
-
-  const availableDates =
-    Object.keys(segmentData)
-      .sort();
-
-  for (const availableDate of availableDates) {
-
-    const segmentDate =
-      new Date(availableDate);
-
-    const episodeDate =
-      new Date(dateKey);
-
-    const diffDays =
-      Math.abs(
-        (episodeDate - segmentDate) /
-        (1000 * 60 * 60 * 24)
-      );
-
-    if (diffDays <= 7) {
-      entry =
-        segmentData[availableDate];
-      break;
-    }
-  }
-}
-
-  if (
-    !entry ||
-    !entry.segments ||
-    entry.segments.length === 0
-  ) {
-
-    showNotes.innerHTML = `
-      <div class="card">
-        <h3>📖 Topics Discussed</h3>
-        <p>No segment data available.</p>
-      </div>
-    `;
-
-    return;
-  }
-
-  showNotes.innerHTML = `
-    <div class="card">
-
-      <h3>📖 Topics Discussed</h3>
-
-      <ul class="segment-list">
-
-        ${entry.segments.map(segment => `
-          <li>
-
-  <button
-    class="segment-jump"
-    data-time="${segment.time || ""}">
-
-    ${
-      segment.time
-        ? `${segment.time} - `
-        : ""
-    }
-
-    ${segment.title}
-
-  </button>
-
-</li>
-        `).join("")}
-
-      </ul>
-
-    </div>
-  `;
-}
-        
-  
-    
     function loadEpisode(file, { autoplay = true } = {}) {
       if (!file) return;
 
@@ -585,10 +491,17 @@ if (!entry) {
       prevButton.disabled = currentIndex <= 0;
       nextButton.disabled = currentIndex >= mp3s.length - 1;
 
-      playback.load({
-        type: "archive", collectionId: archiveId, trackId: file.name,
-        collectionTitle: title || "Stern Archive", title: displayName, audioUrl
-      }, autoplay);
+      playback.load(
+        {
+          type: "archive",
+          collectionId: archiveId,
+          trackId: file.name,
+          collectionTitle: title || "Stern Archive",
+          title: displayName,
+          audioUrl
+        },
+        autoplay
+      );
     }
 
     function goToEpisode(offset) {
@@ -608,8 +521,17 @@ if (!entry) {
     prevButton.addEventListener("click", () => goToEpisode(-1));
     nextButton.addEventListener("click", () => goToEpisode(1));
 
-    mainPlayer.addEventListener("loadedmetadata", updateTimeDisplay);
-    mainPlayer.addEventListener("timeupdate", updateTimeDisplay);
+    mainPlayer.addEventListener("loadedmetadata", () => {
+      updateTimeDisplay();
+      updateSegmentTimeHints();
+      highlightActiveSegment();
+    });
+
+    mainPlayer.addEventListener("timeupdate", () => {
+      updateTimeDisplay();
+      highlightActiveSegment();
+    });
+
     mainPlayer.addEventListener("ended", () => {
       if (currentIndex >= 0 && currentIndex < mp3s.length - 1) {
         loadEpisode(mp3s[currentIndex + 1]);
