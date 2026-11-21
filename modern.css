@@ -497,7 +497,7 @@ a:hover {
   line-height: 1.55;
 }
 
-/* ===== Toolbar / Forms ===== */
+/* ===== Toolbar / Forms / Collapsible Add Archive ===== */
 .toolbar {
   margin: 32px 0 28px;
   padding: 26px;
@@ -514,6 +514,75 @@ a:hover {
 .toolbar-row {
   display: flex;
   gap: 12px;
+}
+
+.add-archive-details {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.add-archive-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 22px;
+  font-size: 16px;
+  font-weight: 750;
+  color: var(--ink);
+  background: var(--surface-raised);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.add-archive-summary:hover {
+  background: var(--surface-tint);
+  color: var(--accent-hover);
+}
+
+.add-archive-summary::-webkit-details-marker {
+  display: none;
+}
+
+.add-archive-summary::after,
+summary.collapsible-trigger::after {
+  content: "▾";
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--accent-dim);
+  color: var(--accent-hover);
+  font-size: 13px;
+  transition: transform 0.2s ease, background 0.16s ease;
+}
+
+details[open] > .add-archive-summary::after,
+details[open] > summary.collapsible-trigger::after {
+  transform: rotate(180deg);
+}
+
+.add-archive-body,
+.collapsible-body {
+  padding: 20px 22px 24px;
+  border-top: 1px solid var(--line);
+}
+
+.collapsible-panel[hidden] > .collapsible-body,
+.collapsible-panel:not([data-open="true"]):not(.is-open) > .collapsible-body {
+  display: none;
+}
+
+.collapsible-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 label {
@@ -586,7 +655,7 @@ textarea:focus {
 }
 
 .month-group,
-details {
+details:not(.add-archive-details) {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -595,7 +664,7 @@ details {
 }
 
 .month-summary,
-summary {
+summary:not(.add-archive-summary) {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -610,7 +679,7 @@ summary {
 }
 
 .month-summary:hover,
-summary:hover {
+summary:not(.add-archive-summary):hover {
   background: var(--surface-tint);
 }
 
