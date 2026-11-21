@@ -18,10 +18,10 @@
       <section class="toolbar">
         <div class="toolbar-intro"><p class="eyebrow">Internet Archive powered</p><h1>Video archives</h1></div>
         <p>Choose an archive to browse its videos. Availability and playback are controlled by Internet Archive.</p>
-        <button type="button" id="addVideoBtn" class="primary-btn" disabled>＋ Add video archive</button>
-        <div id="addVideoPanel" class="archive-panel hidden">
+        <button type="button" id="addVideoBtn" class="primary-btn" aria-expanded="false" aria-controls="addVideoPanel" disabled>＋ Add video archive</button>
+        <div id="addVideoPanel" class="archive-panel collapsible-panel hidden" hidden>
           <div class="archive-panel-header"><h2 id="videoFormHeading">Add a video archive</h2><button type="button" id="closeVideoPanel" class="icon-btn" aria-label="Close">×</button></div>
-          <form id="addVideoForm">
+          <form id="addVideoForm" class="collapsible-body">
             <div class="archive-form-grid">
               <label><span>Archive.org item URL or ID</span><input id="videoArchiveInput" required placeholder="https://archive.org/details/..."></label>
               <label><span>Display name</span><input id="videoArchiveTitle" required placeholder="1999 video archive"></label>
@@ -67,6 +67,30 @@
       supabaseUrl: "https://uzbbwvihkfzdbnowhglc.supabase.co",
       supabaseAnonKey: "sb_publishable_a6YEwdDOpkZ6BI8pHXVPnQ_WlFMlHmf"
     };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const addVideoBtn = document.getElementById("addVideoBtn");
+      const addVideoPanel = document.getElementById("addVideoPanel");
+      const closeVideoPanel = document.getElementById("closeVideoPanel");
+
+      function setVideoPanelOpen(isOpen) {
+        if (!addVideoPanel) return;
+        addVideoPanel.classList.toggle("hidden", !isOpen);
+        addVideoPanel.hidden = !isOpen;
+        if (addVideoBtn) {
+          addVideoBtn.setAttribute("aria-expanded", String(isOpen));
+        }
+      }
+
+      addVideoBtn?.addEventListener("click", () => {
+        const isCurrentlyHidden = addVideoPanel?.classList.contains("hidden") ?? true;
+        setVideoPanelOpen(isCurrentlyHidden);
+      });
+
+      closeVideoPanel?.addEventListener("click", () => {
+        setVideoPanelOpen(false);
+      });
+    });
   </script>
   <script src="videos.js"></script>
 </body>
