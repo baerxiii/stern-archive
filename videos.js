@@ -22,6 +22,19 @@
     element.classList.toggle("error", error);
   }
 
+  function syncPanelExpanded() {
+    const btn = el("addVideoBtn");
+    if (btn && panel) {
+      btn.setAttribute("aria-expanded", String(!panel.classList.contains("hidden")));
+    }
+  }
+
+  function hidePanel() {
+    editingArchive = null;
+    panel.classList.add("hidden");
+    syncPanelExpanded();
+  }
+
   function archiveId(value) {
     const input = value.trim();
     let id = input;
@@ -224,6 +237,7 @@
       message(el("videoMessage"), `Could not load shared archives: ${error.message}. Check your connection and apply database/video-archive-categories.sql if needed.`, true);
     }
     el("addVideoBtn").disabled = !editor || !managementReady;
+    syncPanelExpanded();
     renderArchives();
   }
 
@@ -241,7 +255,8 @@
     el("signInForm").hidden = Boolean(user);
     el("signOutBtn").hidden = !user;
     el("addVideoBtn").disabled = !editor || !managementReady;
-    if (!editor) panel.classList.add("hidden");
+    if (!editor) hidePanel();
+    else syncPanelExpanded();
     message(el("authStatus"), user ? (editor ? "Signed in as an authorized editor." : "This account is not authorized to edit archives.") : "Sign in with an authorized editor account to add shared archives.");
     renderArchives();
   }
@@ -280,15 +295,17 @@
     el("videoFormHeading").textContent = archive ? "Edit video archive" : "Add a video archive";
     message(el("videoFormMessage"), "");
     panel.classList.remove("hidden");
+    syncPanelExpanded();
     el("videoArchiveInput").focus();
     panel.scrollIntoView({ block: "nearest" });
   }
 
-  el("addVideoBtn").addEventListener("click", () => showForm());
-  el("closeVideoPanel").addEventListener("click", () => {
-    editingArchive = null;
-    panel.classList.add("hidden");
+  el("addVideoBtn").addEventListener("click", () => {
+    const isOpen = !panel.classList.contains("hidden") && !editingArchive;
+    if (isOpen) hidePanel();
+    else showForm();
   });
+  el("closeVideoPanel").addEventListener("click", hidePanel);
   el("videoSearch").addEventListener("input", renderFiles);
   player.addEventListener("error", () => {
     if (player.getAttribute("src")) message(el("videoStatus"), "Video playback failed. Try opening the archive on Internet Archive.", true);
@@ -341,8 +358,7 @@
       openCategories.add(archive.category.toLocaleLowerCase());
       renderArchives();
       form.reset();
-      panel.classList.add("hidden");
-      editingArchive = null;
+      hidePanel();
       message(el("videoFormMessage"), "");
       message(el("videoMessage"), previous ? "Archive updated." : "Archive added to the shared list.");
     } catch (error) {
